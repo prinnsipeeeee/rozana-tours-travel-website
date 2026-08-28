@@ -1,78 +1,77 @@
-# ✈️ Rozana Tours & Travels (روزانة للسياحة والسفر)
-> **Official Web Application — Development Phase 1**  
-> A luxury, high-converting, and bilingual (English & Arabic) web portal for Rozana Tours & Travels, based in Riyadh, Kingdom of Saudi Arabia.
+# Rozana Tours & Travels — Web Application
+
+Official corporate web portal for **Rozana Tours & Travels (روزانة للسياحة والسفر)**, a premier licensed travel agency based in Riyadh, Kingdom of Saudi Arabia.
 
 ---
 
-## 📌 Executive Summary
+## Technical Overview
 
-**Rozana Tours & Travels** is designed to provide Saudi travelers with a seamless experience for worldwide visa processing, bespoke luxury tour packages, and first-class flight bookings. Built with modern web performance standards, responsive design, and dynamic translation capabilities.
+The application is engineered as a high-performance, single-page application (SPA) designed to convert visitor traffic into qualified sales inquiries for visa processing, bespoke holiday packages, and flight/hotel bookings.
 
----
-
-## 🎨 Brand Design System & Color Palette
-
-Extracted from the official **Rozana Tours & Travels** logo:
-
-| Element | Hex Code | Purpose |
-| :--- | :--- | :--- |
-| **Royal Navy** | `#002B5B` / `#001E3D` | Navbar Topbar, Hero Background, Dark Headers |
-| **Ocean Blue** | `#0084D6` / `#003B7A` | Primary Brand Color, Badges, Active States |
-| **Sunset Orange** | `#FF7A00` | Call to Action (CTA) Buttons, Highlights, Airplane Accents |
-| **Emerald Green** | `#10B981` | Direct WhatsApp Inquiry Actions |
-| **Slate Light** | `#F8FAFC` | Clean Section Backgrounds |
+### Key Architecture Highlights
+- **Dynamic Full-Page Localization**: Integrated Google Translate Client Engine providing instant English & Arabic (RTL) full-page translation.
+- **Interactive Component Architecture**: Data-driven modular UI for Visa Services and Tour Packages with interactive requirement modals and itinerary timelines.
+- **Micro-Interactions & Motion**: Smooth UI physics powered by Framer Motion, including staggered scroll reveals and animated modal drawers.
+- **Direct WhatsApp Conversion Funnel**: Automated deep-link generators mapping user-selected criteria directly to customer support agents.
 
 ---
 
-## 🚀 Key Features Implemented in Phase 1
+## Features & Modules
 
-### 1. 🛡️ Ultra-Premium Header & Navbar (`Navbar.jsx`)
-- **Top Announcement Bar**: 24/7 VIP Assistance indicator, Riyadh office location badge, and direct call/email contacts.
-- **Glassmorphism Main Header**: Sticky navbar with backdrop blur effect on scroll.
-- **Dual Action CTAs**: Instant WhatsApp button + "Plan My Trip" gradient button.
-- **Responsive Mobile Drawer**: Smooth overlay menu optimized for smartphones and tablets.
+### 1. Navigation & Topbar (`Navbar.jsx`)
+- Sticky glassmorphic header with backdrop blur effect on scroll.
+- Top announcement bar with 24/7 VIP support channels and location info.
+- Language switcher triggering full DOM text translation and text-direction alignment.
+- Responsive navigation drawer optimized for mobile viewports.
 
-### 2. 🌐 Dynamic Full-Page Translation System (`index.html` + `Navbar.jsx`)
-- Integrated **Google Translate Engine** operating seamlessly in the background.
-- Custom luxury **Language Toggle Button** (`English (EN)` / `العربية (AR)`).
-- Automatically translates the entire web page on the fly without hardcoded JSON dictionaries.
-- Supports **RTL (Right-to-Left)** text orientation when switching to Arabic.
+### 2. Hero Finder Console (`Hero.jsx`)
+- Asymmetric split layout presenting value propositions and trust metrics.
+- Interactive multi-tab finder widget for Visa, Tour, and Flight inquiries.
+- Floating rating badge with continuous spring-physics animation.
 
-### 3. 🌟 Unique Asymmetric Hero Section (`Hero.jsx`)
-- **Left Column**: High-impact luxury headline, key trust bullet badges (99.6% Visa Approval, Licensed Agency), and instant travel consultation trigger.
-- **Right Column**: Interactive **Glassmorphism "Quick Travel Finder Console"** featuring 3 dynamic modes:
-  - 🛂 **Visas**: Destination selector (Schengen, UK, USA, Japan, Turkey, etc.).
-  - 🏖️ **Tours**: Interactive destination keyword tags (Maldives, Switzerland, Bosnia, etc.).
-  - ✈️ **Flights**: Direct 5-star airline booking consultation.
-- **Saudi Trust Metrics Bar**: Statistics counter highlighting 15,000+ Visas issued and 12,000+ happy travelers.
+### 3. Visa Processing Services (`VisaSection.jsx`)
+- Categorized visa directory (Europe & UK, North America, Asia & Turkey).
+- High-definition country flag integration (`flagcdn`) ensuring uniform cross-platform rendering.
+- Quick-view specifications (processing timeframe, validity, starting fee).
+- Interactive document requirements modal popup.
 
----
-
-## 🛠️ Tech Stack & Dependencies
-
-- **Frontend Framework**: [React 19](https://react.dev/)
-- **Build Tool**: [Vite 6](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Translation Engine**: Google Translate Client API
+### 4. Curated Tour Packages (`PackagesSection.jsx`)
+- Vacation packages grid featuring high-resolution destination imagery and hover zoom effects.
+- Inclusions checklist (Roundtrip Flight, 5-Star Hotel, Private Transfer, Daily Breakfast).
+- Day-by-Day itinerary timeline popup modal.
 
 ---
 
-## 📁 Project Directory Structure
+## Tech Stack & Dependencies
+
+| Category | Technology |
+| :--- | :--- |
+| **Frontend Library** | React 19 |
+| **Build Tooling** | Vite 6 |
+| **Styling Engine** | Tailwind CSS v4 |
+| **Animation Library** | Framer Motion |
+| **Iconography** | Lucide React |
+| **Translation Engine** | Google Translate Client API |
+
+---
+
+## Project Structure
 
 ```text
 rozana-tours-travel/
 ├── public/
 ├── src/
 │   ├── assets/
-│   │   └── logo.jpeg           <-- Official Rozana Brand Logo
+│   │   └── logo.jpeg
 │   ├── components/
-│   │   ├── Navbar.jsx          <-- Premium Sticky Header & Language Switcher
-│   │   └── Hero.jsx            <-- Unique Luxury Hero & Travel Finder Console
-│   ├── App.jsx                 <-- Main Application Entry Component
-│   ├── index.css               <-- Tailwind CSS Imports
+│   │   ├── Navbar.jsx
+│   │   ├── Hero.jsx
+│   │   ├── VisaSection.jsx
+│   │   └── PackagesSection.jsx
+│   ├── App.jsx
+│   ├── index.css
 │   └── main.jsx
-├── index.html                  <-- Google Translate Script & Meta Configs
+├── index.html
 ├── package.json
 ├── vite.config.js
 └── README.md

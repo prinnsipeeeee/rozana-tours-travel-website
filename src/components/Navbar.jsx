@@ -132,7 +132,7 @@ export default function Navbar() {
 
             <a 
               href="#packages" 
-              className="hover:text-[#003B7A] transition-colors relative py-1 flex items-center gap-1.5"
+              className="hover:text-[#003B7A] transition-colors relative py-1 flex items-center gap-1.5 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-[#FF7A00] hover:after:w-full after:transition-all"
             >
               <Plane size={16} className="text-[#0084D6]" />
               <span>Tour Packages</span>
