@@ -34,12 +34,12 @@ export default function Hero() {
   };
 
   return (
-    <section id="home" className="relative min-h-screen bg-gradient-to-b from-[#001E3D] via-[#002B5B] to-[#003B7A] text-white pt-36 pb-20 overflow-hidden font-sans">
+    <section id="home" className="relative min-h-screen bg-linear-to-b from-[#001E3D] via-[#002B5B] to-[#003B7A] text-white pt-36 pb-20 overflow-hidden font-sans">
       
       {/* BACKGROUND ELEGANT GRAPHICS & ANIMATED GLOW */}
       <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#0084D6]/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#FF7A00]/15 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px] opacity-10 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size-[32px_32px] opacity-10 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
         
@@ -69,7 +69,7 @@ export default function Hero() {
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15]">
               Your Gateway To <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-[#FF7A00] to-orange-400">
+              <span className="bg-clip-text text-transparent bg-linear-to-r from-amber-200 via-[#FF7A00] to-orange-400">
                 Seamless Global Travel
               </span>
             </h1>
@@ -100,7 +100,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleConsultation}
-                className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-[#FF7A00] to-amber-500 hover:from-amber-500 hover:to-[#FF7A00] text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-xl shadow-[#FF7A00]/25 transition-all duration-300"
+                className="group relative inline-flex items-center gap-3 bg-linear-to-r from-[#FF7A00] to-amber-500 hover:from-amber-500 hover:to-[#FF7A00] text-white px-8 py-4 rounded-2xl font-bold text-sm shadow-xl shadow-[#FF7A00]/25 transition-all duration-300"
               >
                 <MessageSquare size={18} />
                 <span>Instant Travel Consultation</span>
@@ -145,7 +145,7 @@ export default function Hero() {
                   onClick={() => setActiveTab('visa')}
                   className={`flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     activeTab === 'visa' 
-                      ? 'bg-gradient-to-r from-[#0084D6] to-[#003B7A] text-white shadow-md' 
+                      ? 'bg-linear-to-r from-[#0084D6] to-[#003B7A] text-white shadow-md' 
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
@@ -157,7 +157,7 @@ export default function Hero() {
                   onClick={() => setActiveTab('packages')}
                   className={`flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     activeTab === 'packages' 
-                      ? 'bg-gradient-to-r from-[#0084D6] to-[#003B7A] text-white shadow-md' 
+                      ? 'bg-linear-to-r from-[#0084D6] to-[#003B7A] text-white shadow-md' 
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
@@ -169,7 +169,7 @@ export default function Hero() {
                   onClick={() => setActiveTab('flights')}
                   className={`flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
                     activeTab === 'flights' 
-                      ? 'bg-gradient-to-r from-[#0084D6] to-[#003B7A] text-white shadow-md' 
+                      ? 'bg-linear-to-r from-[#0084D6] to-[#003B7A] text-white shadow-md' 
                       : 'text-slate-300 hover:text-white'
                   }`}
                 >
@@ -277,7 +277,7 @@ export default function Hero() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={handleConsultation}
-                className="w-full bg-gradient-to-r from-[#FF7A00] to-orange-500 hover:from-orange-500 hover:to-[#FF7A00] text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2"
+                className="w-full bg-linear-to-r from-[#FF7A00] to-orange-500 hover:from-orange-500 hover:to-[#FF7A00] text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2"
               >
                 <MessageSquare size={16} />
                 <span>Check Rates & Availability</span>

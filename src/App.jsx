@@ -3,6 +3,8 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import VisaSection from './components/VisaSection';
 import PackagesSection from './components/PackagesSection';
+import UmrahSection from './components/UmrahSection';
+import AboutSection from './components/AboutSection';
 
 export default function App() {
   return (
@@ -14,6 +16,8 @@ export default function App() {
         <Hero />
         <VisaSection />
         <PackagesSection />
+        <UmrahSection />
+        <AboutSection />
       </main>
       
     </div>
