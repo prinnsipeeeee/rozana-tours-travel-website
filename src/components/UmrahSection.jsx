@@ -64,7 +64,7 @@ export default function UmrahSection() {
 
     const handleInquiry = (packageTitle) => {
     const msg = encodeURIComponent(`Peace be upon you Rozana Tours! I would like to inquire and book the "${packageTitle}". Please send available dates.`);
-    window.open(`https://wa.me/966500000000?text=${msg}`, '_blank');
+    window.open(`https://wa.me/966552993899?text=${msg}`, '_blank');
     }
 
     return (

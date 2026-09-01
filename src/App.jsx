@@ -5,6 +5,8 @@ import VisaSection from './components/VisaSection';
 import PackagesSection from './components/PackagesSection';
 import UmrahSection from './components/UmrahSection';
 import AboutSection from './components/AboutSection';
+import Contact from './components/Contact';
+import Footer from './components/Footer';
 
 export default function App() {
   return (
@@ -12,14 +14,16 @@ export default function App() {
       {/* 1. Navbar */}
       <Navbar />
 
-      <main>
-        <Hero />
-        <VisaSection />
-        <PackagesSection />
-        <UmrahSection />
-        <AboutSection />
-      </main>
+        <main>
+          <Hero />
+          <VisaSection />
+          <PackagesSection />
+          <UmrahSection />
+          <AboutSection />
+          <Contact />
+        </main>
       
+      <Footer />
     </div>
   );
 }

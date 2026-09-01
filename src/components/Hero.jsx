@@ -30,7 +30,7 @@ export default function Hero() {
       msg += `Flight & Hotel Bookings.`;
     }
     const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/966500000000?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/966552993899?text=${encoded}`, '_blank');
   };
 
   return (

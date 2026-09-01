@@ -54,18 +54,18 @@ export default function Navbar() {
               className="flex items-center gap-2 hover:text-[#FF7A00] transition-colors"
             >
               <Phone size={12} className="text-[#FF7A00]" />
-              <span>+966 50 000 0000</span>
+              <span>+966 55 299 3899</span>
             </a>
             <a 
               href="mailto:info@rozanatours.com" 
               className="hidden sm:flex items-center gap-2 hover:text-[#FF7A00] transition-colors"
             >
               <Mail size={14} className="text-[#FF7A00]" />
-              <span>info@rozanatours.com</span>
+              <span>rozanaruh@gmail.com</span>
             </a>
             <div className="hidden lg:flex items-center gap-2 text-slate-300">
               <MapPin size={14} className="text-[#FF7A00]" />
-              <span>Riyadh, Kingdom of Saudi Arabia</span>
+              <span>Umm Al Hammam St. - Umm Al Hammam Al Sharqi Dist. - Riyadh, Kingdom of Saudi Arabia</span>
             </div>
           </div>
 
@@ -173,7 +173,7 @@ export default function Navbar() {
             </a>
 
             <a 
-              href="#book" 
+              href="#contact" 
               className="relative group overflow-hidden rounded-full p-0.5 font-semibold text-xs transition-all shadow-md hover:shadow-xl active:scale-95"
             >
               <span className="absolute inset-0 bg-linear-to-r from-[#003B7A] via-[#0084D6] to-[#FF7A00] rounded-full transition-all group-hover:opacity-90"></span>

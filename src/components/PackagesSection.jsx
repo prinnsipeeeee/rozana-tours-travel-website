@@ -138,7 +138,7 @@ export default function PackagesSection() {
 
     const handleBook = (packageTitle) => {
         const message = encodeURIComponent(`Hello Rozana Tours! I am interested in booking the "${packageTitle}" Tour Package. Please send me details & available dates.`);
-        window.open(`https://wa.me/966500000000?text=${message}`, '_blank');
+        window.open(`https://wa.me/966552993899?text=${message}`, '_blank');
     };
 
     return (

@@ -130,7 +130,7 @@ export default function VisaSection() {
   // Direct WhatsApp Trigger
   const handleApply = (visaName) => {
     const message = encodeURIComponent(`Hello Rozana Tours! I want to apply for the ${visaName} Visa. Please assist me with the process.`);
-    window.open(`https://wa.me/966500000000?text=${message}`, '_blank');
+    window.open(`https://wa.me/966552993899?text=${message}`, '_blank');
   };
 
   return (
