@@ -46,7 +46,7 @@ const umrahPackages = [
         makkahHotel: 'Pullman Makkah Clock Royal',
         madinahHotel: 'Day Tour (Optional)',
         duration: '3 Days / 2 Nights',
-        price: '1,750',
+        price: '1,750 SAR',
         rating: 4.8,
         popular: false,
         transport: 'Airport Pick-up & Drop-off',
