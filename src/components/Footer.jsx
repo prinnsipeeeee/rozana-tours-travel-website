@@ -15,7 +15,7 @@ export default function Footer() {
                     <img 
                     src={logoImg} 
                     alt="Rozana Tours & Travels Logo" 
-                    className="h-12 w-auto object-contain bg-white/90 p-1.5 rounded-xl shadow-sm"
+                    className="h-40 w-auto object-contain bg-white/90 p-1.5 rounded-xl shadow-sm"
                     />
                     <p className="text-xs text-slate-400 leading-relaxed font-light">
                     Making your travel experience exceptional every time. Accredited travel and visa consultancy based in Riyadh, Saudi Arabia.
@@ -54,7 +54,7 @@ export default function Footer() {
                     Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist., Riyadh, Saudi Arabia
                     </p>
                     <p className="text-xs text-[#FF7A00] font-bold">Tel: +966 55 299 3899</p>
-                    <p className="text-xs text-slate-400">Email: rozanaruh@gmail.com</p>
+                    <p className="text-xs text-slate-400">Email: infor@rozanatraverls.com</p>
                 </div>
                 </div>
                 {/* BOTTOM COPYRIGHT */}

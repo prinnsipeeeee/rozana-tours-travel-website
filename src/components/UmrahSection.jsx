@@ -8,8 +8,8 @@ const umrahPackages = [
         id: 'vip-executive',
         title: 'VIP Executive Umrah Experience',
         makkahHotel: 'Fairmont Clock Tower (Kaaba View)',
-        madinahHotel: 'The Oberal Madinah',
-        durationg: '5 Days / 4 Nights',
+        madinahHotel: 'The Oberoi Madinah',
+        duration: '5 Days / 4 Nights',
         price: '3,500 SAR',
         rating: 5.0,
         popular: true,
@@ -17,7 +17,7 @@ const umrahPackages = [
         inclusions: [
             'Direct Front Haram / Kaaba View Suite',
             'Daily 5-Star Open Buffet Breakfast',
-            'Private Chaurffeur Airport & Haram Transfers',
+            'Private Chauffeur Airport & Haram Transfers',
             'Nusuk Permit & Fast-Track Assistance',
             'Guided Historical Ziyarat Tours'
         ]
@@ -25,7 +25,7 @@ const umrahPackages = [
     {
         id: 'premium-family',
         title: 'Premium Family Umrah Package',
-        makkahHotel: 'Swissotel Makkah',
+        makkahHotel: 'Swissôtel Makkah',
         madinahHotel: 'Pullman Zamzam Madinah',
         duration: '7 Days / 6 Nights',
         price: '2,950 SAR',
@@ -33,10 +33,10 @@ const umrahPackages = [
         popular: false,
         transport: 'Private Family SUV Transfer',
         inclusions: [
-            'Connections Family Suites near Haram',
+            'Connecting Family Suites near Haram',
             'Daily Breakfast Included',
             'Makkah - Madinah VIP Train / Car',
-            'Ziyarat in Makkah (Ghar-Hira, Thawr)',
+            'Ziyarat in Makkah (Ghar Hira, Thawr)',
             '24/7 Dedicated Arabic & English Guide'
         ]
     },
@@ -51,10 +51,10 @@ const umrahPackages = [
         popular: false,
         transport: 'Airport Pick-up & Drop-off',
         inclusions: [
-            'Step away from king Abdulaziz Gate',
+            'Steps away from King Abdulaziz Gate',
             'Express Check-in Service',
             'Roundtrip Jeddah Airport Transfer',
-            'Nusuk Rawdah Slot Support',
+            'Nusuk Rawdah Slot Support'
         ]
     }
 ];
@@ -63,64 +63,68 @@ export default function UmrahSection() {
     const [selectedTransport, setSelectedTransport] = useState('all');
 
     const handleInquiry = (packageTitle) => {
-    const msg = encodeURIComponent(`Peace be upon you Rozana Tours! I would like to inquire and book the "${packageTitle}". Please send available dates.`);
-    window.open(`https://wa.me/966552993899?text=${msg}`, '_blank');
-    }
+        const msg = encodeURIComponent(`Peace be upon you Rozana Tours! I would like to inquire and book the "${packageTitle}". Please send available dates.`);
+        window.location.href = `https://wa.me/966552993899?text=${msg}`;
+    };
 
     return (
-        <section id="flights" className="py-24 bg-slate-900 text-white relative font-sans overflow-hidden">
+        <section id="umrah" className="py-20 md:py-24 bg-slate-900 text-white relative font-sans overflow-hidden">
 
-            <div className="absolute top-0 right-1/4 w-96 h-86 bg-[#FF7A00]/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#0084D6]/15 rounded-full blur-3xl pointer-events-none"></div>
+            {/* BACKGROUND GLOW ACCENTS */}
+            <div className="absolute top-0 right-1/4 w-72 md:w-96 h-72 md:h-96 bg-[#FF7A00]/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div className="absolute bottom-0 left-1/4 w-72 md:w-96 h-72 md:h-96 bg-[#0084D6]/15 rounded-full blur-3xl pointer-events-none"></div>
             <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size-[32px_32px] opacity-5 pointer-events-none"></div>
 
-            <div className="wax-w-7xl mx-auto py-4 md:px-8 relative z-10">
+            {/* CONTAINER WITH PROPER PADDING */}
+            <div className="max-w-360 mx-auto px-4 sm:px-6 md:px-10 relative z-10">
 
                 {/* 1. SECTION HEADER */}
                 <motion.div
-                    initial={{ opacity: 0, y: 10}}
-                    whileInView={{ opacity: 1, y: 0}}
-                    viewport={{ once: true}}
-                    transition={{ duration: 0.6}}
-                    className="text-center max-w-3xl mx-auto space-y-4 mb-16"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="text-center max-w-3xl mx-auto space-y-4 mb-12 md:mb-16"
                 >
                     <div className="inline-flex items-center gap-2 bg-amber-400/10 border border-amber-400/20 text-amber-300 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
                         <Sparkles size={15} className="text-[#FF7A00]" />
                         <span>Spiritual Journeys & Luxury Pilgrimage</span>
                     </div>
                     
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-blak tracking-tight text-white">
-                        Bespoke <spand className="text-transparent bg-clip-text bg-linear-to-r from-amber-200 via-[#FF7A00] to-orange-400">VIP Umrah Packages</spand>
+                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
+                        Bespoke <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-200 via-[#FF7A00] to-orange-400">VIP Umrah Packages</span>
                     </h2>
 
-                    <p className="text-slate-300 text-base md:text-lg leading-relaxed font-light">
+                    <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed font-light px-2">
                         Perform your pilgrimage with complete peace of mind. 5-Star luxury hotels overlooking the Holy Kaaba, private GMC transfers, and complete Nusuk concierge.
                     </p>
                 </motion.div>
 
-                {/* 2. UMRAH PACKAGES GRID */}
-                <div className="grid gird-cols- lg:grid-cols-3 gap-8 mb-16">
+                {/* 2. UMRAH PACKAGES GRID (MOBILE RESPONSIVE) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-14 md:mb-16">
                     {umrahPackages.map((pkg) => (
                         <motion.div
                             key={pkg.id}
-                            whileHover={{ y: -8 }}
+                            whileHover={{ y: -6 }}
                             transition={{ type: "spring", stiffness: 300 }}
-                            className={`rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden text-left backdrop-blur-xl border transition-all duration-300 ${
+                            className={`rounded-3xl p-6 sm:p-7 md:p-8 flex flex-col justify-between relative overflow-hidden text-left backdrop-blur-xl border transition-all duration-300 ${
                                 pkg.popular
                                 ? 'bg-linear-to-b from-[#002B5B] to-[#001E3D] border-[#FF7A00]/60 shadow-2xl shadow-[#FF7A00]/10'
                                 : 'bg-white/5 border-white/10 hover:border-white/25 shadow-lg'
-                        }`}
+                            }`}
                         >
+                            {/* POPULAR BADGE */}
                             {pkg.popular && (
-                                <div className="absolute top-4 right-4 bg-linear-to-r from-[#FF7A00] to-amber-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow:md flex items-center gap-1">
-                                    <Star size={12} fill="#FFFFF" />
+                                <div className="absolute top-4 right-4 bg-linear-to-r from-[#FF7A00] to-amber-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-md flex items-center gap-1">
+                                    <Star size={12} fill="#FFFFFF" />
                                     <span>Most Popular</span>
                                 </div>
                             )}
 
                             <div>
+                                {/* DURATION & RATING */}
                                 <div className="flex items-center gap-3 text-xs text-slate-300 mb-3">
-                                    <span className="bg-white/10 px-3 py-1 rounded-full font-semibold text-amber-300 border border-white-10">
+                                    <span className="bg-white/10 px-3 py-1 rounded-full font-semibold text-amber-300 border border-white/10">
                                         {pkg.duration}
                                     </span>
 
@@ -130,14 +134,13 @@ export default function UmrahSection() {
                                     </div>
                                 </div>
 
-
                                 {/* TITLE */}
-                                <h3 className="text-2xl font-black text-white mb-6">
+                                <h3 className="text-xl sm:text-2xl font-black text-white mb-5">
                                     {pkg.title}
                                 </h3>
 
                                 {/* HOTEL PARTNERS */}
-                                <div className="space-y-3 bg-black/30 p-4 rounded-2xl border boder-white/10 mb-6 text-xs">
+                                <div className="space-y-3 bg-black/30 p-4 rounded-2xl border border-white/10 mb-6 text-xs">
                                     <div className="space-y-1">
                                         <span className="text-amber-400 font-bold flex items-center gap-1.5">
                                             <Building2 size={14} /> 
@@ -150,7 +153,7 @@ export default function UmrahSection() {
                                     <div className="space-y-1 border-t border-white/10 pt-2">
                                         <span className="text-sky-400 font-bold flex items-center gap-1.5">
                                             <Building2 size={14} /> 
-                                            Madinah Al-Munwwarah:
+                                            Madinah Al-Munawwarah:
                                         </span>
                                         <p className="text-slate-200 font-medium pl-5">
                                             {pkg.madinahHotel}
@@ -158,34 +161,33 @@ export default function UmrahSection() {
                                     </div>
                                 </div>
 
-
                                 {/* INCLUSIONS LIST */}
-                                <div className="space-y-2 5 mb-8">
+                                <div className="space-y-2.5 mb-8">
                                     <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">
-                                        Packages Inclusions:
+                                        Package Inclusions:
                                     </span>
-                                    <span>
+                                    <div className="space-y-2">
                                         {pkg.inclusions.map((inc, i) => (
                                             <div key={i} className="flex items-start gap-2.5 text-xs text-slate-300">
                                                 <CheckCircle2 size={15} className="text-emerald-400 shrink-0 mt-0.5" />
                                                 <span>{inc}</span>
                                             </div>
                                         ))}
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* FOOTER PRICE & ACTION BUTTON */}
-                            <div className="pt-6 border-t border-white.10 flex items-center justify-between gap-4">
+                            {/* FOOTER PRICE & ACTION BUTTON (RESPONSIVE ON MOBILE) */}
+                            <div className="pt-6 border-t border-white/10 flex items-center justify-between gap-3">
                                 <div>
                                     <span className="text-[10px] uppercase font-bold text-slate-400 block">Starting Per Person</span>
-                                    <span className="text-2xl font-black text-amber-300">{pkg.price}</span>
+                                    <span className="text-xl sm:text-2xl font-black text-amber-300">{pkg.price}</span>
                                 </div>
 
                                 <button
                                     onClick={() => handleInquiry(pkg.title)}
-                                    className="bg-linear-to-r from-[#FF7A00] to-amber-500 hover:from-amber-500 hover:to-[#FF7A00] text-white px-5 py-3 rounded-2xl font-bold text-xs transition-all flex items-center gap-2 shadow-lg shadow-[#FF7A00]/25 hover:scale-105 active:scale-95"
-                                    >
+                                    className="bg-linear-to-r from-[#FF7A00] to-amber-500 hover:from-amber-500 hover:to-[#FF7A00] text-white px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs transition-all flex items-center gap-1.5 shadow-lg shadow-[#FF7A00]/25 hover:scale-105 active:scale-95 whitespace-nowrap"
+                                >
                                     <MessageSquare size={15} />
                                     <span>Book VIP</span>
                                 </button>
@@ -194,33 +196,31 @@ export default function UmrahSection() {
                     ))}
                 </div>
                 
-                {/*  3. CUSTOM UMRAH QUOTATION BANNER */}
+                {/* 3. CUSTOM UMRAH QUOTATION BANNER (RESPONSIVE ON MOBILE) */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20}}
-                    whileInView={{ opacity: 1, y: 0}}
-                    viewport={{ once: true}}
-                    transition={{ duration: 0.6}}
-                    className="bg-linear-to-r from-[#002B5B] via-[#003B7A] to-[#002B5B] border border-amber-500/30 rounded-3xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 text-left shadow-2xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6 }}
+                    className="bg-linear-to-r from-[#002B5B] via-[#003B7A] to-[#002B5B] border border-amber-500/30 rounded-3xl p-6 sm:p-8 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 text-left shadow-2xl"
                 >
-                    <div className="space-y-2">
-                        <h4 className="text-xl md:text-2xl font-black text-white flex items-center gap-2">
-                            <Sparkles size={20} className="text-[#FF7A00]" />
-                            Need a custom Date or Group Umrah Itinerary?
+                    <div className="space-y-2 max-w-2xl">
+                        <h4 className="text-lg sm:text-xl md:text-2xl font-black text-white flex items-center gap-2">
+                            <Sparkles size={20} className="text-[#FF7A00] shrink-0" />
+                            <span>Need a Custom Date or Group Umrah Itinerary?</span>
                         </h4>
-                        <p className="text-sm text-slate-300 font-light max-w-2xl">
+                        <p className="text-xs sm:text-sm text-slate-300 font-light leading-relaxed">
                             We customize bespoke pilgrimages for families, corporate delegations, and VIP guests with private jet coordination and 5-star royal suites.
                         </p>
-
-                        <a
-                            href="https://wa.me/966500000000?text=Hello%20Rozana%20Tours!%20I%20would%20like%20a%20custom%20Umrah%20quotation."
-                            target="_blank"
-                            rel="noreferrer"
-                            className="shrink-0 inline-flex items-center gap-2 bg-white text-[#002B5B] hover:bg-amber-300 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider transition-all shadow-xl hover:scale-105"
-                        >
-                            <span>Request Custom Quotation</span>
-                            <ChevronRight size={16} />
-                        </a>
                     </div>
+
+                    <a
+                        href="https://wa.me/966552993899?text=Hello%20Rozana%20Tours!%20I%20would%20like%20a%20custom%20Umrah%20quotation."
+                        className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 bg-white text-[#002B5B] hover:bg-amber-300 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider transition-all shadow-xl hover:scale-105 active:scale-95 text-center"
+                    >
+                        <span>Request Custom Quotation</span>
+                        <ChevronRight size={16} />
+                    </a>
                 </motion.div>
 
             </div>
