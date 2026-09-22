@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Hero() {
+export default function Hero({ settings = {} }) {
+  const whatsappNumber = settings.whatsapp_number || '966552993899';
   const [activeTab, setActiveTab] = useState('visa');
   const [destination, setDestination] = useState('');
   const [visaType, setVisaType] = useState('Schengen (Europe)');
@@ -30,7 +31,7 @@ export default function Hero() {
       msg += `Flight & Hotel Bookings.`;
     }
     const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/966552993899?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/${whatsappNumber}?text=${encoded}`, '_blank');
   };
 
   return (
@@ -51,7 +52,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-1.5 rounded-full text-xs font-medium text-amber-300 mb-8 shadow-inner"
         >
           <Award size={15} className="text-[#FF7A00]" />
-          <span>Premier Saudi Arabia Travel & Visa Consultancy</span>
+          <span>{settings.hero_badge || 'Premier Saudi Arabia Travel & Visa Consultancy'}</span>
           <span className="bg-[#FF7A00] text-white text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ml-1">
             VIP Standard
           </span>
@@ -68,14 +69,14 @@ export default function Hero() {
             className="lg:col-span-7 space-y-6 text-left"
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15]">
-              Your Gateway To <br />
+              {settings.hero_title || 'Your Gateway To'} <br />
               <span className="bg-clip-text text-transparent bg-linear-to-r from-amber-200 via-[#FF7A00] to-orange-400">
-                Seamless Global Travel
+                {settings.hero_highlight || 'Seamless Global Travel'}
               </span>
             </h1>
 
             <p className="text-slate-300 text-base sm:text-lg max-w-2xl font-light leading-relaxed">
-              Experience hassle-free worldwide visa processing, bespoke luxury tour packages, and first-class flight bookings crafted with perfection for Saudi travelers.
+              {settings.hero_description || 'Experience hassle-free worldwide visa processing, bespoke luxury tour packages, and first-class flight bookings crafted with perfection for Saudi travelers.'}
             </p>
 
             {/* QUICK FEATURE BULLETS */}

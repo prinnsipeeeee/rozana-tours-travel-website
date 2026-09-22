@@ -14,10 +14,14 @@ import {
 } from 'lucide-react';
 import logoImg from '../assets/logo-1.png'; 
 
-export default function Navbar() {
+export default function Navbar({ settings = {} }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentLang, setCurrentLang] = useState('EN');
+  const whatsappNumber = settings.whatsapp_number || '966552993899';
+  const phonePrimary = settings.phone_primary || '+966 55 299 3899';
+  const email = settings.email || 'rozanaruh@gmail.com';
+  const address = settings.address || 'Umm Al Hamam St., Riyadh, Saudi Arabia';
 
   const toggleLanguage = () => {
     const nextLang = currentLang === 'EN' ? 'AR' : 'EN';
@@ -51,22 +55,22 @@ export default function Navbar() {
           {/* LEFT SIDE INFO */}
           <div className="flex items-center gap-5 whitespace-nowrap overflow-hidden">
             <a 
-              href="tel:+966552993899" 
+              href={`tel:${phonePrimary.replace(/[^+\d]/g, '')}`}
               className="flex items-center gap-1.5 text-slate-200 hover:text-[#FF7A00] transition-all duration-300 ease-out hover:-translate-y-0.5 font-medium"
             >
               <Phone size={12} className="text-[#FF7A00]" />
-              <span>+966 55 299 3899</span>
+              <span>{phonePrimary}</span>
             </a>
             <a 
-              href="mailto:rozanaruh@gmail.com" 
+              href={`mailto:${email}`}
               className="hidden sm:flex items-center gap-1.5 text-slate-200 hover:text-[#FF7A00] transition-all duration-300 ease-out hover:-translate-y-0.5 font-medium"
             >
               <Mail size={13} className="text-[#FF7A00]" />
-              <span>info@rozanatravels.com</span>
+              <span>{email}</span>
             </a>
             <div className="hidden xl:flex items-center gap-1.5 text-slate-300 truncate font-light">
               <MapPin size={13} className="text-[#FF7A00] shrink-0" />
-              <span className="truncate">Umm Al Hamam St., Riyadh, Saudi Arabia</span>
+              <span className="truncate">{address}</span>
             </div>
           </div>
 
@@ -190,7 +194,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-2.5 shrink-0">
             {/* WhatsApp Us Button */}
             <a 
-              href="https://wa.me/966552993899" 
+              href={`https://wa.me/${whatsappNumber}`}
               target="_blank" 
               rel="noreferrer"
               className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-full font-bold text-xs shadow-md shadow-emerald-500/20 transition-all duration-300 ease-out hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/30 active:scale-95 whitespace-nowrap"
@@ -251,7 +255,7 @@ export default function Navbar() {
             </div>
 
             <div className="pt-2 flex flex-col gap-3">
-              <a href="https://wa.me/966552993899" target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 bg-emerald-500 text-white py-3 rounded-xl font-semibold text-sm shadow-md">
+              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-2 bg-emerald-500 text-white py-3 rounded-xl font-semibold text-sm shadow-md">
                 <MessageSquare size={18} />
                 <span>WhatsApp Us</span>
               </a>

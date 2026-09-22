@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Building2, Car, Clock2, CheckCircle2, MessageSquare, Sparkles, ShieldCheck, MapPin, Star, Users, ChevronRight } from "lucide-react";
+import React from "react";
+import { Building2, CheckCircle2, MessageSquare, Sparkles, Star, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 // DATA SET: Umrah Packages
@@ -59,12 +59,13 @@ const umrahPackages = [
     }
 ];
 
-export default function UmrahSection() {
-    const [selectedTransport, setSelectedTransport] = useState('all');
+export default function UmrahSection({ items, settings = {} }) {
+    const packages = Array.isArray(items) ? items : umrahPackages;
+    const whatsappNumber = settings.whatsapp_number || '966552993899';
 
     const handleInquiry = (packageTitle) => {
         const msg = encodeURIComponent(`Peace be upon you Rozana Tours! I would like to inquire and book the "${packageTitle}". Please send available dates.`);
-        window.location.href = `https://wa.me/966552993899?text=${msg}`;
+        window.location.assign(`https://wa.me/${whatsappNumber}?text=${msg}`);
     };
 
     return (
@@ -92,17 +93,17 @@ export default function UmrahSection() {
                     </div>
                     
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
-                        Bespoke <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-200 via-[#FF7A00] to-orange-400">VIP Umrah Packages</span>
+                        {settings.umrah_heading || <>Bespoke <span className="text-transparent bg-clip-text bg-linear-to-r from-amber-200 via-[#FF7A00] to-orange-400">VIP Umrah Packages</span></>}
                     </h2>
 
                     <p className="text-slate-300 text-sm sm:text-base md:text-lg leading-relaxed font-light px-2">
-                        Perform your pilgrimage with complete peace of mind. 5-Star luxury hotels overlooking the Holy Kaaba, private GMC transfers, and complete Nusuk concierge.
+                        {settings.umrah_description || 'Perform your pilgrimage with complete peace of mind. 5-Star luxury hotels overlooking the Holy Kaaba, private GMC transfers, and complete Nusuk concierge.'}
                     </p>
                 </motion.div>
 
                 {/* 2. UMRAH PACKAGES GRID (MOBILE RESPONSIVE) */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-14 md:mb-16">
-                    {umrahPackages.map((pkg) => (
+                    {packages.map((pkg) => (
                         <motion.div
                             key={pkg.id}
                             whileHover={{ y: -6 }}
@@ -215,7 +216,7 @@ export default function UmrahSection() {
                     </div>
 
                     <a
-                        href="https://wa.me/966552993899?text=Hello%20Rozana%20Tours!%20I%20would%20like%20a%20custom%20Umrah%20quotation."
+                        href={`https://wa.me/${whatsappNumber}?text=Hello%20Rozana%20Tours!%20I%20would%20like%20a%20custom%20Umrah%20quotation.`}
                         className="w-full sm:w-auto shrink-0 inline-flex items-center justify-center gap-2 bg-white text-[#002B5B] hover:bg-amber-300 px-6 py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider transition-all shadow-xl hover:scale-105 active:scale-95 text-center"
                     >
                         <span>Request Custom Quotation</span>

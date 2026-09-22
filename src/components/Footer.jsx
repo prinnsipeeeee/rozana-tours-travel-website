@@ -1,8 +1,11 @@
 import React from "react";
-import { Plane, MapPin, Phone, Mail, ShieldCheck, Heart, ChevronRight, Globe2 } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import logoImg from '../assets/logo.jpeg';
 
-export default function Footer() {
+export default function Footer({ settings = {} }) {
+    const phonePrimary = settings.phone_primary || '+966 55 299 3899';
+    const email = settings.email || 'rozanaruh@gmail.com';
+    const address = settings.address || 'Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist., Riyadh, Saudi Arabia';
     return (
         <footer className="bg-[#001E3D] text-slate-300 font-sans border-t border-blue-900/60 pt-16 pb-10">
             <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -51,10 +54,10 @@ export default function Footer() {
                 <div className="lg:col-span-3 space-y-3">
                     <h4 className="text-white font-bold text-xs uppercase tracking-wider">Riyadh Office</h4>
                     <p className="text-xs text-slate-400 leading-relaxed">
-                    Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist., Riyadh, Saudi Arabia
+                    {address}
                     </p>
-                    <p className="text-xs text-[#FF7A00] font-bold">Tel: +966 55 299 3899</p>
-                    <p className="text-xs text-slate-400">Email: infor@rozanatraverls.com</p>
+                    <p className="text-xs text-[#FF7A00] font-bold">Tel: {phonePrimary}</p>
+                    <p className="text-xs text-slate-400">Email: {email}</p>
                 </div>
                 </div>
                 {/* BOTTOM COPYRIGHT */}

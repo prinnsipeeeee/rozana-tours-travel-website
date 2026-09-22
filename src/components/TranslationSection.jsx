@@ -7,8 +7,6 @@ import {
   CheckCircle2, 
   MessageSquare, 
   Sparkles, 
-  Award, 
-  ArrowRight, 
   Stamp, 
   UploadCloud, 
   BadgeCheck,
@@ -71,7 +69,8 @@ const targetLanguages = [
   { name: 'Chinese', flag: 'https://flagcdn.com/w40/cn.png' }
 ];
 
-export default function TranslationSection() {
+export default function TranslationSection({ settings = {} }) {
+  const whatsappNumber = settings.whatsapp_number || '966552993899';
   const [selectedDoc, setSelectedDoc] = useState('Visa & Travel Documents');
   const [selectedLang, setSelectedLang] = useState('English');
 
@@ -81,7 +80,7 @@ export default function TranslationSection() {
       `🌐 *Target Language:* ${selectedLang}\n` +
       `Please give me the estimated fee and turnaround time.`;
     const encoded = encodeURIComponent(message);
-    window.location.href = `https://wa.me/966552993899?text=${encoded}`;
+    window.location.href = `https://wa.me/${whatsappNumber}?text=${encoded}`;
   };
 
   return (

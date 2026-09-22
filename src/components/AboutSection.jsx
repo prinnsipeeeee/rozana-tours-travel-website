@@ -1,9 +1,11 @@
 import React from "react";
-import { Building2, Award, ShieldCheck, Users, MapPin, CheckCircle2, Sparkles, HeartHandshake, Compass, PhoneCall, Clock } from "lucide-react";
+import { Award, ShieldCheck, MapPin, Sparkles, HeartHandshake, Compass, PhoneCall, Clock } from "lucide-react";
 import { motion } from "framer-motion";
-import { desc } from "framer-motion/client";
 
-export default function AboutSection() {
+export default function AboutSection({ settings = {} }) {
+    const whatsappNumber = settings.whatsapp_number || '966552993899';
+    const phonePrimary = settings.phone_primary || '+966 55 299 3899';
+    const address = settings.address || 'Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist., Riyadh, Saudi Arabia';
     const pillars = [
         {
             icon: <Award size={24} className="text-[#FF7A00]"  />,
@@ -82,7 +84,7 @@ export default function AboutSection() {
                             </div>
 
                             <a 
-                                href="tel:+966552993899" 
+                                href={`tel:${phonePrimary.replace(/[^+\d]/g, '')}`}
                                 className="hidden sm:inline-flex items-center gap-2 bg-[#002B5B] hover:bg-[#FF7A00] text-white px-4 py-2.5 rounded-xl font-bold text-xs transition-colors shadow-sm"
                             >
                                 <PhoneCall size={14} />
@@ -93,7 +95,7 @@ export default function AboutSection() {
                         {/* PHYSICAL OFFICE LOCATION PIN */}
                         <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-500 pt-2">
                             <MapPin size={16} className="text-[#FF7A00] shrink-0" />
-                            <span>Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist., Riyadh, Saudi Arabia</span>
+                            <span>{address}</span>
                         </div>
                     </motion.div>
 
@@ -140,7 +142,7 @@ export default function AboutSection() {
                             </div>
 
                               <a
-                                href="https://wa.me/966552993899?text=Hello%20Rozana%20Tours!%20I%20would%20like%20to%20know%20more%20about%20your%20services."
+                                href={`https://wa.me/${whatsappNumber}?text=Hello%20Rozana%20Tours!%20I%20would%20like%20to%20know%20more%20about%20your%20services.`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="shrink-0 bg-[#FF7A00] hover:bg-orange-600 text-white px-5 py-3 rounded-2xl font-bold text-xs transition-transform hover:scale-105 shadow-md"

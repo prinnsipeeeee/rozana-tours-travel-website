@@ -118,19 +118,21 @@ const visaData = [
   }
 ];
 
-export default function VisaSection() {
+export default function VisaSection({ items, settings = {} }) {
+  const whatsappNumber = settings.whatsapp_number || '966552993899';
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [activeModalVisa, setActiveModalVisa] = useState(null);
 
   // Filter Logic
+  const visas = Array.isArray(items) ? items : visaData;
   const filteredVisas = selectedCategory === 'all'
-    ? visaData
-    : visaData.filter(v => v.category === selectedCategory);
+    ? visas
+    : visas.filter(v => v.category === selectedCategory);
 
   // Direct WhatsApp Trigger
   const handleApply = (visaName) => {
     const message = encodeURIComponent(`Hello Rozana Tours! I want to apply for the ${visaName} Visa. Please assist me with the process.`);
-    window.open(`https://wa.me/966552993899?text=${message}`, '_blank');
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
   };
 
   return (
@@ -151,11 +153,11 @@ export default function VisaSection() {
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#002B5B] tracking-tight">
-            Seamless Visa Assistance for <span className="text-[#FF7A00]">Saudi Residents</span>
+            {settings.visa_heading || <>Seamless Visa Assistance for <span className="text-[#FF7A00]">Saudi Residents</span></>}
           </h2>
 
           <p className="text-slate-600 text-base md:text-lg leading-relaxed font-sans">
-            We handle everything from document translation, embassy appointment slots, to form filling with a 99.6% approval rating.
+            {settings.visa_description || 'We handle everything from document translation, embassy appointment slots, to form filling with a 99.6% approval rating.'}
           </p>
         </motion.div>
 

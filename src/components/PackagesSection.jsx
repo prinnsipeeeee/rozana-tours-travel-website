@@ -130,15 +130,17 @@ const packageData = [
     }
 ];
 
-export default function PackagesSection() {
+export default function PackagesSection({ items, settings = {} }) {
+    const whatsappNumber = settings.whatsapp_number || '966552993899';
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [activeModalPackage, setActiveModalPackage] = useState(null);
 
-    const filteredPackages = selectedCategory === 'all' ? packageData : packageData.filter(p => p.category === selectedCategory);
+    const packages = Array.isArray(items) ? items : packageData;
+    const filteredPackages = selectedCategory === 'all' ? packages : packages.filter(p => p.category === selectedCategory);
 
     const handleBook = (packageTitle) => {
         const message = encodeURIComponent(`Hello Rozana Tours! I am interested in booking the "${packageTitle}" Tour Package. Please send me details & available dates.`);
-        window.open(`https://wa.me/966552993899?text=${message}`, '_blank');
+        window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
     };
 
     return (
@@ -159,11 +161,11 @@ export default function PackagesSection() {
                     </div>
 
                     <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#002B5B] tracking-tight">
-                        Handcrafted <span className="text-[#FF7A00]">Tour Packages</span> For You
+                        {settings.packages_heading || <>Handcrafted <span className="text-[#FF7A00]">Tour Packages</span> For You</>}
                     </h2>
 
                     <p className="text-slate-600 text-base md:text-lg leading-relaxed">
-                        All packages include roundtrip flight arrangements, 5-star hotel accommodations, guided tours, and 24/7 dedicated concierge.
+                        {settings.packages_description || 'All packages include roundtrip flight arrangements, 5-star hotel accommodations, guided tours, and 24/7 dedicated concierge.'}
                     </p>
                 </motion.div>
 

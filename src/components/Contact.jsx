@@ -1,8 +1,13 @@
 import React, { useState } from "react";
-import { ShieldCheck, MapPin, Phone, Mail, Clock, Send, MessageSquare, Sparkles, CheckCircle2, Building, QrCode } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, MessageSquare, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function Contact() {
+export default function Contact({ settings = {} }) {
+    const whatsappNumber = settings.whatsapp_number || '966552993899';
+    const phonePrimary = settings.phone_primary || '+966 55 299 3899';
+    const phoneSecondary = settings.phone_secondary || '+966 53 188 0016';
+    const email = settings.email || 'rozanaruh@gmail.com';
+    const address = settings.address || 'Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist., Riyadh · Kingdom of Saudi Arabia';
     const [ formData, setFormData ] = useState({
         name: '',
         phone: '',
@@ -19,7 +24,7 @@ export default function Contact() {
       `💬 *Message:* ${formData.message || 'I would like more details regarding your services.'}`
     
     const encoded = encodeURIComponent(text);
-    window.open(`https://wa.me/966552993899?text=${encoded}`, '_blank')
+    window.open(`https://wa.me/${whatsappNumber}?text=${encoded}`, '_blank')
     };
 
     return (
@@ -73,8 +78,7 @@ export default function Contact() {
                             <h3 className="text-lg font-bold text-[#002B5B]">Riyadh Main Office</h3>
 
                             <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-                                Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist.,<br />
-                                Riyadh &bull; Kingdom of Saudi Arabia
+                                {address}
                             </p>                 
                         </div>
 
@@ -84,7 +88,7 @@ export default function Contact() {
 
                                 <div className="space-y-3">
                                     <a 
-                                        href="https://wa.me/966552993899"
+                                        href={`https://wa.me/${whatsappNumber}`}
                                         target="blank"
                                         rel="noreferrer"
                                         className="flex items-center justify-between p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF7A00] transition-all group"
@@ -95,14 +99,14 @@ export default function Contact() {
                                             </div>
                                             <div>
                                                 <p className="text-xs text-slate-400 font-medium">Senior Consultant (Ashraf)</p>
-                                                <p className="text-sm font-bold text-slate-800 group-hover:text-[#FF7A00]">+966 55 299 3899</p>
+                                                <p className="text-sm font-bold text-slate-800 group-hover:text-[#FF7A00]">{phonePrimary}</p>
                                             </div>
                                         </div>
                                         <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">WhatsApp</span>
                                     </a>
 
                                     <a 
-                                    href="tel:+966531880016"
+                                    href={`tel:${phoneSecondary.replace(/[^+\d]/g, '')}`}
                                     className="flex items-center justify-between p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-[#0084D6] transition-all group"
                                     >
                                         <div className="flex items-center gap-3">
@@ -112,14 +116,14 @@ export default function Contact() {
 
                                             <div>
                                                 <p className="text-xs text-slate-400 font-medium">Office Support Line</p>
-                                                <p className="text-sm font-bold text-slate-800 group-hover:text-[#0084D6]">+966 53 188 0016</p>
+                                                <p className="text-sm font-bold text-slate-800 group-hover:text-[#0084D6]">{phoneSecondary}</p>
                                             </div>
                                         </div>
                                         <span className="text-[11px] font-bold text-[#0084D6] bg-blue-50 px-2.5 py-1 rounded-full">Call</span>
                                     </a>
 
                                     <a 
-                                    href="mailto:rozanaruh@gmail.com"
+                                    href={`mailto:${email}`}
                                     className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-slate-400 transition-all group"
                                     >
                                         <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center font-bold">
@@ -127,7 +131,7 @@ export default function Contact() {
                                         </div>
                                         <div>
                                             <p className="text-xs text-slate-400 font-medium">Official Inquiry Email</p>
-                                            <p className="text-sm font-bold text-slate-800">rozanaruh@gmail.com</p>
+                                            <p className="text-sm font-bold text-slate-800">{email}</p>
                                         </div>
                                     </a>
                                 </div>
