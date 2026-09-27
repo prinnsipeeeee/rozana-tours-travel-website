@@ -28,3 +28,6 @@ lerna-debug.log*
 
 # Local files
 *.local
+
+# Local deployment references
+DEPLOYMENT.md
