@@ -11,22 +11,22 @@ use Illuminate\View\View;
 class SettingsController extends Controller
 {
     public const FIELDS = [
-        'site_name' => ['label' => 'Site name', 'type' => 'text'],
-        'whatsapp_number' => ['label' => 'WhatsApp number (digits only)', 'type' => 'text'],
-        'phone_primary' => ['label' => 'Primary phone', 'type' => 'text'],
-        'phone_secondary' => ['label' => 'Secondary phone', 'type' => 'text'],
-        'email' => ['label' => 'Email address', 'type' => 'email'],
-        'address' => ['label' => 'Office address', 'type' => 'textarea'],
-        'hero_badge' => ['label' => 'Hero badge', 'type' => 'text'],
-        'hero_title' => ['label' => 'Hero title', 'type' => 'text'],
-        'hero_highlight' => ['label' => 'Hero highlighted text', 'type' => 'text'],
-        'hero_description' => ['label' => 'Hero description', 'type' => 'textarea'],
-        'visa_heading' => ['label' => 'Visa section heading', 'type' => 'text'],
-        'visa_description' => ['label' => 'Visa section description', 'type' => 'textarea'],
-        'packages_heading' => ['label' => 'Tour packages heading', 'type' => 'text'],
-        'packages_description' => ['label' => 'Tour packages description', 'type' => 'textarea'],
-        'umrah_heading' => ['label' => 'Umrah section heading', 'type' => 'text'],
-        'umrah_description' => ['label' => 'Umrah section description', 'type' => 'textarea'],
+        'site_name' => ['label' => 'admin.settings.fields.site_name', 'type' => 'text'],
+        'whatsapp_number' => ['label' => 'admin.settings.fields.whatsapp_number', 'type' => 'text'],
+        'phone_primary' => ['label' => 'admin.settings.fields.phone_primary', 'type' => 'text'],
+        'phone_secondary' => ['label' => 'admin.settings.fields.phone_secondary', 'type' => 'text'],
+        'email' => ['label' => 'admin.settings.fields.email', 'type' => 'email'],
+        'address' => ['label' => 'admin.settings.fields.address', 'type' => 'textarea'],
+        'hero_badge' => ['label' => 'admin.settings.fields.hero_badge', 'type' => 'text'],
+        'hero_title' => ['label' => 'admin.settings.fields.hero_title', 'type' => 'text'],
+        'hero_highlight' => ['label' => 'admin.settings.fields.hero_highlight', 'type' => 'text'],
+        'hero_description' => ['label' => 'admin.settings.fields.hero_description', 'type' => 'textarea'],
+        'visa_heading' => ['label' => 'admin.settings.fields.visa_heading', 'type' => 'text'],
+        'visa_description' => ['label' => 'admin.settings.fields.visa_description', 'type' => 'textarea'],
+        'packages_heading' => ['label' => 'admin.settings.fields.packages_heading', 'type' => 'text'],
+        'packages_description' => ['label' => 'admin.settings.fields.packages_description', 'type' => 'textarea'],
+        'umrah_heading' => ['label' => 'admin.settings.fields.umrah_heading', 'type' => 'text'],
+        'umrah_description' => ['label' => 'admin.settings.fields.umrah_description', 'type' => 'textarea'],
     ];
 
     public function edit(): View
@@ -43,6 +43,6 @@ class SettingsController extends Controller
             SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
         }
 
-        return back()->with('status', 'Site settings saved.');
+        return back()->with('status', __('admin.flash.settings_saved'));
     }
 }

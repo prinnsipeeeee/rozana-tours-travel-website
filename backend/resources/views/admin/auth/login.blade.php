@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
-    <title>Admin sign in · Rozana Tours</title>
+    <title>{{ __('admin.login.title') }} · Rozana Tours</title>
     <style>
         :root { color-scheme:light; --navy:#0b2748; --navy-deep:#071a2f; --orange:#ef7118; --ink:#16253a; --muted:#69778a; --line:#d7e0e9; }
         * { box-sizing:border-box; }
@@ -36,6 +36,10 @@
         .errors { position:relative; margin-bottom:21px; padding:12px 14px 12px 42px; border:1px solid #f2c6c2; border-radius:11px; color:#b42318; background:#fff4f3; font-size:14px; font-weight:650; }
         .errors::before { content:"!"; position:absolute; left:14px; top:11px; display:grid; place-items:center; width:20px; height:20px; border-radius:50%; color:#fff; background:#d14343; }
         .security-note { display:flex; align-items:center; justify-content:center; gap:7px; margin:21px 0 0; color:#8793a3; font-size:12px; }
+        [dir="rtl"] body { font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
+        [dir="rtl"] .brand-message span::before { order:2; }
+        [dir="rtl"] .errors { padding:12px 42px 12px 14px; }
+        [dir="rtl"] .errors::before { left:auto; right:14px; }
         @media (max-width:760px) { body { padding:17px; } .login-shell { min-height:0; grid-template-columns:1fr; } .brand-panel { min-height:220px; padding:30px; } .brand-message h2 { font-size:28px; } .brand-message p { display:none; } .form-panel { padding:35px 28px 38px; } }
         @media (prefers-reduced-motion:reduce) { * { transition-duration:.01ms!important; } }
     </style>
@@ -44,18 +48,18 @@
 <main class="login-shell">
     <section class="brand-panel">
         <div class="brand"><span class="mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 9.5 14.5"/><path d="m22 2-8 20-4.5-7.5L2 10l20-8Z"/></svg></span>Rozana Tours</div>
-        <div class="brand-message"><span>Content studio</span><h2>Your travel website, all in one place.</h2><p>Manage offers, packages, and the information your travelers rely on.</p></div>
+        <div class="brand-message"><span>{{ __('admin.login.eyebrow') }}</span><h2>{{ __('admin.login.headline') }}</h2><p>{{ __('admin.login.description') }}</p></div>
     </section>
     <section class="form-panel">
         <form method="post" action="{{ route('admin.login.store') }}">@csrf
             <span class="lock" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
-            <h1>Welcome back</h1><p class="intro">Sign in to manage the Rozana Tours website.</p>
+            <h1>{{ __('admin.login.welcome') }}</h1><p class="intro">{{ __('admin.login.intro') }}</p>
             @if($errors->any())<div class="errors" role="alert">{{ $errors->first() }}</div>@endif
-            <label for="email">Email address</label><input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="email" required autofocus>
-            <label for="password">Password</label><input id="password" type="password" name="password" autocomplete="current-password" required>
-            <div class="remember"><input id="remember" type="checkbox" name="remember" value="1"><label for="remember">Keep me signed in</label></div>
-            <button type="submit">Sign in to your dashboard</button>
-            <p class="security-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>Secure administrator access</p>
+            <label for="email">{{ __('admin.login.email') }}</label><input id="email" type="email" name="email" value="{{ old('email') }}" autocomplete="email" dir="ltr" required autofocus>
+            <label for="password">{{ __('admin.login.password') }}</label><input id="password" type="password" name="password" autocomplete="current-password" dir="ltr" required>
+            <div class="remember"><input id="remember" type="checkbox" name="remember" value="1"><label for="remember">{{ __('admin.login.remember') }}</label></div>
+            <button type="submit">{{ __('admin.login.submit') }}</button>
+            <p class="security-note"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>{{ __('admin.login.secure') }}</p>
         </form>
     </section>
 </main>

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
-    <title>@yield('title', 'Admin') · Rozana Tours</title>
+    <title>@yield('title', __('admin.admin')) · Rozana Tours</title>
     <style>
         :root { color-scheme:light; --navy-950:#071a2f; --navy-900:#0b2748; --navy-800:#12365f; --blue-600:#087fbd; --blue-100:#dff3ff; --orange-600:#e9650a; --orange-500:#f47a1f; --orange-100:#fff0e5; --ink:#16253a; --muted:#66758b; --line:#dde5ee; --line-soft:#edf1f5; --bg:#f3f6fa; --success:#147a52; --danger:#b42318; --shadow:0 18px 55px rgba(22,37,58,.07); }
         * { box-sizing:border-box; }
@@ -30,6 +30,14 @@
         .nav a.active::before { content:""; position:absolute; left:-6px; width:3px; height:22px; border-radius:99px; background:var(--orange-500); box-shadow:0 0 14px rgba(244,122,31,.7); }
         .nav-icon { width:19px; height:19px; flex:0 0 auto; }
         .sidebar-footer { position:relative; z-index:1; margin-top:auto; }
+        .locale-panel { margin:18px 4px 4px; padding:6px; border:1px solid rgba(255,255,255,.09); border-radius:14px; background:rgba(255,255,255,.055); }
+        .locale-label { display:flex; align-items:center; gap:7px; padding:4px 7px 9px; color:#91aac3; font-size:11px; font-weight:750; letter-spacing:.035em; }
+        .locale-label svg { width:14px; height:14px; }
+        .locale-options { display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:3px; border-radius:10px; background:rgba(4,18,34,.32); }
+        .locale-options form { margin:0; }
+        .locale-option { width:100%; min-height:34px; padding:7px 8px; border:0; border-radius:8px; color:#9fb7d0; background:transparent; font-size:12px; font-weight:800; cursor:pointer; transition:background .18s ease,color .18s ease,box-shadow .18s ease; }
+        .locale-option:hover { color:#fff; background:rgba(255,255,255,.06); }
+        .locale-option.active { color:var(--navy-950); background:#fff; box-shadow:0 5px 16px rgba(0,0,0,.16); }
         .account-card { display:flex; align-items:center; gap:10px; margin:18px 4px 10px; padding:12px; border-radius:14px; background:rgba(255,255,255,.065); border:1px solid rgba(255,255,255,.07); }
         .avatar { display:grid; place-items:center; width:36px; height:36px; flex:0 0 auto; border-radius:11px; color:var(--navy-950); background:#fff; font-size:13px; font-weight:850; }
         .account-copy { min-width:0; display:flex; flex-direction:column; }
@@ -86,7 +94,7 @@
         .table-meta span { color:var(--muted); font-size:13px; }
         .table-wrap { overflow-x:auto; }
         table { width:100%; border-collapse:collapse; }
-        th,td { padding:16px 20px; text-align:left; border-bottom:1px solid var(--line-soft); }
+        th,td { padding:16px 20px; text-align:start; border-bottom:1px solid var(--line-soft); }
         th { color:#78879a; background:#fbfcfe; font-size:12px; text-transform:uppercase; letter-spacing:.075em; font-weight:800; }
         tbody tr { transition:background .15s ease; }
         tbody tr:hover { background:#fafcff; }
@@ -131,10 +139,19 @@
         .empty-icon svg { width:24px; height:24px; }
         .empty strong { display:block; color:var(--navy-900); }
         .empty span { display:block; margin-top:4px; color:var(--muted); font-size:14px; }
+        [dir="rtl"] body { font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
+        [dir="rtl"] .nav a:hover { transform:translateX(-2px); }
+        [dir="rtl"] .nav a.active::before { left:auto; right:-6px; }
+        [dir="rtl"] .stat::after { right:auto; left:0; border-radius:0 0 99px 0; }
+        [dir="rtl"] .flash,[dir="rtl"] .errors { padding:14px 46px 14px 17px; }
+        [dir="rtl"] .flash::before,[dir="rtl"] .errors::before { left:auto; right:17px; }
+        [dir="rtl"] .errors ul { padding-left:0; padding-right:20px; }
+        [dir="rtl"] input[type=file]::file-selector-button { margin-right:0; margin-left:11px; }
+        [dir="rtl"] .button svg,[dir="rtl"] .logout svg { transform:scaleX(-1); }
         @media (max-width:900px) {
             .shell { grid-template-columns:1fr; }
             .sidebar { position:relative; height:auto; min-height:0; padding:15px 18px 13px; }
-            .sidebar::after,.nav-label,.sidebar-footer { display:none; }
+            .sidebar::after,.nav-label,.account-card,.logout { display:none; }
             .brand { padding:0 2px 13px; }
             .brand-mark { width:38px; height:38px; border-radius:12px; }
             .brand-copy small { display:none; }
@@ -143,6 +160,9 @@
             .nav a { min-height:41px; padding:9px 12px; white-space:nowrap; }
             .nav a:hover { transform:none; }
             .nav a.active::before { left:12px; right:12px; bottom:-2px; width:auto; height:2px; }
+            .sidebar-footer { margin-top:10px; }
+            .locale-panel { max-width:310px; margin:0; }
+            .locale-label { display:none; }
             .topbar { height:65px; padding:0 22px; }
             .content { padding:30px 22px 52px; }
         }
@@ -168,26 +188,34 @@
     <aside class="sidebar">
         <a class="brand" href="{{ route('admin.dashboard') }}">
             <span class="brand-mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 9.5 14.5"/><path d="m22 2-8 20-4.5-7.5L2 10l20-8Z"/></svg></span>
-            <span class="brand-copy"><strong>Rozana Tours</strong><small>Content studio</small></span>
+            <span class="brand-copy"><strong>Rozana Tours</strong><small>{{ __('admin.brand_subtitle') }}</small></span>
         </a>
-        <div class="nav-label">Workspace</div>
-        <nav class="nav" aria-label="Admin navigation">
-            <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>Overview</a>
-            <a class="{{ request()->is('admin/visas*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'visas') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h16v16H4z"/><path d="M8 4v16M16 4v16M4 10h16M4 16h16"/></svg>Visas</a>
-            <a class="{{ request()->is('admin/tour-packages*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'tour-packages') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19h16"/><path d="m5 16 4.5-5 3 3L17 8l2 8"/><circle cx="8" cy="6" r="2"/></svg>Tour packages</a>
-            <a class="{{ request()->is('admin/umrah-packages*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'umrah-packages') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 20V9l6-5 6 5v11"/><path d="M4 20h16M9 20v-6h6v6M9 10h6"/></svg>Umrah packages</a>
-            <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>Site settings</a>
+        <div class="nav-label">{{ __('admin.workspace') }}</div>
+        <nav class="nav" aria-label="{{ __('admin.navigation.label') }}">
+            <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>{{ __('admin.navigation.overview') }}</a>
+            <a class="{{ request()->is('admin/visas*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'visas') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h16v16H4z"/><path d="M8 4v16M16 4v16M4 10h16M4 16h16"/></svg>{{ __('admin.navigation.visas') }}</a>
+            <a class="{{ request()->is('admin/tour-packages*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'tour-packages') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19h16"/><path d="m5 16 4.5-5 3 3L17 8l2 8"/><circle cx="8" cy="6" r="2"/></svg>{{ __('admin.navigation.tour_packages') }}</a>
+            <a class="{{ request()->is('admin/umrah-packages*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'umrah-packages') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 20V9l6-5 6 5v11"/><path d="M4 20h16M9 20v-6h6v6M9 10h6"/></svg>{{ __('admin.navigation.umrah_packages') }}</a>
+            <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>{{ __('admin.navigation.settings') }}</a>
         </nav>
         <div class="sidebar-footer">
-            <div class="account-card"><span class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span><span class="account-copy"><strong>{{ auth()->user()->name }}</strong><small>Administrator</small></span></div>
-            <form class="logout" method="post" action="{{ route('admin.logout') }}">@csrf<button type="submit"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/></svg>Sign out</button></form>
+            <div class="locale-panel">
+                <div class="locale-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg>{{ __('admin.locale.label') }}</div>
+                <div class="locale-options" role="group" aria-label="{{ __('admin.locale.label') }}">
+                    @foreach(['ar' => 'admin.locale.arabic', 'en' => 'admin.locale.english'] as $locale => $label)
+                    <form method="post" action="{{ route('admin.locale.update') }}">@csrf<input type="hidden" name="locale" value="{{ $locale }}"><button class="locale-option {{ app()->getLocale() === $locale ? 'active' : '' }}" type="submit" lang="{{ $locale }}" @if(app()->getLocale() === $locale) aria-pressed="true" @else aria-pressed="false" @endif>{{ __($label) }}</button></form>
+                    @endforeach
+                </div>
+            </div>
+            <div class="account-card"><span class="avatar">{{ Str::upper(Str::substr(auth()->user()->name, 0, 2)) }}</span><span class="account-copy"><strong>{{ auth()->user()->name }}</strong><small>{{ __('admin.administrator') }}</small></span></div>
+            <form class="logout" method="post" action="{{ route('admin.logout') }}">@csrf<button type="submit"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/></svg>{{ __('admin.navigation.sign_out') }}</button></form>
         </div>
     </aside>
     <main>
-        <header class="topbar"><div class="topbar-title"><span>Admin</span><span class="topbar-divider"></span><strong>@yield('title', 'Overview')</strong></div><span class="topbar-action"><span class="live-indicator"></span>Website content is live</span></header>
+        <header class="topbar"><div class="topbar-title"><span>{{ __('admin.admin') }}</span><span class="topbar-divider"></span><strong>@yield('title', __('admin.dashboard.title'))</strong></div><span class="topbar-action"><span class="live-indicator"></span>{{ __('admin.website_live') }}</span></header>
         <div class="content">
             @if(session('status'))<div class="flash" role="status">{{ session('status') }}</div>@endif
-            @if($errors->any())<div class="errors" role="alert"><strong>Please correct the following:</strong><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
+            @if($errors->any())<div class="errors" role="alert"><strong>{{ __('admin.errors.heading') }}</strong><ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul></div>@endif
             @yield('content')
         </div>
     </main>

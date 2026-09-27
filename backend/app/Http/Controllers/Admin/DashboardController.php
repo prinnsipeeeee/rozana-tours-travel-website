@@ -13,9 +13,9 @@ class DashboardController extends Controller
     public function __invoke(): View
     {
         return view('admin.dashboard', ['counts' => [
-            'Visas' => Visa::count(),
-            'Tour packages' => TourPackage::count(),
-            'Umrah packages' => UmrahPackage::count(),
+            __('admin.resources.visas') => Visa::count(),
+            __('admin.resources.tour_packages') => TourPackage::count(),
+            __('admin.resources.umrah_packages') => UmrahPackage::count(),
         ]]);
     }
 }

@@ -16,61 +16,61 @@ class ResourceController extends Controller
 {
     private const RESOURCES = [
         'visas' => [
-            'label' => 'Visas', 'singular' => 'Visa', 'model' => Visa::class,
+            'label' => 'admin.resources.visas', 'singular' => 'admin.resources.visa', 'model' => Visa::class,
             'title' => 'country', 'secondary' => 'category',
             'fields' => [
-                'slug' => ['label' => 'Slug', 'type' => 'text', 'required' => true],
-                'country' => ['label' => 'Country / visa name', 'type' => 'text', 'required' => true],
-                'flag_url' => ['label' => 'Flag image URL', 'type' => 'url'],
-                'category' => ['label' => 'Category', 'type' => 'select', 'required' => true, 'options' => ['europe' => 'Europe & UK', 'americas' => 'North America', 'asia' => 'Asia & Turkey']],
-                'processing_time' => ['label' => 'Processing time', 'type' => 'text', 'required' => true],
-                'validity' => ['label' => 'Validity', 'type' => 'text', 'required' => true],
-                'price' => ['label' => 'Price', 'type' => 'text', 'required' => true],
-                'description' => ['label' => 'Description', 'type' => 'textarea', 'required' => true],
-                'requirements' => ['label' => 'Requirements (one per line)', 'type' => 'lines', 'required' => true],
-                'popular' => ['label' => 'Mark as popular', 'type' => 'checkbox'],
-                'active' => ['label' => 'Visible on website', 'type' => 'checkbox'],
-                'sort_order' => ['label' => 'Display order', 'type' => 'number'],
+                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
+                'country' => ['label' => 'admin.fields.country', 'type' => 'text', 'required' => true],
+                'flag_url' => ['label' => 'admin.fields.flag_url', 'type' => 'url'],
+                'category' => ['label' => 'admin.fields.category', 'type' => 'select', 'required' => true, 'options' => ['europe' => 'admin.categories.europe_uk', 'americas' => 'admin.categories.north_america', 'asia' => 'admin.categories.asia_turkey']],
+                'processing_time' => ['label' => 'admin.fields.processing_time', 'type' => 'text', 'required' => true],
+                'validity' => ['label' => 'admin.fields.validity', 'type' => 'text', 'required' => true],
+                'price' => ['label' => 'admin.fields.price', 'type' => 'text', 'required' => true],
+                'description' => ['label' => 'admin.fields.description', 'type' => 'textarea', 'required' => true],
+                'requirements' => ['label' => 'admin.fields.requirements', 'type' => 'lines', 'required' => true],
+                'popular' => ['label' => 'admin.fields.popular', 'type' => 'checkbox'],
+                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
+                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
             ],
         ],
         'tour-packages' => [
-            'label' => 'Tour packages', 'singular' => 'Tour package', 'model' => TourPackage::class,
+            'label' => 'admin.resources.tour_packages', 'singular' => 'admin.resources.tour_package', 'model' => TourPackage::class,
             'title' => 'title', 'secondary' => 'location',
             'fields' => [
-                'slug' => ['label' => 'Slug', 'type' => 'text', 'required' => true],
-                'title' => ['label' => 'Package title', 'type' => 'text', 'required' => true],
-                'location' => ['label' => 'Location', 'type' => 'text', 'required' => true],
-                'flag_url' => ['label' => 'Flag image URL', 'type' => 'url'],
-                'category' => ['label' => 'Category', 'type' => 'select', 'required' => true, 'options' => ['tropical' => 'Tropical Islands', 'europe' => 'European Escapes', 'arabian' => 'Arabian Luxury']],
-                'duration' => ['label' => 'Duration', 'type' => 'text', 'required' => true],
-                'price' => ['label' => 'Price', 'type' => 'text', 'required' => true],
-                'rating' => ['label' => 'Rating', 'type' => 'number', 'step' => '0.1'],
-                'reviews' => ['label' => 'Review count', 'type' => 'number'],
-                'image_url' => ['label' => 'Main image URL', 'type' => 'text'],
-                'image_file' => ['label' => 'Or upload a main image', 'type' => 'file'],
-                'inclusions' => ['label' => 'Inclusions (one per line)', 'type' => 'lines', 'required' => true],
-                'itinerary' => ['label' => 'Itinerary (Day | Details, one per line)', 'type' => 'itinerary', 'required' => true],
-                'popular' => ['label' => 'Mark as popular', 'type' => 'checkbox'],
-                'active' => ['label' => 'Visible on website', 'type' => 'checkbox'],
-                'sort_order' => ['label' => 'Display order', 'type' => 'number'],
+                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
+                'title' => ['label' => 'admin.fields.title', 'type' => 'text', 'required' => true],
+                'location' => ['label' => 'admin.fields.location', 'type' => 'text', 'required' => true],
+                'flag_url' => ['label' => 'admin.fields.flag_url', 'type' => 'url'],
+                'category' => ['label' => 'admin.fields.category', 'type' => 'select', 'required' => true, 'options' => ['tropical' => 'admin.categories.tropical', 'europe' => 'admin.categories.europe', 'arabian' => 'admin.categories.arabian']],
+                'duration' => ['label' => 'admin.fields.duration', 'type' => 'text', 'required' => true],
+                'price' => ['label' => 'admin.fields.price', 'type' => 'text', 'required' => true],
+                'rating' => ['label' => 'admin.fields.rating', 'type' => 'number', 'step' => '0.1'],
+                'reviews' => ['label' => 'admin.fields.reviews', 'type' => 'number'],
+                'image_url' => ['label' => 'admin.fields.image_url', 'type' => 'text'],
+                'image_file' => ['label' => 'admin.fields.image_file', 'type' => 'file'],
+                'inclusions' => ['label' => 'admin.fields.inclusions', 'type' => 'lines', 'required' => true],
+                'itinerary' => ['label' => 'admin.fields.itinerary', 'type' => 'itinerary', 'required' => true],
+                'popular' => ['label' => 'admin.fields.popular', 'type' => 'checkbox'],
+                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
+                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
             ],
         ],
         'umrah-packages' => [
-            'label' => 'Umrah packages', 'singular' => 'Umrah package', 'model' => UmrahPackage::class,
+            'label' => 'admin.resources.umrah_packages', 'singular' => 'admin.resources.umrah_package', 'model' => UmrahPackage::class,
             'title' => 'title', 'secondary' => 'duration',
             'fields' => [
-                'slug' => ['label' => 'Slug', 'type' => 'text', 'required' => true],
-                'title' => ['label' => 'Package title', 'type' => 'text', 'required' => true],
-                'makkah_hotel' => ['label' => 'Makkah hotel', 'type' => 'text', 'required' => true],
-                'madinah_hotel' => ['label' => 'Madinah hotel', 'type' => 'text', 'required' => true],
-                'duration' => ['label' => 'Duration', 'type' => 'text', 'required' => true],
-                'price' => ['label' => 'Price', 'type' => 'text', 'required' => true],
-                'rating' => ['label' => 'Rating', 'type' => 'number', 'step' => '0.1'],
-                'transport' => ['label' => 'Transport', 'type' => 'text', 'required' => true],
-                'inclusions' => ['label' => 'Inclusions (one per line)', 'type' => 'lines', 'required' => true],
-                'popular' => ['label' => 'Mark as popular', 'type' => 'checkbox'],
-                'active' => ['label' => 'Visible on website', 'type' => 'checkbox'],
-                'sort_order' => ['label' => 'Display order', 'type' => 'number'],
+                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
+                'title' => ['label' => 'admin.fields.title', 'type' => 'text', 'required' => true],
+                'makkah_hotel' => ['label' => 'admin.fields.makkah_hotel', 'type' => 'text', 'required' => true],
+                'madinah_hotel' => ['label' => 'admin.fields.madinah_hotel', 'type' => 'text', 'required' => true],
+                'duration' => ['label' => 'admin.fields.duration', 'type' => 'text', 'required' => true],
+                'price' => ['label' => 'admin.fields.price', 'type' => 'text', 'required' => true],
+                'rating' => ['label' => 'admin.fields.rating', 'type' => 'number', 'step' => '0.1'],
+                'transport' => ['label' => 'admin.fields.transport', 'type' => 'text', 'required' => true],
+                'inclusions' => ['label' => 'admin.fields.inclusions', 'type' => 'lines', 'required' => true],
+                'popular' => ['label' => 'admin.fields.popular', 'type' => 'checkbox'],
+                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
+                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
             ],
         ],
     ];
@@ -98,7 +98,7 @@ class ResourceController extends Controller
         $config = $this->config($resource);
         $config['model']::create($this->validatedData($request, $config));
 
-        return redirect()->route('admin.resources.index', $resource)->with('status', $config['singular'].' created.');
+        return redirect()->route('admin.resources.index', $resource)->with('status', __('admin.flash.created', ['resource' => __($config['singular'])]));
     }
 
     public function edit(string $resource, int $record): View
@@ -116,7 +116,7 @@ class ResourceController extends Controller
         $model = $config['model']::findOrFail($record);
         $model->update($this->validatedData($request, $config, $model));
 
-        return redirect()->route('admin.resources.index', $resource)->with('status', $config['singular'].' updated.');
+        return redirect()->route('admin.resources.index', $resource)->with('status', __('admin.flash.updated', ['resource' => __($config['singular'])]));
     }
 
     public function destroy(string $resource, int $record): RedirectResponse
@@ -126,7 +126,7 @@ class ResourceController extends Controller
         $this->deleteUploadedImage($model);
         $model->delete();
 
-        return back()->with('status', $config['singular'].' deleted.');
+        return back()->with('status', __('admin.flash.deleted', ['resource' => __($config['singular'])]));
     }
 
     private function config(string $resource): array

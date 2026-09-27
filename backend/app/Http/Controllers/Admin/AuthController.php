@@ -28,13 +28,13 @@ class AuthController extends Controller
 
         if (RateLimiter::tooManyAttempts($key, 5)) {
             throw ValidationException::withMessages([
-                'email' => 'Too many login attempts. Try again in '.RateLimiter::availableIn($key).' seconds.',
+                'email' => __('admin.login.too_many_attempts', ['seconds' => RateLimiter::availableIn($key)]),
             ]);
         }
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             RateLimiter::hit($key, 60);
-            throw ValidationException::withMessages(['email' => 'The email or password is incorrect.']);
+            throw ValidationException::withMessages(['email' => __('admin.login.incorrect')]);
         }
 
         RateLimiter::clear($key);
