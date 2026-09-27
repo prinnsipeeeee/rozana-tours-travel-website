@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
+use App\Models\TourPackageCategory;
 use App\Models\UmrahPackage;
 use App\Models\Visa;
 use Illuminate\Database\Seeder;
@@ -32,6 +33,18 @@ class ContentSeeder extends Seeder
         ];
         foreach ($settings as $key => $value) {
             SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+        }
+
+        $categories = [
+            ['tropical', 'Tropical Islands', 'الجزر الاستوائية'],
+            ['europe', 'European Escapes', 'وجهات أوروبا'],
+            ['arabian', 'Arabian Luxury', 'الفخامة العربية'],
+        ];
+        foreach ($categories as $order => $category) {
+            TourPackageCategory::updateOrCreate(
+                ['slug' => $category[0]],
+                ['name_en' => $category[1], 'name_ar' => $category[2], 'active' => true, 'sort_order' => $order],
+            );
         }
 
         $visas = [

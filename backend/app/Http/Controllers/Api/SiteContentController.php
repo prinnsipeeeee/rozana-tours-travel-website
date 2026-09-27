@@ -8,6 +8,7 @@ use App\Http\Resources\UmrahPackageResource;
 use App\Http\Resources\VisaResource;
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
+use App\Models\TourPackageCategory;
 use App\Models\UmrahPackage;
 use App\Models\Visa;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +21,7 @@ class SiteContentController extends Controller
             'settings' => SiteSetting::allAsArray(),
             'visas' => VisaResource::collection(Visa::query()->where('active', true)->orderBy('sort_order')->orderBy('country')->get()),
             'tourPackages' => TourPackageResource::collection(TourPackage::query()->where('active', true)->orderBy('sort_order')->orderBy('title')->get()),
+            'tourPackageCategories' => TourPackageCategory::query()->where('active', true)->orderBy('sort_order')->orderBy('name_en')->get(['slug', 'name_en', 'name_ar']),
             'umrahPackages' => UmrahPackageResource::collection(UmrahPackage::query()->where('active', true)->orderBy('sort_order')->orderBy('title')->get()),
         ]);
     }

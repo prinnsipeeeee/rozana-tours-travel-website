@@ -39,6 +39,7 @@ export default function App() {
           flagImg: pkg.flag_url,
           image: pkg.image_url,
         })),
+        tourPackageCategories: data.tourPackageCategories || [],
         umrahPackages: (data.umrahPackages || []).map((pkg) => ({
           ...pkg,
           id: pkg.slug,
@@ -67,7 +68,7 @@ export default function App() {
           <TranslationSection settings={content?.settings} />
           <LicenseSection />
           <FlightBookingSection />
-          <PackagesSection items={content?.tourPackages} settings={content?.settings} />
+          <PackagesSection items={content?.tourPackages} categories={content?.tourPackageCategories} settings={content?.settings} />
           <AboutSection settings={content?.settings} />
           <Contact settings={content?.settings} />
         </main>

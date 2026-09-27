@@ -193,8 +193,8 @@ const packageData = [
     }
 ];
 
-export default function PackagesSection({ items, settings = {} }) {
-    const { lang, isRTL, t } = useLanguage();
+export default function PackagesSection({ items, categories: categoryItems, settings = {} }) {
+    const { lang, isRTL } = useLanguage();
     const whatsappNumber = settings.whatsapp_number || '966552993899';
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [activeModalPackage, setActiveModalPackage] = useState(null);
@@ -219,12 +219,22 @@ export default function PackagesSection({ items, settings = {} }) {
         window.location.href = `https://wa.me/${whatsappNumber}?text=${message}`;
     };
 
-    const categories = [
+    const fallbackCategories = [
         { id: 'all', label_en: 'All Packages', label_ar: 'جميع الباقات', flagImg: null },
         { id: 'tropical', label_en: 'Tropical Islands', label_ar: 'الجزر الاستوائية', flagImg: 'https://flagcdn.com/w40/mv.png' },
         { id: 'europe', label_en: 'European Escapes', label_ar: 'وجهات أوروبا', flagImg: 'https://flagcdn.com/w40/ch.png' },
         { id: 'arabian', label_en: 'Arabian Luxury', label_ar: 'الفخامة العربية', flagImg: 'https://flagcdn.com/w40/ae.png' },
     ];
+    const categories = Array.isArray(categoryItems) && categoryItems.length > 0
+        ? [
+            { id: 'all', label_en: 'All Packages', label_ar: 'جميع الباقات' },
+            ...categoryItems.map((category) => ({
+                id: category.slug,
+                label_en: category.name_en,
+                label_ar: category.name_ar,
+            })),
+        ]
+        : fallbackCategories;
 
     return (
         <section id="packages" className="py-24 bg-white relative font-sans overflow-hidden" dir={isRTL ? 'rtl' : 'ltr'}>

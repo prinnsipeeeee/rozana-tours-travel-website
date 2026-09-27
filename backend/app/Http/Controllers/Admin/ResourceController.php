@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SaveContentRequest;
 use App\Models\TourPackage;
+use App\Models\TourPackageCategory;
 use App\Models\UmrahPackage;
 use App\Models\Visa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -41,7 +43,7 @@ class ResourceController extends Controller
                 'title' => ['label' => 'admin.fields.title', 'type' => 'text', 'required' => true],
                 'location' => ['label' => 'admin.fields.location', 'type' => 'text', 'required' => true],
                 'flag_url' => ['label' => 'admin.fields.flag_url', 'type' => 'url'],
-                'category' => ['label' => 'admin.fields.category', 'type' => 'select', 'required' => true, 'options' => ['tropical' => 'admin.categories.tropical', 'europe' => 'admin.categories.europe', 'arabian' => 'admin.categories.arabian']],
+                'category' => ['label' => 'admin.fields.category', 'type' => 'select', 'required' => true, 'options' => []],
                 'duration' => ['label' => 'admin.fields.duration', 'type' => 'text', 'required' => true],
                 'price' => ['label' => 'admin.fields.price', 'type' => 'text', 'required' => true],
                 'rating' => ['label' => 'admin.fields.rating', 'type' => 'number', 'step' => '0.1'],
@@ -51,6 +53,17 @@ class ResourceController extends Controller
                 'inclusions' => ['label' => 'admin.fields.inclusions', 'type' => 'lines', 'required' => true],
                 'itinerary' => ['label' => 'admin.fields.itinerary', 'type' => 'itinerary', 'required' => true],
                 'popular' => ['label' => 'admin.fields.popular', 'type' => 'checkbox'],
+                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
+                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
+            ],
+        ],
+        'tour-package-categories' => [
+            'label' => 'admin.resources.tour_package_categories', 'singular' => 'admin.resources.tour_package_category', 'model' => TourPackageCategory::class,
+            'title' => 'name_en', 'secondary' => 'slug',
+            'fields' => [
+                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
+                'name_en' => ['label' => 'admin.fields.name_en', 'type' => 'text', 'required' => true],
+                'name_ar' => ['label' => 'admin.fields.name_ar', 'type' => 'text', 'required' => true],
                 'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
                 'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
             ],
@@ -114,7 +127,16 @@ class ResourceController extends Controller
     {
         $config = $this->config($resource);
         $model = $config['model']::findOrFail($record);
-        $model->update($this->validatedData($request, $config, $model));
+        $data = $this->validatedData($request, $config, $model);
+
+        if ($model instanceof TourPackageCategory && $model->slug !== $data['slug']) {
+            DB::transaction(function () use ($model, $data) {
+                TourPackage::query()->where('category', $model->slug)->update(['category' => $data['slug']]);
+                $model->update($data);
+            });
+        } else {
+            $model->update($data);
+        }
 
         return redirect()->route('admin.resources.index', $resource)->with('status', __('admin.flash.updated', ['resource' => __($config['singular'])]));
     }
@@ -123,6 +145,9 @@ class ResourceController extends Controller
     {
         $config = $this->config($resource);
         $model = $config['model']::findOrFail($record);
+        if ($model instanceof TourPackageCategory && $model->tourPackages()->exists()) {
+            return back()->withErrors(__('admin.resources.category_in_use'));
+        }
         $this->deleteUploadedImage($model);
         $model->delete();
 
@@ -133,7 +158,14 @@ class ResourceController extends Controller
     {
         abort_unless(isset(self::RESOURCES[$resource]), 404);
 
-        return self::RESOURCES[$resource];
+        $config = self::RESOURCES[$resource];
+        if ($resource === 'tour-packages') {
+            $labelColumn = app()->getLocale() === 'ar' ? 'name_ar' : 'name_en';
+            $config['fields']['category']['options'] = TourPackageCategory::query()
+                ->orderBy('sort_order')->orderBy($labelColumn)->pluck($labelColumn, 'slug')->all();
+        }
+
+        return $config;
     }
 
     private function validatedData(SaveContentRequest $request, array $config, ?Model $model = null): array

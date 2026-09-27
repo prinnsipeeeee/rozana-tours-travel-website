@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TourPackage extends Model
 {
@@ -21,5 +22,10 @@ class TourPackage extends Model
             'inclusions' => 'array', 'itinerary' => 'array', 'popular' => 'boolean',
             'active' => 'boolean', 'rating' => 'float',
         ];
+    }
+
+    public function categoryRecord(): BelongsTo
+    {
+        return $this->belongsTo(TourPackageCategory::class, 'category', 'slug');
     }
 }

@@ -26,8 +26,19 @@ class SaveContentRequest extends FormRequest
             'visas' => 'visas',
             'tour-packages' => 'tour_packages',
             'umrah-packages' => 'umrah_packages',
+            'tour-package-categories' => 'tour_package_categories',
             default => abort(404),
         };
+
+        if ($resource === 'tour-package-categories') {
+            return [
+                'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique($table, 'slug')->ignore($record)],
+                'name_en' => ['required', 'string', 'max:255'],
+                'name_ar' => ['required', 'string', 'max:255'],
+                'active' => ['nullable', 'boolean'],
+                'sort_order' => ['nullable', 'integer', 'min:0'],
+            ];
+        }
 
         $common = [
             'slug' => ['required', 'string', 'max:255', Rule::unique($table, 'slug')->ignore($record)],
@@ -56,7 +67,7 @@ class SaveContentRequest extends FormRequest
                 ...$common,
                 'location' => ['required', 'string', 'max:255'],
                 'flag_url' => ['nullable', 'url', 'max:2000'],
-                'category' => ['required', Rule::in(['tropical', 'europe', 'arabian'])],
+                'category' => ['required', Rule::exists('tour_package_categories', 'slug')],
                 'reviews' => ['nullable', 'integer', 'min:0'],
                 'image_url' => ['nullable', 'string', 'max:2000'],
                 'image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],

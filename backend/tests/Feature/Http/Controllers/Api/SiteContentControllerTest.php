@@ -26,6 +26,7 @@ class SiteContentControllerTest extends TestCase
             ->assertJsonPath('settings.site_name', 'Rozana Tours & Travels')
             ->assertJsonCount(6, 'visas')
             ->assertJsonCount(6, 'tourPackages')
+            ->assertJsonCount(3, 'tourPackageCategories')
             ->assertJsonCount(3, 'umrahPackages');
     }
 }
