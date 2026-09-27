@@ -73,31 +73,36 @@ class ResourceControllerTest extends TestCase
         $this->actingAs($admin)->get('/admin/tour-packages/create')
             ->assertOk()
             ->assertSee('value="adventure"', false)
-            ->assertSee('رحلات المغامرات');
+            ->assertSee('رحلات المغامرات')
+            ->assertSee('id="category-add"', false)
+            ->assertSee('id="category-edit"', false)
+            ->assertSee('id="category-delete"', false);
+
+        $this->actingAs($admin)->get('/admin/tour-package-categories')->assertNotFound();
     }
 
     public function test_admin_can_create_and_edit_a_tour_package_category(): void
     {
         $admin = User::factory()->create();
 
-        $this->actingAs($admin)->post('/admin/tour-package-categories', [
+        $this->actingAs($admin)->postJson('/admin/tour-package-categories', [
             'slug' => 'adventure',
             'name_en' => 'Adventure Travel',
             'name_ar' => 'رحلات المغامرات',
             'active' => '1',
             'sort_order' => '5',
-        ])->assertRedirect('/admin/tour-package-categories');
+        ])->assertCreated()->assertJsonPath('category.slug', 'adventure');
 
         $category = TourPackageCategory::query()->where('slug', 'adventure')->firstOrFail();
         TourPackage::factory()->create(['category' => 'adventure']);
 
-        $this->actingAs($admin)->put("/admin/tour-package-categories/{$category->id}", [
+        $this->actingAs($admin)->putJson("/admin/tour-package-categories/{$category->id}", [
             'slug' => 'active-adventure',
             'name_en' => 'Active Adventure',
             'name_ar' => 'مغامرات نشطة',
             'active' => '1',
             'sort_order' => '6',
-        ])->assertRedirect('/admin/tour-package-categories');
+        ])->assertOk()->assertJsonPath('category.slug', 'active-adventure');
 
         $this->assertDatabaseHas('tour_package_categories', ['slug' => 'active-adventure']);
         $this->assertDatabaseHas('tour_packages', ['category' => 'active-adventure']);
@@ -109,13 +114,14 @@ class ResourceControllerTest extends TestCase
         $category = TourPackageCategory::query()->where('slug', 'tropical')->firstOrFail();
         $package = TourPackage::factory()->create(['category' => $category->slug]);
 
-        $this->actingAs($admin)->delete("/admin/tour-package-categories/{$category->id}")
-            ->assertSessionHasErrors();
+        $this->actingAs($admin)->deleteJson("/admin/tour-package-categories/{$category->id}")
+            ->assertUnprocessable()
+            ->assertJsonPath('message', __('admin.resources.category_in_use'));
         $this->assertDatabaseHas('tour_package_categories', ['id' => $category->id]);
 
         $package->update(['category' => 'europe']);
-        $this->actingAs($admin)->delete("/admin/tour-package-categories/{$category->id}")
-            ->assertRedirect();
+        $this->actingAs($admin)->deleteJson("/admin/tour-package-categories/{$category->id}")
+            ->assertNoContent();
         $this->assertDatabaseMissing('tour_package_categories', ['id' => $category->id]);
     }
 }

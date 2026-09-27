@@ -124,6 +124,21 @@
         .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:21px; }
         .field.full { grid-column:1/-1; }
         label { display:block; margin-bottom:8px; color:#33445a; font-size:14px; font-weight:750; }
+        .category-actions { display:flex; flex-wrap:wrap; gap:7px; margin-top:9px; }
+        .category-actions .button { min-height:34px; padding:6px 10px; font-size:12px; border-radius:9px; }
+        .category-actions .button:disabled { opacity:.48; cursor:not-allowed; transform:none; }
+        .field-help { min-height:20px; margin:7px 0 0; color:var(--muted); font-size:12px; }
+        .field-help.error { color:var(--danger); }
+        dialog { width:min(520px,calc(100% - 32px)); padding:0; border:0; border-radius:18px; color:var(--ink); box-shadow:0 28px 90px rgba(7,26,47,.28); }
+        dialog::backdrop { background:rgba(7,26,47,.58); backdrop-filter:blur(3px); }
+        .category-dialog-card { margin:0; }
+        .category-dialog-head { padding:22px 24px 16px; border-bottom:1px solid var(--line-soft); }
+        .category-dialog-head h2 { margin:0; color:var(--navy-900); font-size:20px; }
+        .category-dialog-body { display:grid; grid-template-columns:1fr 1fr; gap:17px; padding:22px 24px; }
+        .category-dialog-body .full { grid-column:1/-1; }
+        .category-dialog-error { display:none; grid-column:1/-1; margin:0; padding:10px 12px; border-radius:9px; color:var(--danger); background:#fff4f3; font-size:13px; }
+        .category-dialog-error.visible { display:block; }
+        .category-dialog-actions { display:flex; justify-content:flex-end; gap:9px; padding:16px 24px; border-top:1px solid var(--line-soft); background:#fbfcfe; }
         .required { color:var(--orange-600); }
         input[type=text],input[type=email],input[type=url],input[type=number],input[type=password],input[type=file],textarea,select { width:100%; min-height:45px; border:1px solid #cfd9e5; border-radius:11px; padding:11px 13px; background:#fff; color:var(--ink); outline:none; transition:border-color .15s ease,box-shadow .15s ease,background .15s ease; }
         input[type=file] { padding:8px 10px; color:var(--muted); font-size:14px; }
@@ -172,8 +187,9 @@
             .content { padding:26px 16px 46px; }
             .page-head { align-items:stretch; flex-direction:column; }
             .page-head > .button { width:100%; }
-            .stats,.quick,.form-grid { grid-template-columns:1fr; }
+            .stats,.quick,.form-grid,.category-dialog-body { grid-template-columns:1fr; }
             .field.full { grid-column:1; }
+            .category-dialog-body .full { grid-column:1; }
             .card-pad,.form-section { padding:21px 18px; }
             .form-actions { padding:16px 18px; }
             .form-actions .button { flex:1; }
@@ -195,7 +211,6 @@
             <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>{{ __('admin.navigation.overview') }}</a>
             <a class="{{ request()->is('admin/visas*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'visas') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h16v16H4z"/><path d="M8 4v16M16 4v16M4 10h16M4 16h16"/></svg>{{ __('admin.navigation.visas') }}</a>
             <a class="{{ request()->is('admin/tour-packages*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'tour-packages') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19h16"/><path d="m5 16 4.5-5 3 3L17 8l2 8"/><circle cx="8" cy="6" r="2"/></svg>{{ __('admin.navigation.tour_packages') }}</a>
-            <a class="{{ request()->is('admin/tour-package-categories*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'tour-package-categories') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 7h10M4 12h16M4 17h12"/><circle cx="18" cy="7" r="2"/></svg>{{ __('admin.navigation.tour_package_categories') }}</a>
             <a class="{{ request()->is('admin/umrah-packages*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'umrah-packages') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M6 20V9l6-5 6 5v11"/><path d="M4 20h16M9 20v-6h6v6M9 10h6"/></svg>{{ __('admin.navigation.umrah_packages') }}</a>
             <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>{{ __('admin.navigation.settings') }}</a>
         </nav>

@@ -21,10 +21,14 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
+    Route::post('/tour-package-categories', [ResourceController::class, 'categoryStore'])->defaults('resource', 'tour-package-categories')->name('categories.store');
+    Route::put('/tour-package-categories/{record}', [ResourceController::class, 'categoryUpdate'])->defaults('resource', 'tour-package-categories')->name('categories.update')->whereNumber('record');
+    Route::delete('/tour-package-categories/{record}', [ResourceController::class, 'categoryDestroy'])->defaults('resource', 'tour-package-categories')->name('categories.destroy')->whereNumber('record');
+
     Route::get('/{resource}', [ResourceController::class, 'index'])->name('resources.index');
     Route::get('/{resource}/create', [ResourceController::class, 'create'])->name('resources.create');
     Route::post('/{resource}', [ResourceController::class, 'store'])->name('resources.store');
     Route::get('/{resource}/{record}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
     Route::put('/{resource}/{record}', [ResourceController::class, 'update'])->name('resources.update');
     Route::delete('/{resource}/{record}', [ResourceController::class, 'destroy'])->name('resources.destroy');
-})->where(['resource' => 'visas|tour-packages|tour-package-categories|umrah-packages', 'record' => '[0-9]+']);
+})->where(['resource' => 'visas|tour-packages|umrah-packages', 'record' => '[0-9]+']);

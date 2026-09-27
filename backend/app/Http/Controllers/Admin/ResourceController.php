@@ -9,7 +9,10 @@ use App\Models\TourPackageCategory;
 use App\Models\UmrahPackage;
 use App\Models\Visa;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -90,6 +93,7 @@ class ResourceController extends Controller
 
     public function index(string $resource): View
     {
+        abort_if($resource === 'tour-package-categories', 404);
         $config = $this->config($resource);
 
         return view('admin.resources.index', [
@@ -101,21 +105,37 @@ class ResourceController extends Controller
 
     public function create(string $resource): View
     {
+        abort_if($resource === 'tour-package-categories', 404);
+
         return view('admin.resources.form', [
             'resource' => $resource, 'config' => $this->config($resource), 'record' => null,
         ]);
     }
 
-    public function store(SaveContentRequest $request, string $resource): RedirectResponse
+    public function store(SaveContentRequest $request, string $resource): RedirectResponse|JsonResponse
     {
         $config = $this->config($resource);
-        $config['model']::create($this->validatedData($request, $config));
+        $model = $config['model']::create($this->validatedData($request, $config));
+
+        if ($model instanceof TourPackageCategory && $request->expectsJson()) {
+            return response()->json(['category' => $model], 201);
+        }
+
+        if ($model instanceof TourPackageCategory) {
+            return back()->with('status', __('admin.flash.created', ['resource' => __($config['singular'])]));
+        }
 
         return redirect()->route('admin.resources.index', $resource)->with('status', __('admin.flash.created', ['resource' => __($config['singular'])]));
     }
 
+    public function categoryStore(SaveContentRequest $request, string $resource): RedirectResponse|JsonResponse
+    {
+        return $this->store($request, $resource);
+    }
+
     public function edit(string $resource, int $record): View
     {
+        abort_if($resource === 'tour-package-categories', 404);
         $config = $this->config($resource);
 
         return view('admin.resources.form', [
@@ -123,7 +143,7 @@ class ResourceController extends Controller
         ]);
     }
 
-    public function update(SaveContentRequest $request, string $resource, int $record): RedirectResponse
+    public function update(SaveContentRequest $request, string $resource, int $record): RedirectResponse|JsonResponse
     {
         $config = $this->config($resource);
         $model = $config['model']::findOrFail($record);
@@ -138,20 +158,46 @@ class ResourceController extends Controller
             $model->update($data);
         }
 
+        if ($model instanceof TourPackageCategory && $request->expectsJson()) {
+            return response()->json(['category' => $model->fresh()]);
+        }
+
+        if ($model instanceof TourPackageCategory) {
+            return back()->with('status', __('admin.flash.updated', ['resource' => __($config['singular'])]));
+        }
+
         return redirect()->route('admin.resources.index', $resource)->with('status', __('admin.flash.updated', ['resource' => __($config['singular'])]));
     }
 
-    public function destroy(string $resource, int $record): RedirectResponse
+    public function categoryUpdate(SaveContentRequest $request, int $record, string $resource): RedirectResponse|JsonResponse
+    {
+        return $this->update($request, $resource, $record);
+    }
+
+    public function destroy(Request $request, string $resource, int $record): RedirectResponse|JsonResponse|Response
     {
         $config = $this->config($resource);
         $model = $config['model']::findOrFail($record);
         if ($model instanceof TourPackageCategory && $model->tourPackages()->exists()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => __('admin.resources.category_in_use')], 422);
+            }
+
             return back()->withErrors(__('admin.resources.category_in_use'));
         }
         $this->deleteUploadedImage($model);
         $model->delete();
 
+        if ($model instanceof TourPackageCategory && $request->expectsJson()) {
+            return response()->noContent();
+        }
+
         return back()->with('status', __('admin.flash.deleted', ['resource' => __($config['singular'])]));
+    }
+
+    public function categoryDestroy(Request $request, int $record, string $resource): RedirectResponse|JsonResponse|Response
+    {
+        return $this->destroy($request, $resource, $record);
     }
 
     private function config(string $resource): array
@@ -163,6 +209,8 @@ class ResourceController extends Controller
             $labelColumn = app()->getLocale() === 'ar' ? 'name_ar' : 'name_en';
             $config['fields']['category']['options'] = TourPackageCategory::query()
                 ->orderBy('sort_order')->orderBy($labelColumn)->pluck($labelColumn, 'slug')->all();
+            $config['category_records'] = TourPackageCategory::query()
+                ->orderBy('sort_order')->orderBy($labelColumn)->get();
         }
 
         return $config;
