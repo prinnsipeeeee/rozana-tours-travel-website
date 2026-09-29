@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Service;
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
 use App\Models\TourPackageCategory;
@@ -33,6 +34,25 @@ class ContentSeeder extends Seeder
         ];
         foreach ($settings as $key => $value) {
             SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
+        }
+
+        $services = [
+            ['visa', 'Visa Services', 'خدمات التأشيرات', 'Schengen, UK, USA', 'شنغن، بريطانيا، وأمريكا', '#visa', 'visa'],
+            ['embassy', 'Embassy Services', 'خدمات السفارات', 'MOFA & Embassy Attestation', 'تصديقات وزارة الخارجية والسفارات', '#embassy', 'embassy'],
+            ['translation', 'Certified Translation', 'الترجمة المعتمدة', 'Official Sworn Translation', 'ترجمة معتمدة لجميع اللغات', '#translation', 'translation'],
+            ['license', 'International License', 'رخصة القيادة الدولية', 'Accepted in 150+ countries', 'معتمدة في أكثر من 150 دولة', '#license', 'license'],
+        ];
+        foreach ($services as $order => $service) {
+            Service::updateOrCreate(['slug' => $service[0]], [
+                'title_en' => $service[1],
+                'title_ar' => $service[2],
+                'subtitle_en' => $service[3],
+                'subtitle_ar' => $service[4],
+                'href' => $service[5],
+                'icon' => $service[6],
+                'active' => true,
+                'sort_order' => $order,
+            ]);
         }
 
         $categories = [

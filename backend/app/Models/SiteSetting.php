@@ -24,8 +24,6 @@ class SiteSetting extends Model
         'visa_description',
         'packages_heading',
         'packages_description',
-        'umrah_heading',
-        'umrah_description',
     ];
 
     protected $fillable = ['key', 'value'];

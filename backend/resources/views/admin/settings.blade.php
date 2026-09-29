@@ -6,7 +6,7 @@
     $groups = [
         ['title' => 'admin.settings.business', 'description' => 'admin.settings.business_description', 'keys' => ['site_name', 'whatsapp_number', 'phone_primary', 'phone_secondary', 'email', 'address']],
         ['title' => 'admin.settings.hero', 'description' => 'admin.settings.hero_description', 'keys' => ['hero_badge', 'hero_title', 'hero_highlight', 'hero_description']],
-        ['title' => 'admin.settings.headings', 'description' => 'admin.settings.headings_description', 'keys' => ['visa_heading', 'visa_description', 'packages_heading', 'packages_description', 'umrah_heading', 'umrah_description']],
+        ['title' => 'admin.settings.headings', 'description' => 'admin.settings.headings_description', 'keys' => ['visa_heading', 'visa_description', 'packages_heading', 'packages_description']],
     ];
 @endphp
 <form class="card form-card" method="post" action="{{ route('admin.settings.update') }}">@csrf @method('PUT')

@@ -31,4 +31,4 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/{resource}/{record}/edit', [ResourceController::class, 'edit'])->name('resources.edit');
     Route::put('/{resource}/{record}', [ResourceController::class, 'update'])->name('resources.update');
     Route::delete('/{resource}/{record}', [ResourceController::class, 'destroy'])->name('resources.destroy');
-})->where(['resource' => 'visas|tour-packages|umrah-packages', 'record' => '[0-9]+']);
+})->where(['resource' => 'services|visas|tour-packages', 'record' => '[0-9]+']);

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ServiceResource;
 use App\Http\Resources\TourPackageResource;
 use App\Http\Resources\UmrahPackageResource;
 use App\Http\Resources\VisaResource;
+use App\Models\Service;
 use App\Models\SiteSetting;
 use App\Models\TourPackage;
 use App\Models\TourPackageCategory;
@@ -19,6 +21,7 @@ class SiteContentController extends Controller
     {
         return response()->json([
             'settings' => SiteSetting::allAsArray(),
+            'services' => ServiceResource::collection(Service::query()->where('active', true)->orderBy('sort_order')->orderBy('title_en')->get()),
             'visas' => VisaResource::collection(Visa::query()->where('active', true)->orderBy('sort_order')->orderBy('country')->get()),
             'tourPackages' => TourPackageResource::collection(TourPackage::query()->where('active', true)->orderBy('sort_order')->orderBy('title')->get()),
             'tourPackageCategories' => TourPackageCategory::query()->where('active', true)->orderBy('sort_order')->orderBy('name_en')->get(['slug', 'name_en', 'name_ar']),

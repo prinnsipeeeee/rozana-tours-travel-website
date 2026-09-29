@@ -25,8 +25,6 @@ class SettingsController extends Controller
         'visa_description' => ['label' => 'admin.settings.fields.visa_description', 'type' => 'textarea'],
         'packages_heading' => ['label' => 'admin.settings.fields.packages_heading', 'type' => 'text'],
         'packages_description' => ['label' => 'admin.settings.fields.packages_description', 'type' => 'textarea'],
-        'umrah_heading' => ['label' => 'admin.settings.fields.umrah_heading', 'type' => 'text'],
-        'umrah_description' => ['label' => 'admin.settings.fields.umrah_description', 'type' => 'textarea'],
     ];
 
     public function edit(): View

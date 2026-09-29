@@ -19,11 +19,26 @@ import {
 import logoImg from '../assets/logo-1.png'; 
 import { useLanguage } from '../context/LanguageContext'; // <-- Import dito
 
-export default function Navbar() {
+const defaultServices = [
+  { slug: 'visa', title_en: 'Visa Services', title_ar: 'خدمات التأشيرات', subtitle_en: 'Schengen, UK, USA', subtitle_ar: 'شنغن، بريطانيا، وأمريكا', href: '#visa', icon: 'visa' },
+  { slug: 'embassy', title_en: 'Embassy Services', title_ar: 'خدمات السفارات', subtitle_en: 'MOFA & Embassy Attestation', subtitle_ar: 'تصديقات وزارة الخارجية والسفارات', href: '#embassy', icon: 'embassy' },
+  { slug: 'translation', title_en: 'Certified Translation', title_ar: 'الترجمة المعتمدة', subtitle_en: 'Official Sworn Translation', subtitle_ar: 'ترجمة معتمدة لجميع اللغات', href: '#translation', icon: 'translation' },
+  { slug: 'license', title_en: 'International License', title_ar: 'رخصة القيادة الدولية', subtitle_en: 'Accepted in 150+ countries', subtitle_ar: 'معتمدة في أكثر من 150 دولة', href: '#license', icon: 'license' },
+];
+
+const serviceIcons = {
+  visa: { component: FileCheck, className: 'bg-blue-50 text-[#003B7A]' },
+  embassy: { component: Building2, className: 'bg-amber-50 text-[#FF7A00]' },
+  translation: { component: Languages, className: 'bg-emerald-50 text-emerald-600' },
+  license: { component: CreditCard, className: 'bg-purple-50 text-purple-600' },
+};
+
+export default function Navbar({ services }) {
   const { lang, toggleLanguage, t, isRTL } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const displayedServices = Array.isArray(services) ? services : defaultServices;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -143,45 +158,22 @@ export default function Navbar() {
 
               {servicesDropdownOpen && (
                 <div className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} w-64 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 px-2 z-50 text-start`}>
-                  <a href="#visa" className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-blue-50 text-[#003B7A] flex items-center justify-center shrink-0">
-                      <FileCheck size={16} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">{t('nav.visa')}</p>
-                      <p className="text-[10px] text-slate-400">{isRTL ? 'شنغن، بريطانيا، وأمريكا' : 'Schengen, UK, USA'}</p>
-                    </div>
-                  </a>
+                  {displayedServices.map((service) => {
+                    const icon = serviceIcons[service.icon] || serviceIcons.visa;
+                    const Icon = icon.component;
 
-                  <a href="#embassy" className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-amber-50 text-[#FF7A00] flex items-center justify-center shrink-0">
-                      <Building2 size={16} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">{t('nav.embassy')}</p>
-                      <p className="text-[10px] text-slate-400">{isRTL ? 'تصديقات وزارة الخارجية والسفارات' : 'MOFA & Embassy Attestation'}</p>
-                    </div>
-                  </a>
-
-                  <a href="#translation" className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                      <Languages size={16} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">{t('nav.translation')}</p>
-                      <p className="text-[10px] text-slate-400">{isRTL ? 'ترجمة معتمدة لجميع اللغات' : 'Official Sworn Translation'}</p>
-                    </div>
-                  </a>
-
-                  <a href="#license" className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
-                    <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
-                      <CreditCard size={16} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">{t('nav.license')}</p>
-                      <p className="text-[10px] text-slate-400">{isRTL ? 'معتمدة في أكثر من 150 دولة' : 'Accepted in 150+ countries'}</p>
-                    </div>
-                  </a>
+                    return (
+                      <a key={service.slug} href={service.href} className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${icon.className}`}>
+                          <Icon size={16} />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">{isRTL ? service.title_ar : service.title_en}</p>
+                          <p className="text-[10px] text-slate-400">{isRTL ? service.subtitle_ar : service.subtitle_en}</p>
+                        </div>
+                      </a>
+                    );
+                  })}
                 </div>
               )}
             </div>

@@ -27,6 +27,7 @@ export default function App() {
       })
       .then((data) => setContent({
         settings: data.settings || {},
+        services: data.services || [],
         visas: (data.visas || []).map((visa) => ({
           ...visa,
           id: visa.slug,
@@ -59,7 +60,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 font-sans selection:bg-[#FF7A00] selection:text-white transition-all">
       
       {/* 1. Navbar */}
-      <Navbar settings={content?.settings} />
+      <Navbar settings={content?.settings} services={content?.services} />
 
         <main>
           <Hero settings={content?.settings} />

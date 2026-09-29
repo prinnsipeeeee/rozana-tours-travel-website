@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SaveContentRequest;
+use App\Models\Service;
 use App\Models\TourPackage;
 use App\Models\TourPackageCategory;
-use App\Models\UmrahPackage;
 use App\Models\Visa;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +20,21 @@ use Illuminate\View\View;
 class ResourceController extends Controller
 {
     private const RESOURCES = [
+        'services' => [
+            'label' => 'admin.resources.services', 'singular' => 'admin.resources.service', 'model' => Service::class,
+            'title' => 'title_en', 'secondary' => 'subtitle_en',
+            'fields' => [
+                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
+                'title_en' => ['label' => 'admin.fields.title_en', 'type' => 'text', 'required' => true],
+                'title_ar' => ['label' => 'admin.fields.title_ar', 'type' => 'text', 'required' => true],
+                'subtitle_en' => ['label' => 'admin.fields.subtitle_en', 'type' => 'text', 'required' => true],
+                'subtitle_ar' => ['label' => 'admin.fields.subtitle_ar', 'type' => 'text', 'required' => true],
+                'href' => ['label' => 'admin.fields.href', 'type' => 'text', 'required' => true],
+                'icon' => ['label' => 'admin.fields.icon', 'type' => 'select', 'required' => true, 'options' => ['visa' => 'admin.service_icons.visa', 'embassy' => 'admin.service_icons.embassy', 'translation' => 'admin.service_icons.translation', 'license' => 'admin.service_icons.license']],
+                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
+                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
+            ],
+        ],
         'visas' => [
             'label' => 'admin.resources.visas', 'singular' => 'admin.resources.visa', 'model' => Visa::class,
             'title' => 'country', 'secondary' => 'category',
@@ -67,24 +82,6 @@ class ResourceController extends Controller
                 'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
                 'name_en' => ['label' => 'admin.fields.name_en', 'type' => 'text', 'required' => true],
                 'name_ar' => ['label' => 'admin.fields.name_ar', 'type' => 'text', 'required' => true],
-                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
-                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
-            ],
-        ],
-        'umrah-packages' => [
-            'label' => 'admin.resources.umrah_packages', 'singular' => 'admin.resources.umrah_package', 'model' => UmrahPackage::class,
-            'title' => 'title', 'secondary' => 'duration',
-            'fields' => [
-                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
-                'title' => ['label' => 'admin.fields.title', 'type' => 'text', 'required' => true],
-                'makkah_hotel' => ['label' => 'admin.fields.makkah_hotel', 'type' => 'text', 'required' => true],
-                'madinah_hotel' => ['label' => 'admin.fields.madinah_hotel', 'type' => 'text', 'required' => true],
-                'duration' => ['label' => 'admin.fields.duration', 'type' => 'text', 'required' => true],
-                'price' => ['label' => 'admin.fields.price', 'type' => 'text', 'required' => true],
-                'rating' => ['label' => 'admin.fields.rating', 'type' => 'number', 'step' => '0.1'],
-                'transport' => ['label' => 'admin.fields.transport', 'type' => 'text', 'required' => true],
-                'inclusions' => ['label' => 'admin.fields.inclusions', 'type' => 'lines', 'required' => true],
-                'popular' => ['label' => 'admin.fields.popular', 'type' => 'checkbox'],
                 'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
                 'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
             ],

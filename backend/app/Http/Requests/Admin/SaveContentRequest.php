@@ -23,12 +23,26 @@ class SaveContentRequest extends FormRequest
         $resource = $this->route('resource');
         $record = $this->route('record');
         $table = match ($resource) {
+            'services' => 'services',
             'visas' => 'visas',
             'tour-packages' => 'tour_packages',
-            'umrah-packages' => 'umrah_packages',
             'tour-package-categories' => 'tour_package_categories',
             default => abort(404),
         };
+
+        if ($resource === 'services') {
+            return [
+                'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique($table, 'slug')->ignore($record)],
+                'title_en' => ['required', 'string', 'max:255'],
+                'title_ar' => ['required', 'string', 'max:255'],
+                'subtitle_en' => ['required', 'string', 'max:255'],
+                'subtitle_ar' => ['required', 'string', 'max:255'],
+                'href' => ['required', 'string', 'max:255', 'starts_with:#'],
+                'icon' => ['required', Rule::in(['visa', 'embassy', 'translation', 'license'])],
+                'active' => ['nullable', 'boolean'],
+                'sort_order' => ['nullable', 'integer', 'min:0'],
+            ];
+        }
 
         if ($resource === 'tour-package-categories') {
             return [
@@ -72,12 +86,6 @@ class SaveContentRequest extends FormRequest
                 'image_url' => ['nullable', 'string', 'max:2000'],
                 'image_file' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
                 'itinerary' => ['required', 'string', 'max:10000'],
-            ],
-            'umrah-packages' => [
-                ...$common,
-                'makkah_hotel' => ['required', 'string', 'max:255'],
-                'madinah_hotel' => ['required', 'string', 'max:255'],
-                'transport' => ['required', 'string', 'max:255'],
             ],
         };
     }
