@@ -23,6 +23,7 @@ class ServiceResource extends JsonResource
             'subtitle_ar' => $this->subtitle_ar,
             'href' => $this->href,
             'icon' => $this->icon,
+            'content' => $this->resolvedContent(),
         ];
     }
 }

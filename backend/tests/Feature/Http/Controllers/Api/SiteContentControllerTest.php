@@ -19,7 +19,7 @@ class SiteContentControllerTest extends TestCase
         Service::query()->delete();
         SiteSetting::factory()->create(['key' => 'site_name', 'value' => 'Rozana Tours & Travels']);
         Service::factory()->create(['title_en' => 'Second Service', 'sort_order' => 2]);
-        Service::factory()->create(['title_en' => 'First Service', 'sort_order' => 1]);
+        Service::factory()->create(['slug' => 'visa', 'title_en' => 'First Service', 'sort_order' => 1]);
         Service::factory()->create(['active' => false]);
         Visa::factory()->count(6)->create();
         Visa::factory()->create(['active' => false]);
@@ -31,6 +31,7 @@ class SiteContentControllerTest extends TestCase
             ->assertJsonPath('settings.site_name', 'Rozana Tours & Travels')
             ->assertJsonCount(2, 'services')
             ->assertJsonPath('services.0.title_en', 'First Service')
+            ->assertJsonPath('services.0.content.badge_en', 'Fast-Track Worldwide Visas')
             ->assertJsonPath('services.1.title_en', 'Second Service')
             ->assertJsonCount(6, 'visas')
             ->assertJsonCount(6, 'tourPackages')

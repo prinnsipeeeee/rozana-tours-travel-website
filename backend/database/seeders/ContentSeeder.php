@@ -75,8 +75,19 @@ class ContentSeeder extends Seeder
             ['turkey', 'Turkey (e-Visa & Sticker)', 'https://flagcdn.com/w80/tr.png', 'asia', false, 'Same Day (Instant)', '180 Days Multiple Entry', '280 SAR', 'Instant e-Visa issuing for Istanbul, Cappadocia, and Antalya trips.', ['Passport Copy', 'Flight Ticket Confirmation', 'Email address for instant PDF receipt']],
             ['canada', 'Canada (V-1 Tourist)', 'https://flagcdn.com/w80/ca.png', 'americas', false, '10 - 15 Working Days', 'Up to 10 Years (Passport Expiry)', '590 SAR', 'Long-term visitor visa assistance for Canada travel and family visits.', ['Passport Copy', 'Biometrics Appointment Scheduling', 'Financial Proof / Bank Statement', 'Employment Letter']],
         ];
+        $visaArabic = [
+            'schengen' => ['country_ar' => 'تأشيرة شنغن (أوروبا)', 'processing_time_ar' => '3 - 5 أيام عمل', 'validity_ar' => 'تصل إلى 90 يوماً / دخول متعدد', 'description_ar' => 'سافر بحرية عبر 29 دولة أوروبية منها فرنسا وإيطاليا وألمانيا وإسبانيا.', 'requirements_ar' => ['جواز سفر ساري', 'الهوية أو الإقامة', 'صورتان شخصيتان', 'كشف حساب بنكي', 'حجوزات طيران وفندق']],
+            'uk' => ['country_ar' => 'المملكة المتحدة (بريطانيا)', 'processing_time_ar' => '24 - 48 ساعة', 'validity_ar' => '6 أشهر / 2 إلى 5 سنوات', 'description_ar' => 'إجراءات سريعة لتأشيرة زيارة بريطانيا.', 'requirements_ar' => ['نسخة جواز السفر', 'الهوية أو الإقامة', 'تفاصيل السفر']],
+            'usa' => ['country_ar' => 'الولايات المتحدة (B1/B2)', 'processing_time_ar' => '5 - 7 أيام عمل', 'validity_ar' => '10 سنوات دخول متعدد', 'description_ar' => 'مساعدة متكاملة للتأشيرة السياحية والتجارية الأمريكية.', 'requirements_ar' => ['استمارة DS-160', 'جواز سفر ساري', 'صورة أمريكية', 'حجز موعد السفارة']],
+            'japan' => ['country_ar' => 'اليابان', 'processing_time_ar' => '3 - 4 أيام عمل', 'validity_ar' => '90 يوماً', 'description_ar' => 'إجراءات سهلة لتأشيرة اليابان الإلكترونية.', 'requirements_ar' => ['نسخة جواز السفر', 'الهوية أو الإقامة', 'كشف حساب بنكي', 'حجز فندق']],
+            'turkey' => ['country_ar' => 'تركيا', 'processing_time_ar' => 'في نفس اليوم', 'validity_ar' => '180 يوماً', 'description_ar' => 'إصدار فوري للتأشيرة الإلكترونية التركية.', 'requirements_ar' => ['نسخة جواز السفر', 'تأكيد تذكرة الطيران', 'البريد الإلكتروني']],
+            'canada' => ['country_ar' => 'كندا', 'processing_time_ar' => '10 - 15 يوم عمل', 'validity_ar' => 'حتى 10 سنوات', 'description_ar' => 'مساعدة لتأشيرة الزيارة الكندية للسياحة والزيارات العائلية.', 'requirements_ar' => ['نسخة جواز السفر', 'حجز البصمة', 'الإثبات المالي', 'خطاب العمل']],
+        ];
         foreach ($visas as $order => $v) {
-            Visa::updateOrCreate(['slug' => $v[0]], ['country' => $v[1], 'flag_url' => $v[2], 'category' => $v[3], 'popular' => $v[4], 'processing_time' => $v[5], 'validity' => $v[6], 'price' => $v[7], 'description' => $v[8], 'requirements' => $v[9], 'active' => true, 'sort_order' => $order]);
+            Visa::updateOrCreate(['slug' => $v[0]], [
+                'country' => $v[1], 'flag_url' => $v[2], 'category' => $v[3], 'popular' => $v[4], 'processing_time' => $v[5], 'validity' => $v[6], 'price' => $v[7], 'description' => $v[8], 'requirements' => $v[9], 'active' => true, 'sort_order' => $order,
+                ...$visaArabic[$v[0]],
+            ]);
         }
 
         $packages = [

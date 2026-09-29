@@ -12,11 +12,16 @@ class Service extends Model
     use HasFactory;
 
     protected $fillable = [
-        'slug', 'title_en', 'title_ar', 'subtitle_en', 'subtitle_ar', 'href', 'icon', 'active', 'sort_order',
+        'slug', 'title_en', 'title_ar', 'subtitle_en', 'subtitle_ar', 'href', 'icon', 'content', 'active', 'sort_order',
     ];
 
     protected function casts(): array
     {
-        return ['active' => 'boolean'];
+        return ['content' => 'array', 'active' => 'boolean'];
+    }
+
+    public function resolvedContent(): array
+    {
+        return $this->content ?? config("service_sections.{$this->slug}", []);
     }
 }

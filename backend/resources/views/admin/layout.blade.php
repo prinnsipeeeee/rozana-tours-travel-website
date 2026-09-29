@@ -28,6 +28,12 @@
         .nav a:hover { color:#fff; background:rgba(255,255,255,.075); transform:translateX(2px); }
         .nav a.active { color:#fff; background:rgba(255,255,255,.11); box-shadow:inset 0 0 0 1px rgba(255,255,255,.055); }
         .nav a.active::before { content:""; position:absolute; left:-6px; width:3px; height:22px; border-radius:99px; background:var(--orange-500); box-shadow:0 0 14px rgba(244,122,31,.7); }
+        .nav-group { display:grid; gap:4px; }
+        .nav-group > a { margin-bottom:0; }
+        .subnav { display:grid; gap:2px; margin:0 0 7px 19px; padding-left:13px; border-left:1px solid rgba(255,255,255,.11); }
+        .subnav a { min-height:34px; margin:0; padding:7px 10px; font-size:12px; color:#9fb3c8; }
+        .subnav a.active { color:#fff; background:rgba(255,255,255,.07); box-shadow:none; }
+        .subnav a.active::before { display:none; }
         .nav-icon { width:19px; height:19px; flex:0 0 auto; }
         .sidebar-footer { position:relative; z-index:1; margin-top:auto; }
         .locale-panel { margin:18px 4px 4px; padding:6px; border:1px solid rgba(255,255,255,.09); border-radius:14px; background:rgba(255,255,255,.055); }
@@ -149,6 +155,22 @@
         .check input { width:19px; height:19px; flex:0 0 auto; accent-color:var(--orange-500); }
         .check label { margin:0; cursor:pointer; }
         .form-actions { display:flex; justify-content:flex-end; gap:10px; padding:19px 28px; background:#fbfcfe; }
+        .service-sections { display:grid; gap:16px; }
+        .service-section-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:18px; padding:23px; }
+        .service-section-icon { display:grid; place-items:center; width:48px; height:48px; border-radius:14px; color:var(--blue-600); background:var(--blue-100); font-weight:850; }
+        .service-section-copy h2 { margin:9px 0 3px; color:var(--navy-900); font-size:18px; }
+        .service-section-copy p { margin:0; color:var(--muted); font-size:13px; }
+        .service-section-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; }
+        .content-editor { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+        .content-field.full,.content-group.full { grid-column:1/-1; }
+        .content-group { padding:18px; border:1px solid var(--line); border-radius:14px; background:#fafcff; }
+        .content-group-title { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:13px; }
+        .content-group-title h3 { margin:0; color:var(--navy-900); font-size:15px; }
+        .content-group-title span { color:var(--muted); font-size:12px; }
+        .content-item { margin-top:10px; border:1px solid var(--line); border-radius:12px; background:#fff; overflow:hidden; }
+        .content-item summary { padding:13px 15px; color:var(--navy-900); font-size:13px; font-weight:780; cursor:pointer; background:#f8fafc; }
+        .content-item-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:17px; padding:17px; }
+        .field-help-inline { margin-left:6px; color:var(--muted); font-size:11px; font-weight:500; }
         .empty { padding:62px 24px; text-align:center; }
         .empty-icon { display:grid; place-items:center; width:52px; height:52px; margin:0 auto 15px; border-radius:16px; color:var(--blue-600); background:var(--blue-100); }
         .empty-icon svg { width:24px; height:24px; }
@@ -171,6 +193,8 @@
             .brand-mark { width:38px; height:38px; border-radius:12px; }
             .brand-copy small { display:none; }
             .nav { display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
+            .nav-group { display:flex; }
+            .subnav { display:none; }
             .nav::-webkit-scrollbar { display:none; }
             .nav a { min-height:41px; padding:9px 12px; white-space:nowrap; }
             .nav a:hover { transform:none; }
@@ -187,7 +211,10 @@
             .content { padding:26px 16px 46px; }
             .page-head { align-items:stretch; flex-direction:column; }
             .page-head > .button { width:100%; }
-            .stats,.quick,.form-grid,.category-dialog-body { grid-template-columns:1fr; }
+            .stats,.quick,.form-grid,.category-dialog-body,.content-editor,.content-item-grid { grid-template-columns:1fr; }
+            .service-section-card { grid-template-columns:auto 1fr; }
+            .service-section-actions { grid-column:1/-1; justify-content:stretch; }
+            .service-section-actions .button { flex:1; }
             .field.full { grid-column:1; }
             .category-dialog-body .full { grid-column:1; }
             .card-pad,.form-section { padding:21px 18px; }
@@ -209,7 +236,9 @@
         <div class="nav-label">{{ __('admin.workspace') }}</div>
         <nav class="nav" aria-label="{{ __('admin.navigation.label') }}">
             <a class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>{{ __('admin.navigation.overview') }}</a>
-            <a class="{{ request()->is('admin/services*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'services') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 6h14M5 12h14M5 18h14"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></svg>{{ __('admin.navigation.services') }}</a>
+            <div class="nav-group"><a class="{{ request()->is('admin/services*') ? 'active' : '' }}" href="{{ route('admin.services.index') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 6h14M5 12h14M5 18h14"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></svg>{{ __('admin.navigation.services') }}</a><div class="subnav">
+                @foreach(['visa' => 'admin.services.visa', 'embassy' => 'admin.services.embassy', 'translation' => 'admin.services.translation', 'license' => 'admin.services.license'] as $slug => $label)<a class="{{ request()->route('service')?->slug === $slug ? 'active' : '' }}" href="{{ route('admin.services.edit', $slug) }}">{{ __($label) }}</a>@endforeach
+            </div></div>
             <a class="{{ request()->is('admin/visas*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'visas') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 4h16v16H4z"/><path d="M8 4v16M16 4v16M4 10h16M4 16h16"/></svg>{{ __('admin.navigation.visas') }}</a>
             <a class="{{ request()->is('admin/tour-packages*') ? 'active' : '' }}" href="{{ route('admin.resources.index', 'tour-packages') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19h16"/><path d="m5 16 4.5-5 3 3L17 8l2 8"/><circle cx="8" cy="6" r="2"/></svg>{{ __('admin.navigation.tour_packages') }}</a>
             <a class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.edit') }}"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0 .3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>{{ __('admin.navigation.settings') }}</a>

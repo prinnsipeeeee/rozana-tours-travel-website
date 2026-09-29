@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SaveContentRequest;
-use App\Models\Service;
 use App\Models\TourPackage;
 use App\Models\TourPackageCategory;
 use App\Models\Visa;
@@ -20,34 +19,24 @@ use Illuminate\View\View;
 class ResourceController extends Controller
 {
     private const RESOURCES = [
-        'services' => [
-            'label' => 'admin.resources.services', 'singular' => 'admin.resources.service', 'model' => Service::class,
-            'title' => 'title_en', 'secondary' => 'subtitle_en',
-            'fields' => [
-                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
-                'title_en' => ['label' => 'admin.fields.title_en', 'type' => 'text', 'required' => true],
-                'title_ar' => ['label' => 'admin.fields.title_ar', 'type' => 'text', 'required' => true],
-                'subtitle_en' => ['label' => 'admin.fields.subtitle_en', 'type' => 'text', 'required' => true],
-                'subtitle_ar' => ['label' => 'admin.fields.subtitle_ar', 'type' => 'text', 'required' => true],
-                'href' => ['label' => 'admin.fields.href', 'type' => 'text', 'required' => true],
-                'icon' => ['label' => 'admin.fields.icon', 'type' => 'select', 'required' => true, 'options' => ['visa' => 'admin.service_icons.visa', 'embassy' => 'admin.service_icons.embassy', 'translation' => 'admin.service_icons.translation', 'license' => 'admin.service_icons.license']],
-                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
-                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
-            ],
-        ],
         'visas' => [
             'label' => 'admin.resources.visas', 'singular' => 'admin.resources.visa', 'model' => Visa::class,
             'title' => 'country', 'secondary' => 'category',
             'fields' => [
                 'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
                 'country' => ['label' => 'admin.fields.country', 'type' => 'text', 'required' => true],
+                'country_ar' => ['label' => 'admin.fields.country_ar', 'type' => 'text'],
                 'flag_url' => ['label' => 'admin.fields.flag_url', 'type' => 'url'],
                 'category' => ['label' => 'admin.fields.category', 'type' => 'select', 'required' => true, 'options' => ['europe' => 'admin.categories.europe_uk', 'americas' => 'admin.categories.north_america', 'asia' => 'admin.categories.asia_turkey']],
                 'processing_time' => ['label' => 'admin.fields.processing_time', 'type' => 'text', 'required' => true],
+                'processing_time_ar' => ['label' => 'admin.fields.processing_time_ar', 'type' => 'text'],
                 'validity' => ['label' => 'admin.fields.validity', 'type' => 'text', 'required' => true],
+                'validity_ar' => ['label' => 'admin.fields.validity_ar', 'type' => 'text'],
                 'price' => ['label' => 'admin.fields.price', 'type' => 'text', 'required' => true],
                 'description' => ['label' => 'admin.fields.description', 'type' => 'textarea', 'required' => true],
+                'description_ar' => ['label' => 'admin.fields.description_ar', 'type' => 'textarea'],
                 'requirements' => ['label' => 'admin.fields.requirements', 'type' => 'lines', 'required' => true],
+                'requirements_ar' => ['label' => 'admin.fields.requirements_ar', 'type' => 'lines'],
                 'popular' => ['label' => 'admin.fields.popular', 'type' => 'checkbox'],
                 'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
                 'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],

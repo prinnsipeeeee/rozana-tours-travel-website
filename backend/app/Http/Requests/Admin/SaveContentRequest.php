@@ -23,26 +23,11 @@ class SaveContentRequest extends FormRequest
         $resource = $this->route('resource');
         $record = $this->route('record');
         $table = match ($resource) {
-            'services' => 'services',
             'visas' => 'visas',
             'tour-packages' => 'tour_packages',
             'tour-package-categories' => 'tour_package_categories',
             default => abort(404),
         };
-
-        if ($resource === 'services') {
-            return [
-                'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique($table, 'slug')->ignore($record)],
-                'title_en' => ['required', 'string', 'max:255'],
-                'title_ar' => ['required', 'string', 'max:255'],
-                'subtitle_en' => ['required', 'string', 'max:255'],
-                'subtitle_ar' => ['required', 'string', 'max:255'],
-                'href' => ['required', 'string', 'max:255', 'starts_with:#'],
-                'icon' => ['required', Rule::in(['visa', 'embassy', 'translation', 'license'])],
-                'active' => ['nullable', 'boolean'],
-                'sort_order' => ['nullable', 'integer', 'min:0'],
-            ];
-        }
 
         if ($resource === 'tour-package-categories') {
             return [
@@ -70,12 +55,17 @@ class SaveContentRequest extends FormRequest
             'visas' => [
                 ...$common,
                 'country' => ['required', 'string', 'max:255'],
+                'country_ar' => ['nullable', 'string', 'max:255'],
                 'flag_url' => ['nullable', 'url', 'max:2000'],
                 'category' => ['required', Rule::in(['europe', 'americas', 'asia'])],
                 'processing_time' => ['required', 'string', 'max:255'],
+                'processing_time_ar' => ['nullable', 'string', 'max:255'],
                 'validity' => ['required', 'string', 'max:255'],
+                'validity_ar' => ['nullable', 'string', 'max:255'],
                 'description' => ['required', 'string', 'max:10000'],
+                'description_ar' => ['nullable', 'string', 'max:10000'],
                 'requirements' => ['required', 'string', 'max:10000'],
+                'requirements_ar' => ['nullable', 'string', 'max:10000'],
             ],
             'tour-packages' => [
                 ...$common,

@@ -1,16 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Building2, 
   Stamp, 
-  ShieldCheck, 
   Clock, 
   CheckCircle2, 
   MessageSquare, 
-  FileCheck2, 
-  Briefcase, 
-  GraduationCap, 
-  HeartHandshake, 
-  ArrowRight,
   Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -149,10 +143,12 @@ const defaultEmbassyServices = [
   }
 ];
 
-export default function EmbassySection({ settings = {} }) {
+export default function EmbassySection({ settings = {}, service }) {
   const { isRTL, getContent } = useLanguage();
   const whatsappNumber = settings.whatsapp_number || '966552993899';
-  const [services] = useState(defaultEmbassyServices);
+  const content = service?.content || {};
+  const copy = (key, english, arabic) => content[`${key}_${isRTL ? 'ar' : 'en'}`] || (isRTL ? arabic : english);
+  const services = content.items || defaultEmbassyServices;
   const [activeCategory, setActiveCategory] = useState("all");
 
   const filteredServices = activeCategory === "all" 
@@ -175,30 +171,28 @@ export default function EmbassySection({ settings = {} }) {
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 bg-[#003B7A]/10 text-[#003B7A] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
             <Building2 size={15} className="text-[#FF7A00]" />
-            <span>{isRTL ? 'خدمات السفارات والتصديقات بالرياض' : 'Diplomatic Quarter Attestation'}</span>
+            <span>{copy('badge', 'Diplomatic Quarter Attestation', 'خدمات السفارات والتصديقات بالرياض')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#002B5B] tracking-tight">
-            {isRTL ? 'تصديقات وزارة الخارجية و ' : 'Official Embassy & '}
-            <span className="text-[#FF7A00]">{isRTL ? 'السفارات الأجنبية' : 'Legal Attestation'}</span>
+            {copy('heading', 'Official Embassy &', 'تصديقات وزارة الخارجية و')}{' '}
+            <span className="text-[#FF7A00]">{copy('highlight', 'Legal Attestation', 'السفارات الأجنبية')}</span>
           </h2>
 
           <p className="text-slate-600 text-base md:text-lg leading-relaxed font-light">
-            {isRTL 
-              ? 'إنهاء وتصديق كافة المعاملات والوثائق التجارية والأكاديمية والشخصية من وزارة الخارجية السعودية والسفارات بالحي الدبلوماسي بالرياض.'
-              : 'Fast-track legalization and consular stamping for commercial, educational, and personal documents through MOFA and foreign embassies.'}
+            {copy('description', 'Fast-track legalization and consular stamping for commercial, educational, and personal documents through MOFA and foreign embassies.', 'إنهاء وتصديق كافة المعاملات والوثائق التجارية والأكاديمية والشخصية من وزارة الخارجية السعودية والسفارات بالحي الدبلوماسي بالرياض.')}
           </p>
         </div>
 
         {/* 2. CATEGORY TABS */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {[
+          {(content.tabs || [
             { id: "all", label: isRTL ? "جميع الخدمات" : "All Services" },
             { id: "commercial", label: isRTL ? "🏢 الشركات والتجارة" : "🏢 Commercial & MOFA" },
             { id: "educational", label: isRTL ? "🎓 الشهادات الأكاديمية" : "🎓 Educational Degrees" },
             { id: "civil", label: isRTL ? "👨‍👩‍👦 الوثائق الشخصية" : "👨‍👩‍👦 Civil & Family" },
             { id: "appointments", label: isRTL ? "📅 حجز المواعيد" : "📅 Appointments" },
-          ].map((tab) => (
+          ]).map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveCategory(tab.id)}
@@ -208,7 +202,7 @@ export default function EmbassySection({ settings = {} }) {
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
               }`}
             >
-              {tab.label}
+              {tab.label || (isRTL ? tab.label_ar : tab.label_en)}
             </button>
           ))}
         </div>
@@ -250,9 +244,9 @@ export default function EmbassySection({ settings = {} }) {
 
                 <div className="space-y-2.5 bg-slate-50 p-4 rounded-2xl border border-slate-100 mb-6">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
-                    {isRTL ? 'الإجراءات المشمولة:' : "What's Included:"}
+                    {copy('included_label', "What's Included:", 'الإجراءات المشمولة:')}
                   </span>
-                  {(isRTL ? service.inclusions_ar : service.inclusions).map((item, idx) => (
+                  {(isRTL ? (service.features_ar || service.inclusions_ar) : (service.features_en || service.inclusions)).map((item, idx) => (
                     <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
                       <CheckCircle2 size={14} className="text-emerald-500 shrink-0 mt-0.5" />
                       <span>{item}</span>
@@ -263,8 +257,8 @@ export default function EmbassySection({ settings = {} }) {
 
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 block">{isRTL ? 'الرسوم من' : 'Starting From'}</span>
-                  <span className="text-xl font-black text-[#002B5B]">{service.startingFee}</span>
+                  <span className="text-[10px] uppercase font-bold text-slate-400 block">{copy('starting_label', 'Starting From', 'الرسوم من')}</span>
+                  <span className="text-xl font-black text-[#002B5B]">{service.price || service.startingFee}</span>
                 </div>
 
                 <button
@@ -272,7 +266,7 @@ export default function EmbassySection({ settings = {} }) {
                   className="bg-[#002B5B] hover:bg-[#FF7A00] text-white px-4 py-2.5 rounded-xl font-bold text-xs transition-colors duration-300 shadow-md flex items-center gap-1.5"
                 >
                   <MessageSquare size={14} />
-                  <span>{isRTL ? 'بدء التصديق' : 'Start Attestation'}</span>
+                  <span>{copy('cta_label', 'Start Attestation', 'بدء التصديق')}</span>
                 </button>
               </div>
 

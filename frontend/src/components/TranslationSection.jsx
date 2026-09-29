@@ -6,11 +6,8 @@ import {
   Clock, 
   CheckCircle2, 
   MessageSquare, 
-  Sparkles, 
   Stamp, 
   UploadCloud, 
-  BadgeCheck,
-  Building2
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
@@ -89,9 +86,19 @@ const targetLanguages = [
   { name: 'Chinese', name_ar: 'الصينية', flag: 'https://flagcdn.com/w40/cn.png' }
 ];
 
-export default function TranslationSection({ settings = {} }) {
+const advantageIcons = { stamp: Stamp, clock: Clock, shield: ShieldCheck };
+
+export default function TranslationSection({ settings = {}, service }) {
   const { isRTL, getContent } = useLanguage();
   const whatsappNumber = settings.whatsapp_number || '966552993899';
+  const content = service?.content || {};
+  const copy = (key, english, arabic) => content[`${key}_${isRTL ? 'ar' : 'en'}`] || (isRTL ? arabic : english);
+  const documentTypes = content.document_types || defaultDocumentTypes;
+  const languages = content.languages || targetLanguages;
+  const documentOptions = content.document_options || [
+    { value: 'Visa & Employment Papers', label_en: 'Visa & Employment Papers', label_ar: 'خطابات التعريف بالراتب وكشوف الحساب' },
+    { value: 'National ID / Iqama', label_en: 'National ID / Iqama / Family Card', label_ar: 'بطاقات الهوية والإقامة ودفتر العائلة' },
+  ];
   const [selectedDoc, setSelectedDoc] = useState('Visa & Travel Documents');
   const [selectedLang, setSelectedLang] = useState('English');
 
@@ -111,58 +118,32 @@ export default function TranslationSection({ settings = {} }) {
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 bg-[#003B7A]/10 text-[#003B7A] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
             <Languages size={15} className="text-[#FF7A00]" />
-            <span>{isRTL ? 'الترجمة المعتمدة لجميع السفارات' : 'Official Certified Translation'}</span>
+            <span>{copy('badge', 'Official Certified Translation', 'الترجمة المعتمدة لجميع السفارات')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#002B5B] tracking-tight">
-            {isRTL ? 'ترجمة معتمدة مقبولة لدى ' : 'Accredited Legal Translation for '}
-            <span className="text-[#FF7A00]">{isRTL ? 'كافة السفارات والجهات' : 'Embassies & Ministries'}</span>
+            {copy('heading', 'Accredited Legal Translation for', 'ترجمة معتمدة مقبولة لدى')}{' '}
+            <span className="text-[#FF7A00]">{copy('highlight', 'Embassies & Ministries', 'كافة السفارات والجهات')}</span>
           </h2>
 
           <p className="text-slate-600 text-base md:text-lg leading-relaxed font-light">
-            {isRTL 
-              ? 'معتمدة لدى جميع السفارات الأجنبية بالرياض ومراكز VFS Global وTLScontact والوزارات السعودية. دقة لغوية مع أختام رسمية معتمدة.'
-              : '100% accepted by all foreign embassies in Riyadh, VFS Global, TLScontact, and Saudi ministries. Fast and sworn.'}
+            {copy('description', '100% accepted by all foreign embassies in Riyadh, VFS Global, TLScontact, and Saudi ministries. Fast and sworn.', 'معتمدة لدى جميع السفارات الأجنبية بالرياض ومراكز VFS Global وTLScontact والوزارات السعودية. دقة لغوية مع أختام رسمية معتمدة.')}
           </p>
         </div>
 
         {/* 2. ADVANTAGES PILLARS */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm flex items-start gap-4 text-start">
-            <div className="w-12 h-12 rounded-xl bg-[#002B5B] text-white flex items-center justify-center shrink-0">
-              <Stamp size={22} className="text-[#FF7A00]" />
-            </div>
-            <div>
-              <h4 className="font-bold text-[#002B5B] text-sm">{isRTL ? 'ختم معتمد لدى السفارات' : 'Embassy-Approved Seal'}</h4>
-              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                {isRTL ? 'مقبولة لدى سفارات دول الشنغن، بريطانيا، وأمريكا وكندا.' : 'Recognized by Schengen, UK, US, and Asian missions.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm flex items-start gap-4 text-start">
-            <div className="w-12 h-12 rounded-xl bg-[#002B5B] text-white flex items-center justify-center shrink-0">
-              <Clock size={22} className="text-amber-400" />
-            </div>
-            <div>
-              <h4 className="font-bold text-[#002B5B] text-sm">{isRTL ? 'تسليم فوري نفس اليوم' : 'Same-Day Fast Delivery'}</h4>
-              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                {isRTL ? 'تسليم الوثائق العاجلة بصيغة PDF ومطبوعة خلال 2 إلى 4 ساعات.' : 'Urgent documents translated and sealed in 2 to 4 hours.'}
-              </p>
-            </div>
-          </div>
-
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm flex items-start gap-4 text-start">
-            <div className="w-12 h-12 rounded-xl bg-[#002B5B] text-white flex items-center justify-center shrink-0">
-              <ShieldCheck size={22} className="text-emerald-400" />
-            </div>
-            <div>
-              <h4 className="font-bold text-[#002B5B] text-sm">{isRTL ? 'دقة ومطابقة قانونية 100%' : '100% Legal Accuracy'}</h4>
-              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                {isRTL ? 'مترجمون محلفون معتمدون لضمان صحة المصطلحات وسرية البيانات.' : 'Conducted by certified sworn translators ensuring precision.'}
-              </p>
-            </div>
-          </div>
+          {(content.advantages || [
+            { icon: 'stamp', title_en: 'Embassy-Approved Seal', title_ar: 'ختم معتمد لدى السفارات', description_en: 'Recognized by Schengen, UK, US, and Asian missions.', description_ar: 'مقبولة لدى سفارات دول الشنغن، بريطانيا، وأمريكا وكندا.' },
+            { icon: 'clock', title_en: 'Same-Day Fast Delivery', title_ar: 'تسليم فوري نفس اليوم', description_en: 'Urgent documents translated and sealed in 2 to 4 hours.', description_ar: 'تسليم الوثائق العاجلة خلال 2 إلى 4 ساعات.' },
+            { icon: 'shield', title_en: '100% Legal Accuracy', title_ar: 'دقة ومطابقة قانونية 100%', description_en: 'Conducted by certified sworn translators ensuring precision.', description_ar: 'مترجمون محلفون معتمدون لضمان الدقة.' },
+          ]).map((advantage) => {
+            const Icon = advantageIcons[advantage.icon] || Stamp;
+            return <div key={advantage.title_en} className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-sm flex items-start gap-4 text-start">
+              <div className="w-12 h-12 rounded-xl bg-[#002B5B] text-white flex items-center justify-center shrink-0"><Icon size={22} className="text-[#FF7A00]" /></div>
+              <div><h4 className="font-bold text-[#002B5B] text-sm">{isRTL ? advantage.title_ar : advantage.title_en}</h4><p className="text-xs text-slate-500 mt-1 leading-relaxed">{isRTL ? advantage.description_ar : advantage.description_en}</p></div>
+            </div>;
+          })}
         </div>
 
         {/* 3. MAIN CARDS GRID */}
@@ -170,7 +151,7 @@ export default function TranslationSection({ settings = {} }) {
           
           {/* CATEGORIES (7 cols) */}
           <div className="lg:col-span-7 space-y-5">
-            {defaultDocumentTypes.map((doc) => (
+            {documentTypes.map((doc) => (
               <motion.div
                 key={doc.id}
                 whileHover={{ y: -4 }}
@@ -178,7 +159,7 @@ export default function TranslationSection({ settings = {} }) {
               >
                 {doc.popular && (
                   <span className="absolute top-4 right-4 bg-linear-to-r from-[#FF7A00] to-amber-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
-                    {isRTL ? 'الأكثر طلباً' : 'Popular'}
+                    {copy('popular_label', 'Popular', 'الأكثر طلباً')}
                   </span>
                 )}
 
@@ -190,13 +171,13 @@ export default function TranslationSection({ settings = {} }) {
                     <h3 className="text-lg font-bold text-[#002B5B]">{getContent(doc, 'title')}</h3>
                     <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
                       <Clock size={12} />
-                      <span>{isRTL ? 'سرعة الإنجاز:' : 'Turnaround:'} {getContent(doc, 'turnaround')}</span>
+                      <span>{copy('turnaround_label', 'Turnaround:', 'سرعة الإنجاز:')} {getContent(doc, 'turnaround')}</span>
                     </p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-slate-100">
-                  {(isRTL ? doc.items_ar : doc.items).map((item, idx) => (
+                  {(isRTL ? doc.items_ar : (doc.items_en || doc.items)).map((item, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-xs text-slate-600">
                       <CheckCircle2 size={14} className="text-emerald-500 shrink-0" />
                       <span>{item}</span>
@@ -211,44 +192,44 @@ export default function TranslationSection({ settings = {} }) {
           <div className="lg:col-span-5 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-xl text-start space-y-6">
             <div className="border-b border-slate-100 pb-4">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#FF7A00] block">
-                {isRTL ? 'تسعير وترجمة فورية' : 'Instant Translation Quote'}
+                {copy('quote_badge', 'Instant Translation Quote', 'تسعير وترجمة فورية')}
               </span>
               <h3 className="text-xl font-black text-[#002B5B] mt-1">
-                {isRTL ? 'أرسل وثيقتك للترجمة الآن' : 'Upload & Translate Today'}
+                {copy('quote_title', 'Upload & Translate Today', 'أرسل وثيقتك للترجمة الآن')}
               </h3>
               <p className="text-xs text-slate-500 mt-1">
-                {isRTL ? 'أرسل صورة أو ملف PDF مباشرة عبر الواتساب للحصول على السعر والوقت.' : 'Send a photo or PDF directly to our translation desk on WhatsApp.'}
+                {copy('quote_description', 'Send a photo or PDF directly to our translation desk on WhatsApp.', 'أرسل صورة أو ملف PDF مباشرة عبر الواتساب للحصول على السعر والوقت.')}
               </p>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                {isRTL ? 'نوع الوثيقة:' : 'Select Document Category:'}
+                {copy('document_label', 'Select Document Category:', 'نوع الوثيقة:')}
               </label>
               <select
                 value={selectedDoc}
                 onChange={(e) => setSelectedDoc(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-3 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#FF7A00]"
               >
-                <option value="Visa & Employment Papers">{isRTL ? 'خطابات التعريف بالراتب وكشوف الحساب' : 'Visa & Employment Papers'}</option>
-                <option value="National ID / Iqama">{isRTL ? 'بطاقات الهوية والإقامة ودفتر العائلة' : 'National ID / Iqama / Family Card'}</option>
-                <option value="Marriage / Birth Certificate">{isRTL ? 'عقود الزواج وشهادات الميلاد' : 'Marriage / Birth Certificate'}</option>
-                <option value="Commercial Registration / Contracts">{isRTL ? 'السجلات التجارية والعقود القانونية' : 'Commercial Registration / Legal Contracts'}</option>
-                <option value="University Degree">{isRTL ? 'الشهادات الجامعية والمؤهلات الدراسية' : 'University Degree & Transcripts'}</option>
+                {documentOptions.map((option) => (
+                  <option key={option.value} value={option.value}>{isRTL ? option.label_ar : option.label_en}</option>
+                ))}
               </select>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                {isRTL ? 'اللغة المطلوب الترجمة إليها:' : 'Target Language:'}
+                {copy('language_label', 'Target Language:', 'اللغة المطلوب الترجمة إليها:')}
               </label>
               <select
                 value={selectedLang}
                 onChange={(e) => setSelectedLang(e.target.value)}
                 className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-3 text-xs text-slate-800 font-medium focus:outline-none focus:border-[#FF7A00]"
               >
-                {targetLanguages.map((l) => (
-                  <option key={l.name} value={l.name}>{isRTL ? l.name_ar : l.name}</option>
+                {languages.map((language) => (
+                  <option key={language.value || language.name} value={language.value || language.name}>
+                    {isRTL ? (language.label_ar || language.name_ar) : (language.label_en || language.name)}
+                  </option>
                 ))}
               </select>
             </div>
@@ -256,10 +237,10 @@ export default function TranslationSection({ settings = {} }) {
             <div className="bg-slate-50 border border-dashed border-slate-300 rounded-2xl p-4 text-center space-y-1.5">
               <UploadCloud size={24} className="text-[#0084D6] mx-auto" />
               <p className="text-xs font-semibold text-slate-700">
-                {isRTL ? 'التقط صورة واضحة أو أرفق ملف PDF عبر الواتساب' : 'Snap photo or attach PDF via WhatsApp'}
+                {copy('upload_title', 'Snap photo or attach PDF via WhatsApp', 'التقط صورة واضحة أو أرفق ملف PDF عبر الواتساب')}
               </p>
               <p className="text-[11px] text-slate-400">
-                {isRTL ? 'يرد فريق الترجمة خلال أقل من 15 دقيقة.' : 'Our translation desk responds in under 15 minutes.'}
+                {copy('upload_description', 'Our translation desk responds in under 15 minutes.', 'يرد فريق الترجمة خلال أقل من 15 دقيقة.')}
               </p>
             </div>
 
@@ -268,7 +249,7 @@ export default function TranslationSection({ settings = {} }) {
               className="w-full bg-linear-to-r from-[#FF7A00] to-amber-500 hover:from-amber-500 hover:to-[#FF7A00] text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#FF7A00]/25 transition-all flex items-center justify-center gap-2"
             >
               <MessageSquare size={16} />
-              <span>{isRTL ? 'إرسال المستند عبر الواتساب' : 'Send Document via WhatsApp'}</span>
+              <span>{copy('cta_label', 'Send Document via WhatsApp', 'إرسال المستند عبر الواتساب')}</span>
             </button>
           </div>
 

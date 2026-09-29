@@ -14,14 +14,19 @@ class VisaResource extends JsonResource
             'id' => $this->id,
             'slug' => $this->slug,
             'country' => $this->country,
+            'country_ar' => $this->country_ar,
             'flag_url' => $this->flag_url,
             'category' => $this->category,
             'popular' => $this->popular,
             'processing_time' => $this->processing_time,
+            'processing_time_ar' => $this->processing_time_ar,
             'validity' => $this->validity,
+            'validity_ar' => $this->validity_ar,
             'price' => $this->price,
             'description' => $this->description,
+            'description_ar' => $this->description_ar,
             'requirements' => $this->requirements,
+            'requirements_ar' => $this->requirements_ar,
         ];
     }
 }

@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   CreditCard, 
-  ShieldCheck, 
   Clock, 
   CheckCircle2, 
   MessageSquare, 
-  FileCheck, 
   Sparkles
 } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -95,10 +93,13 @@ const defaultLicensePlans = [
   }
 ];
 
-export default function LicenseSection({ settings = {} }) {
+export default function LicenseSection({ settings = {}, service }) {
   const { isRTL, getContent } = useLanguage();
   const whatsappNumber = settings.whatsapp_number || '966552993899';
-  const [plans] = useState(defaultLicensePlans);
+  const content = service?.content || {};
+  const copy = (key, english, arabic) => content[`${key}_${isRTL ? 'ar' : 'en'}`] || (isRTL ? arabic : english);
+  const plans = content.plans || defaultLicensePlans;
+  const planCopy = (plan, key, fallbackKey = key) => plan[`${key}_${isRTL ? 'ar' : 'en'}`] || getContent(plan, fallbackKey);
 
   const handleApply = (planTitle, price) => {
     const text = isRTL 
@@ -116,18 +117,16 @@ export default function LicenseSection({ settings = {} }) {
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 bg-[#003B7A]/10 text-[#003B7A] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
             <CreditCard size={15} className="text-[#FF7A00]" />
-            <span>{isRTL ? 'رخصة القيادة الدولية المعتمدة' : 'Official UN International Permit'}</span>
+            <span>{copy('badge', 'Official UN International Permit', 'رخصة القيادة الدولية المعتمدة')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#002B5B] tracking-tight">
-            {isRTL ? 'استخراج رخصة القيادة ' : 'International '}
-            <span className="text-[#FF7A00]">{isRTL ? 'الدولية الفورية' : 'Driving License'}</span>
+            {copy('heading', 'International ', 'استخراج رخصة القيادة ')}
+            <span className="text-[#FF7A00]">{copy('highlight', 'Driving License', 'الدولية الفورية')}</span>
           </h2>
 
           <p className="text-slate-600 text-base md:text-lg leading-relaxed font-light">
-            {isRTL 
-              ? 'قد سيارتك بكل أمان وقانونية في أكثر من 150 دولة حول العالم. تصدر وفقاً لاتفاقيات الأمم المتحدة ومعتمدة لدى كافة شركات تأجير السيارات العالمية.'
-              : 'Drive legally across 150+ countries. Issued in accordance with UN conventions, accepted by all major car rental agencies.'}
+            {copy('description', 'Drive legally across 150+ countries. Issued in accordance with UN conventions, accepted by all major car rental agencies.', 'قد سيارتك بكل أمان وقانونية في أكثر من 150 دولة حول العالم. تصدر وفقاً لاتفاقيات الأمم المتحدة ومعتمدة لدى كافة شركات تأجير السيارات العالمية.')}
           </p>
         </div>
 
@@ -146,37 +145,37 @@ export default function LicenseSection({ settings = {} }) {
               {plan.popular && (
                 <div className="absolute top-2 right-4 bg-linear-to-r from-[#FF7A00] to-amber-500 text-white text-[10px] font-black px-3.5 py-1 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
                   <Sparkles size={11} />
-                  <span>{isRTL ? 'الخيار الأكثر طلباً' : 'Most Popular Choice'}</span>
+                  <span>{copy('popular_label', 'Most Popular Choice', 'الخيار الأكثر طلباً')}</span>
                 </div>
               )}
 
               <div>
                 <div className="space-y-1 mb-4">
                   <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#0084D6] block">
-                    {getContent(plan, 'recommendedFor')}
+                    {planCopy(plan, 'recommended', 'recommendedFor')}
                   </span>
                   <h3 className="text-2xl font-black text-[#002B5B]">
                     {getContent(plan, 'title')}
                   </h3>
                   <div className="flex items-center gap-1.5 text-xs text-slate-500 pt-1">
                     <Clock size={13} className="text-emerald-500" />
-                    <span>{isRTL ? 'سرعة الإنجاز:' : 'Turnaround:'} {getContent(plan, 'turnaround')}</span>
+                    <span>{copy('turnaround_label', 'Turnaround:', 'سرعة الإنجاز:')} {getContent(plan, 'turnaround')}</span>
                   </div>
                 </div>
 
                 <div className="py-4 border-y border-slate-100 my-6">
-                  <span className="text-[11px] uppercase font-bold text-slate-400 block">{isRTL ? 'رسوم الإصدار شاملة' : 'Total Issuance Fee'}</span>
+                  <span className="text-[11px] uppercase font-bold text-slate-400 block">{copy('fee_label', 'Total Issuance Fee', 'رسوم الإصدار شاملة')}</span>
                   <div className="flex items-baseline gap-1 mt-0.5">
                     <span className="text-3xl sm:text-4xl font-black text-[#002B5B]">{plan.price}</span>
-                    <span className="text-xs text-slate-400 font-medium">{isRTL ? '/ شامل الدفتر' : '/ all-inclusive'}</span>
+                    <span className="text-xs text-slate-400 font-medium">{copy('fee_suffix', '/ all-inclusive', '/ شامل الدفتر')}</span>
                   </div>
                 </div>
 
                 <div className="space-y-3 mb-8">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">
-                    {isRTL ? 'المواصفات والاعتمادات:' : 'Permit Specifications:'}
+                    {copy('features_label', 'Permit Specifications:', 'المواصفات والاعتمادات:')}
                   </span>
-                  {(isRTL ? plan.features_ar : plan.features).map((feat, idx) => (
+                  {(isRTL ? plan.features_ar : (plan.features_en || plan.features)).map((feat, idx) => (
                     <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed">
                       <CheckCircle2 size={15} className="text-emerald-500 shrink-0 mt-0.5" />
                       <span>{feat}</span>
@@ -194,7 +193,7 @@ export default function LicenseSection({ settings = {} }) {
                 }`}
               >
                 <MessageSquare size={16} />
-                <span>{isRTL ? 'طلب إصدار الرخصة' : 'Apply for this Permit'}</span>
+                <span>{copy('cta_label', 'Apply for this Permit', 'طلب إصدار الرخصة')}</span>
               </button>
             </motion.div>
           ))}

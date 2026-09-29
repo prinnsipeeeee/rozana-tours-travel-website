@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { 
-  ShieldCheck, 
+import {
   Sparkles, 
   Clock, 
   Calendar, 
   CheckCircle2, 
   MessageSquare, 
-  Info, 
   X,
   FileCheck
 } from "lucide-react";
@@ -127,9 +125,11 @@ const defaultVisaData = [
   }
 ];
 
-export default function VisaSection({ items, settings = {} }) {
+export default function VisaSection({ items, settings = {}, service }) {
   const { isRTL, getContent } = useLanguage();
   const whatsappNumber = settings.whatsapp_number || '966552993899';
+  const content = service?.content || {};
+  const copy = (key, english, arabic) => content[`${key}_${isRTL ? 'ar' : 'en'}`] || (isRTL ? arabic : english);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedVisa, setSelectedVisa] = useState(null);
 
@@ -155,29 +155,27 @@ export default function VisaSection({ items, settings = {} }) {
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
           <div className="inline-flex items-center gap-2 bg-[#003B7A]/10 text-[#003B7A] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
             <FileCheck size={15} className="text-[#FF7A00]" />
-            <span>{isRTL ? 'خدمات التأشيرات المعتمدة' : 'Fast-Track Worldwide Visas'}</span>
+            <span>{copy('badge', 'Fast-Track Worldwide Visas', 'خدمات التأشيرات المعتمدة')}</span>
           </div>
 
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-[#002B5B] tracking-tight">
-            {isRTL ? 'استخراج التأشيرات لجميع ' : 'Fast-Track Global '}
-            <span className="text-[#FF7A00]">{isRTL ? 'دول العالم' : 'Visa Assistance'}</span>
+            {copy('heading', 'Fast-Track Global', 'استخراج التأشيرات لجميع')}{' '}
+            <span className="text-[#FF7A00]">{copy('highlight', 'Visa Assistance', 'دول العالم')}</span>
           </h2>
 
           <p className="text-slate-600 text-base md:text-lg leading-relaxed font-light">
-            {isRTL 
-              ? 'فريق متخصص لمساعدتك في استخراج تأشيرات الشنغن، بريطانيا، وأمريكا مع حجز المواعيد وتعبئة النماذج وتجهيز ملفك كاملاً.'
-              : 'End-to-end visa assistance for Saudi citizens & residents. Appointment booking, official translations, and application filing.'}
+            {copy('description', 'End-to-end visa assistance for Saudi citizens & residents. Appointment booking, official translations, and application filing.', 'فريق متخصص لمساعدتك في استخراج تأشيرات الشنغن، بريطانيا، وأمريكا مع حجز المواعيد وتعبئة النماذج وتجهيز ملفك كاملاً.')}
           </p>
         </div>
 
         {/* CATEGORY TABS */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {[
+          {(content.tabs || [
             { id: 'all', label: isRTL ? 'جميع التأشيرات' : 'All Destinations' },
             { id: 'europe', label: isRTL ? '🇪🇺 أوروبا وبريطانيا' : '🇪🇺 Europe & UK' },
             { id: 'americas', label: isRTL ? '🇺🇸 أمريكا وكندا' : '🇺🇸 USA & Canada' },
             { id: 'asia', label: isRTL ? '🇯🇵 آسيا وشرق آسيا' : '🇯🇵 Asia' },
-          ].map((tab) => (
+          ]).map((tab) => (
             <button
               key={tab.id}
               onClick={() => setSelectedCategory(tab.id)}
@@ -187,7 +185,7 @@ export default function VisaSection({ items, settings = {} }) {
                   : 'bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200'
               }`}
             >
-              {tab.label}
+              {tab.label || (isRTL ? tab.label_ar : tab.label_en)}
             </button>
           ))}
         </div>
@@ -203,7 +201,7 @@ export default function VisaSection({ items, settings = {} }) {
               {visa.popular && (
                 <div className="absolute top-3.5 right-4 bg-linear-to-r from-[#FF7A00] to-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
                   <Sparkles size={10} />
-                  <span>{isRTL ? 'الأكثر طلباً' : 'Popular'}</span>
+                  <span>{copy('popular_label', 'Popular', 'الأكثر طلباً')}</span>
                 </div>
               )}
 
@@ -215,7 +213,7 @@ export default function VisaSection({ items, settings = {} }) {
                       {getContent(visa, 'country')}
                     </h3>
                     <span className="text-[11px] text-slate-400 font-medium">
-                      {isRTL ? 'تجهيز الملف بالكامل' : 'Full Assisted Filing'}
+                      {copy('assisted_label', 'Full Assisted Filing', 'تجهيز الملف بالكامل')}
                     </span>
                   </div>
                 </div>
@@ -227,13 +225,13 @@ export default function VisaSection({ items, settings = {} }) {
                 <div className="space-y-2 py-3 border-y border-slate-100 mb-6 text-xs text-slate-600">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-400 flex items-center gap-1">
-                      <Clock size={13} className="text-[#0084D6]" /> {isRTL ? 'مدة الإنجاز:' : 'Turnaround:'}
+                      <Clock size={13} className="text-[#0084D6]" /> {copy('turnaround_label', 'Turnaround:', 'مدة الإنجاز:')}
                     </span>
                     <span className="font-bold text-[#002B5B]">{getContent(visa, 'processingTime')}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-400 flex items-center gap-1">
-                      <Calendar size={13} className="text-[#FF7A00]" /> {isRTL ? 'الصلاحية:' : 'Validity:'}
+                      <Calendar size={13} className="text-[#FF7A00]" /> {copy('validity_label', 'Validity:', 'الصلاحية:')}
                     </span>
                     <span className="font-bold text-emerald-600">{getContent(visa, 'validity')}</span>
                   </div>
@@ -242,7 +240,7 @@ export default function VisaSection({ items, settings = {} }) {
 
               <div className="space-y-3 pt-2">
                 <div className="flex items-baseline justify-between">
-                  <span className="text-[10px] text-slate-400 font-bold uppercase">{isRTL ? 'رسوم الخدمة' : 'Service Fee'}</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{copy('fee_label', 'Service Fee', 'رسوم الخدمة')}</span>
                   <span className="text-xl font-black text-[#002B5B]">{visa.price}</span>
                 </div>
 
@@ -251,7 +249,7 @@ export default function VisaSection({ items, settings = {} }) {
                     onClick={() => setSelectedVisa(visa)}
                     className="bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-bold text-xs transition-colors"
                   >
-                    {isRTL ? 'المتطلبات' : 'Requirements'}
+                    {copy('requirements_label', 'Requirements', 'المتطلبات')}
                   </button>
 
                   <button
@@ -259,7 +257,7 @@ export default function VisaSection({ items, settings = {} }) {
                     className="bg-[#002B5B] hover:bg-[#FF7A00] text-white py-2.5 rounded-xl font-bold text-xs transition-colors shadow-sm flex items-center justify-center gap-1"
                   >
                     <MessageSquare size={13} />
-                    <span>{isRTL ? 'قدم الآن' : 'Apply'}</span>
+                    <span>{copy('apply_label', 'Apply', 'قدم الآن')}</span>
                   </button>
                 </div>
               </div>
@@ -282,7 +280,7 @@ export default function VisaSection({ items, settings = {} }) {
               <div className="flex items-center gap-3 mb-4">
                 <img src={selectedVisa.flagImg || selectedVisa.flag} alt="" className="w-8 h-6 object-cover rounded border" />
                 <h3 className="text-xl font-black text-[#002B5B]">
-                  {getContent(selectedVisa, 'country')} - {isRTL ? 'متطلبات التقديم' : 'Checklist'}
+                  {getContent(selectedVisa, 'country')} - {copy('checklist_label', 'Checklist', 'متطلبات التقديم')}
                 </h3>
               </div>
 
@@ -300,7 +298,7 @@ export default function VisaSection({ items, settings = {} }) {
                 className="w-full bg-[#FF7A00] hover:bg-orange-600 text-white py-3 rounded-xl font-bold text-xs uppercase shadow-md flex items-center justify-center gap-2"
               >
                 <MessageSquare size={16} />
-                <span>{isRTL ? 'تواصل مع مسؤول التأشيرات' : 'Inquire via WhatsApp'}</span>
+                <span>{copy('inquiry_label', 'Inquire via WhatsApp', 'تواصل مع مسؤول التأشيرات')}</span>
               </button>
             </motion.div>
           </div>

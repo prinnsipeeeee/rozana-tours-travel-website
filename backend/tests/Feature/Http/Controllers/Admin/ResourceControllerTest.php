@@ -59,43 +59,6 @@ class ResourceControllerTest extends TestCase
         $this->assertDatabaseMissing('visas', ['slug' => 'invalid']);
     }
 
-    public function test_valid_payload_creates_a_visible_service(): void
-    {
-        $admin = User::factory()->create();
-
-        $this->actingAs($admin)->post('/admin/services', [
-            'slug' => 'insurance',
-            'title_en' => 'Travel Insurance',
-            'title_ar' => 'تأمين السفر',
-            'subtitle_en' => 'Worldwide travel protection',
-            'subtitle_ar' => 'حماية سفر عالمية',
-            'href' => '#insurance',
-            'icon' => 'visa',
-            'active' => '1',
-            'sort_order' => '4',
-        ])->assertRedirect('/admin/services');
-
-        $this->assertDatabaseHas('services', [
-            'slug' => 'insurance',
-            'title_en' => 'Travel Insurance',
-            'active' => true,
-            'sort_order' => 4,
-        ]);
-    }
-
-    public function test_invalid_service_payload_returns_validation_errors_without_creating_a_service(): void
-    {
-        $admin = User::factory()->create();
-
-        $this->actingAs($admin)->post('/admin/services', [
-            'slug' => 'insurance',
-            'href' => 'https://example.com',
-            'icon' => 'unknown',
-        ])->assertInvalid(['title_en', 'title_ar', 'subtitle_en', 'subtitle_ar', 'href', 'icon']);
-
-        $this->assertDatabaseMissing('services', ['slug' => 'insurance']);
-    }
-
     public function test_umrah_management_is_not_available_in_admin(): void
     {
         $admin = User::factory()->create();

@@ -15,6 +15,7 @@ import FlightBookingSection from './components/FlightBookingSection';
 
 export default function App() {
   const [content, setContent] = useState(null);
+  const serviceBySlug = (slug) => content?.services?.find((service) => service.slug === slug);
 
   useEffect(() => {
     const apiBase = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
@@ -33,6 +34,7 @@ export default function App() {
           id: visa.slug,
           flagImg: visa.flag_url,
           processingTime: visa.processing_time,
+          processingTime_ar: visa.processing_time_ar,
         })),
         tourPackages: (data.tourPackages || []).map((pkg) => ({
           ...pkg,
@@ -64,10 +66,10 @@ export default function App() {
 
         <main>
           <Hero settings={content?.settings} />
-          <VisaSection items={content?.visas} settings={content?.settings} />
-          <EmbassySection />
-          <TranslationSection settings={content?.settings} />
-          <LicenseSection />
+          {(content === null || serviceBySlug('visa')) && <VisaSection items={content?.visas} settings={content?.settings} service={serviceBySlug('visa')} />}
+          {(content === null || serviceBySlug('embassy')) && <EmbassySection settings={content?.settings} service={serviceBySlug('embassy')} />}
+          {(content === null || serviceBySlug('translation')) && <TranslationSection settings={content?.settings} service={serviceBySlug('translation')} />}
+          {(content === null || serviceBySlug('license')) && <LicenseSection settings={content?.settings} service={serviceBySlug('license')} />}
           <FlightBookingSection />
           <PackagesSection items={content?.tourPackages} categories={content?.tourPackageCategories} settings={content?.settings} />
           <AboutSection settings={content?.settings} />
