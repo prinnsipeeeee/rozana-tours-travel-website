@@ -199,8 +199,6 @@ export default function PackagesSection({ items, categories: categoryItems, sett
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [activeModalPackage, setActiveModalPackage] = useState(null);
 
-    // Backend-ready: use API items if provided, else use default static data
-    // Items from API should have title_ar/title_en, location_ar/location_en, etc.
     const packages = Array.isArray(items) && items.length > 0 ? items : packageData;
     const filteredPackages = selectedCategory === 'all' ? packages : packages.filter(p => p.category === selectedCategory);
 

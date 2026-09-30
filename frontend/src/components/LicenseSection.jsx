@@ -95,18 +95,43 @@ const defaultLicensePlans = [
 
 export default function LicenseSection({ settings = {}, service }) {
   const { isRTL, getContent } = useLanguage();
-  const whatsappNumber = settings.whatsapp_number || '966552993899';
+
+  const rawWhatsappNumber =
+    settings.whatsapp_number || '966552993899';
+
+  const whatsappNumber = String(rawWhatsappNumber)
+    .replace(/\D/g, '')
+    .replace(/^00/, '');
+
   const content = service?.content || {};
-  const copy = (key, english, arabic) => content[`${key}_${isRTL ? 'ar' : 'en'}`] || (isRTL ? arabic : english);
+
+  const copy = (
+    key,
+    english,
+    arabic
+  ) =>
+    content[`${key}_${isRTL ? 'ar' : 'en'}`] ||
+    (isRTL ? arabic : english);
+
   const plans = content.plans || defaultLicensePlans;
-  const planCopy = (plan, key, fallbackKey = key) => plan[`${key}_${isRTL ? 'ar' : 'en'}`] || getContent(plan, fallbackKey);
+
+  const planCopy = (
+    plan,
+    key,
+    fallbackKey = key
+  ) =>
+    plan[`${key}_${isRTL ? 'ar' : 'en'}`] ||
+    getContent(plan, fallbackKey);
 
   const handleApply = (planTitle, price) => {
-    const text = isRTL 
+    const text = isRTL
       ? `السلام عليكم روزانة للسياحة، أرغب في استخراج "${planTitle}" بقيمة (${price}). الرجاء إفادتي بالمتطلبات.`
       : `Hello Rozana Tours! I want to apply for the "${planTitle}" (${price}). Please assist me with issuance.`;
+
     const encoded = encodeURIComponent(text);
-    window.location.href = `https://wa.me/${whatsappNumber}?text=${encoded}`;
+
+    window.location.href =
+      `https://wa.me/${whatsappNumber}?text=${encoded}`;
   };
 
   return (
@@ -151,7 +176,7 @@ export default function LicenseSection({ settings = {}, service }) {
 
               <div>
                 <div className="space-y-1 mb-4">
-                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#0084D6] block">
+                  <span className="text-[11px] mt-2 font-extrabold uppercase tracking-wider text-[#0084D6] block">
                     {planCopy(plan, 'recommended', 'recommendedFor')}
                   </span>
                   <h3 className="text-2xl font-black text-[#002B5B]">

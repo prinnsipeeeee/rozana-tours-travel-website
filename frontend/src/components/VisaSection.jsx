@@ -127,24 +127,45 @@ const defaultVisaData = [
 
 export default function VisaSection({ items, settings = {}, service }) {
   const { isRTL, getContent } = useLanguage();
-  const whatsappNumber = settings.whatsapp_number || '966552993899';
+
+  const rawWhatsappNumber = settings.whatsapp_number || '966552993899';
+
+  const whatsappNumber = String(rawWhatsappNumber)
+    .replace(/\D/g, '')
+    .replace(/^00/, '');
+
   const content = service?.content || {};
-  const copy = (key, english, arabic) => content[`${key}_${isRTL ? 'ar' : 'en'}`] || (isRTL ? arabic : english);
+
+  const copy = (
+    key,
+    english,
+    arabic
+  ) =>
+    content[`${key}_${isRTL ? 'ar' : 'en'}`] ||
+    (isRTL ? arabic : english);
+
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedVisa, setSelectedVisa] = useState(null);
 
-  const displayData = items && items.length > 0 ? items : defaultVisaData;
+  const displayData =
+    items && items.length > 0 ? items : defaultVisaData;
 
-  const filteredVisas = selectedCategory === 'all'
-    ? displayData
-    : displayData.filter(v => v.category === selectedCategory);
+  const filteredVisas =
+    selectedCategory === 'all'
+      ? displayData
+      : displayData.filter(
+          v => v.category === selectedCategory
+        );
 
   const handleApplyWhatsApp = (countryName) => {
-    const text = isRTL 
+    const text = isRTL
       ? `السلام عليكم روزانة للسياحة، أرغب في التقديم على استخراج ${countryName}. الرجاء تزويدي بالتفاصيل والمواعيد المتاحة.`
       : `Hello Rozana Tours! I want to apply for the ${countryName} visa. Please provide me with requirements and details.`;
+
     const encoded = encodeURIComponent(text);
-    window.location.href = `https://wa.me/${whatsappNumber}?text=${encoded}`;
+
+    window.location.href =
+      `https://wa.me/${whatsappNumber}?text=${encoded}`;
   };
 
   return (
@@ -209,7 +230,7 @@ export default function VisaSection({ items, settings = {}, service }) {
                 <div className="flex items-center gap-3 mb-4">
                   <img src={visa.flagImg || visa.flag} alt="" className="w-8 h-6 object-cover rounded shadow-xs border border-slate-200" />
                   <div>
-                    <h3 className="font-extrabold text-[#002B5B] text-base group-hover:text-[#FF7A00] transition-colors">
+                    <h3 className="font-extrabold mt-2 text-[#002B5B] text-base group-hover:text-[#FF7A00] transition-colors">
                       {getContent(visa, 'country')}
                     </h3>
                     <span className="text-[11px] text-slate-400 font-medium">

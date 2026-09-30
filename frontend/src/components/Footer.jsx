@@ -164,28 +164,22 @@ export default function Footer({ settings = {} }) {
                 <span dir="ltr">{phoneSecondary}</span>
               </a>
 
-              <p className="text-slate-400 flex items-center gap-1.5 font-light">
+              <p className="text-slate-400 font-bold flex items-center gap-1.5">
                 <Mail size={13} />
                 <span>{email}</span>
               </p>
             </div>
 
-            <div className="pt-2">
-              <a 
-                href="/admin" 
-                className="inline-flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-amber-400 font-semibold transition-colors"
-              >
-                <Lock size={12} />
-                <span>{t('nav.admin_login')}</span>
-              </a>
-            </div>
           </div>
 
         </div>
 
         {/* BOTTOM COPYRIGHT */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>&copy; {new Date().getFullYear()} Rozana Tours & Travels (روزانة للسياحة والسفر). {t('footer.rights')}.</p>
+          <p>
+            &copy; {new Date().getFullYear()} Rozana Tours & Travels (روزانة للسياحة والسفر). {t('footer.rights')}. 
+            Developed by Smart Inbox Technology.
+          </p>
           <div className="flex items-center gap-2 text-slate-400">
             <span>Riyadh &bull; Kingdom of Saudi Arabia</span>
           </div>

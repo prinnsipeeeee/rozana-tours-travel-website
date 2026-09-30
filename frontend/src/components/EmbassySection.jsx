@@ -145,22 +145,44 @@ const defaultEmbassyServices = [
 
 export default function EmbassySection({ settings = {}, service }) {
   const { isRTL, getContent } = useLanguage();
-  const whatsappNumber = settings.whatsapp_number || '966552993899';
+
+  const rawWhatsappNumber =
+    settings.whatsapp_number || '966552993899';
+
+  const whatsappNumber = String(rawWhatsappNumber)
+    .replace(/\D/g, '')
+    .replace(/^00/, '');
+
   const content = service?.content || {};
-  const copy = (key, english, arabic) => content[`${key}_${isRTL ? 'ar' : 'en'}`] || (isRTL ? arabic : english);
+
+  const copy = (
+    key,
+    english,
+    arabic
+  ) =>
+    content[`${key}_${isRTL ? 'ar' : 'en'}`] ||
+    (isRTL ? arabic : english);
+
   const services = content.items || defaultEmbassyServices;
+
   const [activeCategory, setActiveCategory] = useState("all");
 
-  const filteredServices = activeCategory === "all" 
-    ? services 
-    : services.filter(s => s.category === activeCategory);
+  const filteredServices =
+    activeCategory === "all"
+      ? services
+      : services.filter(
+          s => s.category === activeCategory
+        );
 
   const handleApply = (serviceTitle) => {
-    const text = isRTL 
+    const text = isRTL
       ? `السلام عليكم روزانة للسياحة، أرغب في الاستفسار عن خدمة: "${serviceTitle}". الرجاء توضيح المتطلبات والرسوم.`
       : `Hello Rozana Tours! I need assistance with "${serviceTitle}". Please inform me about requirements and fees.`;
+
     const encoded = encodeURIComponent(text);
-    window.location.href = `https://wa.me/${whatsappNumber}?text=${encoded}`;
+
+    window.location.href =
+      `https://wa.me/${whatsappNumber}?text=${encoded}`;
   };
 
   return (
