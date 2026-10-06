@@ -8,6 +8,7 @@ use App\Models\TourPackage;
 use App\Models\TourPackageCategory;
 use App\Models\UmrahPackage;
 use App\Models\Visa;
+use App\Models\VisaCategory;
 use Illuminate\Database\Seeder;
 
 class ContentSeeder extends Seeder
@@ -64,6 +65,18 @@ class ContentSeeder extends Seeder
             TourPackageCategory::updateOrCreate(
                 ['slug' => $category[0]],
                 ['name_en' => $category[1], 'name_ar' => $category[2], 'active' => true, 'sort_order' => $order],
+            );
+        }
+
+        $visaCategories = [
+            ['europe', 'Europe & UK', 'أوروبا وبريطانيا'],
+            ['americas', 'USA & Canada', 'أمريكا وكندا'],
+            ['asia', 'Asia', 'آسيا وشرق آسيا'],
+        ];
+        foreach ($visaCategories as $order => $vcat) {
+            VisaCategory::updateOrCreate(
+                ['slug' => $vcat[0]],
+                ['name_en' => $vcat[1], 'name_ar' => $vcat[2], 'active' => true, 'sort_order' => $order],
             );
         }
 

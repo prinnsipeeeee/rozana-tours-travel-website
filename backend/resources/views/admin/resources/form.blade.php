@@ -20,7 +20,7 @@
                 <textarea id="{{ $name }}" name="{{ $name }}" @required($field['required'] ?? false)>{{ $value }}</textarea>
             @elseif($field['type'] === 'select')
                 <select id="{{ $name }}" name="{{ $name }}" @required($field['required'] ?? false)>@foreach($field['options'] as $optionValue => $optionLabel)<option value="{{ $optionValue }}" @selected($value === $optionValue)>{{ __($optionLabel) }}</option>@endforeach</select>
-                @if($resource === 'tour-packages' && $name === 'category')
+                @if(in_array($resource, ['tour-packages', 'visas'], true) && $name === 'category')
                     <div class="category-actions">
                         <button class="button secondary" id="category-add" type="button">{{ __('admin.resources.add_category') }}</button>
                         <button class="button secondary" id="category-edit" type="button">{{ __('admin.resources.edit_category') }}</button>
@@ -38,9 +38,9 @@
 <div class="form-actions"><a class="button secondary" href="{{ route('admin.resources.index', $resource) }}">{{ __('admin.common.cancel') }}</a><button class="button" type="submit">{{ $record ? __('admin.common.save_changes') : __('admin.common.create_item') }}</button></div>
 </form>
 
-@if($resource === 'tour-packages')
+@if(in_array($resource, ['tour-packages', 'visas'], true))
 <dialog id="category-add-dialog">
-    <form class="category-dialog-card category-ajax-form" method="post" action="{{ route('admin.categories.store') }}" data-mode="add">
+    <form class="category-dialog-card category-ajax-form" method="post" action="{{ $resource === 'visas' ? route('admin.visa-categories.store') : route('admin.categories.store') }}" data-mode="add">
         @csrf
         <div class="category-dialog-head"><h2>{{ __('admin.resources.add_category') }}</h2></div>
         <div class="category-dialog-body">
@@ -79,10 +79,10 @@
     const editDialog = document.getElementById('category-edit-dialog');
     const editButton = document.getElementById('category-edit');
     const deleteButton = document.getElementById('category-delete');
-    const categoryBaseUrl = @js(url('/admin/tour-package-categories'));
+    const categoryBaseUrl = @js(url($resource === 'visas' ? '/admin/visa-categories' : '/admin/tour-package-categories'));
     const csrfToken = @js(csrf_token());
     const isArabic = document.documentElement.lang === 'ar';
-    const categories = new Map(Object.entries(@js($config['category_records']->keyBy('slug'))));
+    const categories = new Map(Object.entries(@js(isset($config['category_records']) ? $config['category_records']->keyBy('slug') : [])));
 
     const setFeedback = (message, error = false) => {
         feedback.textContent = message;

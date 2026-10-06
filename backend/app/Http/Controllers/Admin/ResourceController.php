@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\SaveContentRequest;
 use App\Models\TourPackage;
 use App\Models\TourPackageCategory;
 use App\Models\Visa;
+use App\Models\VisaCategory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -27,7 +28,7 @@ class ResourceController extends Controller
                 'country' => ['label' => 'admin.fields.country', 'type' => 'text', 'required' => true],
                 'country_ar' => ['label' => 'admin.fields.country_ar', 'type' => 'text'],
                 'flag_url' => ['label' => 'admin.fields.flag_url', 'type' => 'url'],
-                'category' => ['label' => 'admin.fields.category', 'type' => 'select', 'required' => true, 'options' => ['europe' => 'admin.categories.europe_uk', 'americas' => 'admin.categories.north_america', 'asia' => 'admin.categories.asia_turkey']],
+                'category' => ['label' => 'admin.fields.category', 'type' => 'select', 'required' => true, 'options' => []],
                 'processing_time' => ['label' => 'admin.fields.processing_time', 'type' => 'text', 'required' => true],
                 'processing_time_ar' => ['label' => 'admin.fields.processing_time_ar', 'type' => 'text'],
                 'validity' => ['label' => 'admin.fields.validity', 'type' => 'text', 'required' => true],
@@ -75,11 +76,22 @@ class ResourceController extends Controller
                 'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
             ],
         ],
+        'visa-categories' => [
+            'label' => 'admin.resources.visa_categories', 'singular' => 'admin.resources.visa_category', 'model' => VisaCategory::class,
+            'title' => 'name_en', 'secondary' => 'slug',
+            'fields' => [
+                'slug' => ['label' => 'admin.fields.slug', 'type' => 'text', 'required' => true],
+                'name_en' => ['label' => 'admin.fields.name_en', 'type' => 'text', 'required' => true],
+                'name_ar' => ['label' => 'admin.fields.name_ar', 'type' => 'text', 'required' => true],
+                'active' => ['label' => 'admin.fields.active', 'type' => 'checkbox'],
+                'sort_order' => ['label' => 'admin.fields.sort_order', 'type' => 'number'],
+            ],
+        ],
     ];
 
     public function index(string $resource): View
     {
-        abort_if($resource === 'tour-package-categories', 404);
+        abort_if(in_array($resource, ['tour-package-categories', 'visa-categories'], true), 404);
         $config = $this->config($resource);
 
         return view('admin.resources.index', [
@@ -91,7 +103,7 @@ class ResourceController extends Controller
 
     public function create(string $resource): View
     {
-        abort_if($resource === 'tour-package-categories', 404);
+        abort_if(in_array($resource, ['tour-package-categories', 'visa-categories'], true), 404);
 
         return view('admin.resources.form', [
             'resource' => $resource, 'config' => $this->config($resource), 'record' => null,
@@ -103,11 +115,11 @@ class ResourceController extends Controller
         $config = $this->config($resource);
         $model = $config['model']::create($this->validatedData($request, $config));
 
-        if ($model instanceof TourPackageCategory && $request->expectsJson()) {
+        if (($model instanceof TourPackageCategory || $model instanceof VisaCategory) && $request->expectsJson()) {
             return response()->json(['category' => $model], 201);
         }
 
-        if ($model instanceof TourPackageCategory) {
+        if ($model instanceof TourPackageCategory || $model instanceof VisaCategory) {
             return back()->with('status', __('admin.flash.created', ['resource' => __($config['singular'])]));
         }
 
@@ -121,7 +133,7 @@ class ResourceController extends Controller
 
     public function edit(string $resource, int $record): View
     {
-        abort_if($resource === 'tour-package-categories', 404);
+        abort_if(in_array($resource, ['tour-package-categories', 'visa-categories'], true), 404);
         $config = $this->config($resource);
 
         return view('admin.resources.form', [
@@ -140,15 +152,20 @@ class ResourceController extends Controller
                 TourPackage::query()->where('category', $model->slug)->update(['category' => $data['slug']]);
                 $model->update($data);
             });
+        } elseif ($model instanceof VisaCategory && $model->slug !== $data['slug']) {
+            DB::transaction(function () use ($model, $data) {
+                Visa::query()->where('category', $model->slug)->update(['category' => $data['slug']]);
+                $model->update($data);
+            });
         } else {
             $model->update($data);
         }
 
-        if ($model instanceof TourPackageCategory && $request->expectsJson()) {
+        if (($model instanceof TourPackageCategory || $model instanceof VisaCategory) && $request->expectsJson()) {
             return response()->json(['category' => $model->fresh()]);
         }
 
-        if ($model instanceof TourPackageCategory) {
+        if ($model instanceof TourPackageCategory || $model instanceof VisaCategory) {
             return back()->with('status', __('admin.flash.updated', ['resource' => __($config['singular'])]));
         }
 
@@ -171,10 +188,17 @@ class ResourceController extends Controller
 
             return back()->withErrors(__('admin.resources.category_in_use'));
         }
+        if ($model instanceof VisaCategory && $model->visas()->exists()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => __('admin.resources.category_in_use')], 422);
+            }
+
+            return back()->withErrors(__('admin.resources.category_in_use'));
+        }
         $this->deleteUploadedImage($model);
         $model->delete();
 
-        if ($model instanceof TourPackageCategory && $request->expectsJson()) {
+        if (($model instanceof TourPackageCategory || $model instanceof VisaCategory) && $request->expectsJson()) {
             return response()->noContent();
         }
 
@@ -196,6 +220,12 @@ class ResourceController extends Controller
             $config['fields']['category']['options'] = TourPackageCategory::query()
                 ->orderBy('sort_order')->orderBy($labelColumn)->pluck($labelColumn, 'slug')->all();
             $config['category_records'] = TourPackageCategory::query()
+                ->orderBy('sort_order')->orderBy($labelColumn)->get();
+        } elseif ($resource === 'visas') {
+            $labelColumn = app()->getLocale() === 'ar' ? 'name_ar' : 'name_en';
+            $config['fields']['category']['options'] = VisaCategory::query()
+                ->orderBy('sort_order')->orderBy($labelColumn)->pluck($labelColumn, 'slug')->all();
+            $config['category_records'] = VisaCategory::query()
                 ->orderBy('sort_order')->orderBy($labelColumn)->get();
         }
 

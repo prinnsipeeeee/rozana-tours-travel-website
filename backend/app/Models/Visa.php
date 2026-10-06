@@ -18,4 +18,9 @@ class Visa extends Model
     {
         return ['requirements' => 'array', 'requirements_ar' => 'array', 'popular' => 'boolean', 'active' => 'boolean'];
     }
+
+    public function visaCategory()
+    {
+        return $this->belongsTo(VisaCategory::class, 'category', 'slug');
+    }
 }

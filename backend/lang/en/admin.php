@@ -69,6 +69,8 @@ return [
         'service' => 'Service',
         'visas' => 'Visas',
         'visa' => 'Visa',
+        'visa_categories' => 'Visa categories',
+        'visa_category' => 'Visa category',
         'tour_packages' => 'Tour packages',
         'tour_package' => 'Tour package',
         'tour_package_categories' => 'Package categories',

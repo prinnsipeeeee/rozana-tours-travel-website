@@ -26,10 +26,11 @@ class SaveContentRequest extends FormRequest
             'visas' => 'visas',
             'tour-packages' => 'tour_packages',
             'tour-package-categories' => 'tour_package_categories',
+            'visa-categories' => 'visa_categories',
             default => abort(404),
         };
 
-        if ($resource === 'tour-package-categories') {
+        if (in_array($resource, ['tour-package-categories', 'visa-categories'], true)) {
             return [
                 'slug' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique($table, 'slug')->ignore($record)],
                 'name_en' => ['required', 'string', 'max:255'],
@@ -57,7 +58,7 @@ class SaveContentRequest extends FormRequest
                 'country' => ['required', 'string', 'max:255'],
                 'country_ar' => ['nullable', 'string', 'max:255'],
                 'flag_url' => ['nullable', 'url', 'max:2000'],
-                'category' => ['required', Rule::in(['europe', 'americas', 'asia'])],
+                'category' => ['required', Rule::exists('visa_categories', 'slug')],
                 'processing_time' => ['required', 'string', 'max:255'],
                 'processing_time_ar' => ['nullable', 'string', 'max:255'],
                 'validity' => ['required', 'string', 'max:255'],

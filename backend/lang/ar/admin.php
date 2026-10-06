@@ -69,6 +69,8 @@ return [
         'service' => 'خدمة',
         'visas' => 'التأشيرات',
         'visa' => 'تأشيرة',
+        'visa_categories' => 'تصنيفات التأشيرات',
+        'visa_category' => 'تصنيف تأشيرة',
         'tour_packages' => 'الباقات السياحية',
         'tour_package' => 'باقة سياحية',
         'tour_package_categories' => 'تصنيفات الباقات',
