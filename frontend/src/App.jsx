@@ -36,6 +36,7 @@ export default function App() {
           processingTime: visa.processing_time,
           processingTime_ar: visa.processing_time_ar,
         })),
+        visaCategories: data.visaCategories || [],
         tourPackages: (data.tourPackages || []).map((pkg) => ({
           ...pkg,
           id: pkg.slug,
@@ -66,7 +67,7 @@ export default function App() {
 
         <main>
           <Hero settings={content?.settings} />
-          {(content === null || serviceBySlug('visa')) && <VisaSection items={content?.visas} settings={content?.settings} service={serviceBySlug('visa')} />}
+          {(content === null || serviceBySlug('visa')) && <VisaSection items={content?.visas} categories={content?.visaCategories} settings={content?.settings} service={serviceBySlug('visa')} />}
           {(content === null || serviceBySlug('embassy')) && <EmbassySection settings={content?.settings} service={serviceBySlug('embassy')} />}
           {(content === null || serviceBySlug('translation')) && <TranslationSection settings={content?.settings} service={serviceBySlug('translation')} />}
           {(content === null || serviceBySlug('license')) && <LicenseSection settings={content?.settings} service={serviceBySlug('license')} />}

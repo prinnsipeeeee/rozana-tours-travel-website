@@ -125,7 +125,7 @@ const defaultVisaData = [
   }
 ];
 
-export default function VisaSection({ items, settings = {}, service }) {
+export default function VisaSection({ items, settings = {}, service, categories = [] }) {
   const { isRTL, getContent } = useLanguage();
 
   const rawWhatsappNumber = settings.whatsapp_number || '966552993899';
@@ -191,12 +191,21 @@ export default function VisaSection({ items, settings = {}, service }) {
 
         {/* CATEGORY TABS */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {(content.tabs || [
-            { id: 'all', label: isRTL ? 'جميع التأشيرات' : 'All Destinations' },
-            { id: 'europe', label: isRTL ? '🇪🇺 أوروبا وبريطانيا' : '🇪🇺 Europe & UK' },
-            { id: 'americas', label: isRTL ? '🇺🇸 أمريكا وكندا' : '🇺🇸 USA & Canada' },
-            { id: 'asia', label: isRTL ? '🇯🇵 آسيا وشرق آسيا' : '🇯🇵 Asia' },
-          ]).map((tab) => (
+          {(categories && categories.length > 0
+            ? [
+                { id: 'all', label: isRTL ? 'جميع التأشيرات' : 'All Destinations' },
+                ...categories.map((c) => ({
+                  id: c.slug,
+                  label: isRTL ? (c.name_ar || c.name_en) : (c.name_en || c.name_ar),
+                })),
+              ]
+            : (content.tabs || [
+                { id: 'all', label: isRTL ? 'جميع التأشيرات' : 'All Destinations' },
+                { id: 'europe', label: isRTL ? '🇪🇺 أوروبا وبريطانيا' : '🇪🇺 Europe & UK' },
+                { id: 'americas', label: isRTL ? '🇺🇸 أمريكا وكندا' : '🇺🇸 USA & Canada' },
+                { id: 'asia', label: isRTL ? '🇯🇵 آسيا وشرق آسيا' : '🇯🇵 Asia' },
+              ])
+          ).map((tab) => (
             <button
               key={tab.id}
               onClick={() => setSelectedCategory(tab.id)}
@@ -217,16 +226,16 @@ export default function VisaSection({ items, settings = {}, service }) {
             <motion.div
               key={visa.id}
               whileHover={{ y: -6 }}
-              className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-sm hover:shadow-xl transition-all text-start flex flex-col justify-between group relative overflow-hidden"
+              className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm hover:shadow-xl transition-all text-start flex flex-col justify-between group relative overflow-hidden"
             >
               {visa.popular && (
-                <div className="absolute top-3.5 right-4 bg-linear-to-r from-[#FF7A00] to-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1">
+                <div className={`absolute top-3.5 ${isRTL ? 'left-4' : 'right-4'} bg-linear-to-r from-[#FF7A00] to-amber-500 text-white text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1`}>
                   <Sparkles size={10} />
                   <span>{copy('popular_label', 'Popular', 'الأكثر طلباً')}</span>
                 </div>
               )}
 
-              <div>
+              <div className="flex flex-col flex-1">
                 <div className="flex items-center gap-3 mb-4">
                   <img src={visa.flagImg || visa.flag} alt="" className="w-8 h-6 object-cover rounded shadow-xs border border-slate-200" />
                   <div>
@@ -239,11 +248,14 @@ export default function VisaSection({ items, settings = {}, service }) {
                   </div>
                 </div>
 
-                <p className="text-xs text-slate-500 mb-5 leading-relaxed line-clamp-2">
-                  {getContent(visa, 'description')}
-                </p>
+                {/* SPACIOUS DESCRIPTION (NO CLAMP, BREATHABLE SPACING & LEGIBLE TEXT) */}
+                <div className="py-2.5 mb-5 min-h-22 flex items-start">
+                  <p className="text-sm text-slate-600 leading-relaxed font-normal">
+                    {getContent(visa, 'description')}
+                  </p>
+                </div>
 
-                <div className="space-y-2 py-3 border-y border-slate-100 mb-6 text-xs text-slate-600">
+                <div className="space-y-2.5 py-3.5 border-y border-slate-100 mb-6 text-xs text-slate-600 mt-auto">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-400 flex items-center gap-1">
                       <Clock size={13} className="text-[#0084D6]" /> {copy('turnaround_label', 'Turnaround:', 'مدة الإنجاز:')}
