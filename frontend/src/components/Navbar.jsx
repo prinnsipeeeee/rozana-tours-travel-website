@@ -14,6 +14,7 @@ import {
   Building2,
   CreditCard,
   ChevronDown,
+  LayoutGrid,
 } from "lucide-react";
 
 import logoImg from "../assets/logo-1.png";
@@ -77,16 +78,40 @@ const serviceIcons = {
   },
 };
 
-export default function Navbar({ services }) {
+// Fallback categories shown while the content API has not loaded yet.
+const defaultVisaCategories = [
+  { slug: "europe", name_en: "Europe & UK", name_ar: "أوروبا وبريطانيا" },
+  { slug: "americas", name_en: "USA & Canada", name_ar: "أمريكا وكندا" },
+  { slug: "asia", name_en: "Asia", name_ar: "آسيا وشرق آسيا" },
+];
+
+export default function Navbar({ services, visaCategories, sections }) {
   const { lang, toggleLanguage, t, isRTL } = useLanguage();
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [visasDropdownOpen, setVisasDropdownOpen] = useState(false);
+  const [openSectionMenu, setOpenSectionMenu] = useState(null);
 
   const displayedServices = Array.isArray(services)
     ? services
     : defaultServices;
+
+  const displayedVisaCategories =
+    Array.isArray(visaCategories) && visaCategories.length > 0
+      ? visaCategories
+      : defaultVisaCategories;
+
+  // Admin-managed dynamic sections; only sections with items get a menu.
+  const navSections = (Array.isArray(sections) ? sections : []).filter(
+    (section) => (section.items || []).length > 0
+  );
+
+  const sectionLabel = (section) =>
+    isRTL
+      ? section.name_ar || section.name_en
+      : section.name_en || section.name_ar;
 
   // Detect page scroll
   useEffect(() => {
@@ -107,6 +132,8 @@ export default function Navbar({ services }) {
       if (window.innerWidth >= 1024) {
         setMobileMenuOpen(false);
         setServicesDropdownOpen(false);
+        setVisasDropdownOpen(false);
+        setOpenSectionMenu(null);
       }
     };
 
@@ -121,6 +148,8 @@ export default function Navbar({ services }) {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setServicesDropdownOpen(false);
+    setVisasDropdownOpen(false);
+    setOpenSectionMenu(null);
   };
 
   return (
@@ -329,6 +358,165 @@ export default function Navbar({ services }) {
               )}
             </div>
 
+            {/* VISAS DROPDOWN (driven by admin-managed visa categories) */}
+            <div
+              className="relative"
+              onMouseEnter={() =>
+                setVisasDropdownOpen(true)
+              }
+              onMouseLeave={() =>
+                setVisasDropdownOpen(false)
+              }
+            >
+              <button
+                className="px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-[#002B5B] transition-all hover:-translate-y-0.5 flex items-center gap-1.5"
+              >
+                <FileCheck
+                  size={15}
+                  className="text-[#003B7A]"
+                />
+
+                <span>{t("nav.visas")}</span>
+
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-300 ${
+                    visasDropdownOpen
+                      ? "rotate-180 text-[#FF7A00]"
+                      : "text-slate-400"
+                  }`}
+                />
+              </button>
+
+              {visasDropdownOpen && (
+                <div
+                  className={`absolute top-full ${
+                    isRTL
+                      ? "right-0"
+                      : "left-0"
+                  } w-60 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 px-2 z-50 text-start`}
+                >
+                  <a
+                    href="#visa"
+                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                  >
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-slate-100 text-slate-500">
+                      <Globe size={16} />
+                    </div>
+
+                    <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">
+                      {isRTL
+                        ? "جميع التأشيرات"
+                        : "All Destinations"}
+                    </p>
+                  </a>
+
+                  {displayedVisaCategories.map(
+                    (category) => (
+                      <a
+                        key={category.slug}
+                        href={`#visa/${category.slug}`}
+                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                      >
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-blue-50 text-[#003B7A]">
+                          <FileCheck size={16} />
+                        </div>
+
+                        <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">
+                          {isRTL
+                            ? category.name_ar ||
+                              category.name_en
+                            : category.name_en ||
+                              category.name_ar}
+                        </p>
+                      </a>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* DYNAMIC SECTION DROPDOWNS (admin-managed) */}
+            {navSections.map((section) => (
+              <div
+                key={section.slug}
+                className="relative"
+                onMouseEnter={() =>
+                  setOpenSectionMenu(section.slug)
+                }
+                onMouseLeave={() =>
+                  setOpenSectionMenu(null)
+                }
+              >
+                <button
+                  className="px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-[#002B5B] transition-all hover:-translate-y-0.5 flex items-center gap-1.5"
+                >
+                  <LayoutGrid
+                    size={15}
+                    className="text-[#0084D6]"
+                  />
+
+                  <span>{sectionLabel(section)}</span>
+
+                  <ChevronDown
+                    size={14}
+                    className={`transition-transform duration-300 ${
+                      openSectionMenu === section.slug
+                        ? "rotate-180 text-[#FF7A00]"
+                        : "text-slate-400"
+                    }`}
+                  />
+                </button>
+
+                {openSectionMenu === section.slug && (
+                  <div
+                    className={`absolute top-full ${
+                      isRTL
+                        ? "right-0"
+                        : "left-0"
+                    } w-60 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 px-2 z-50 text-start`}
+                  >
+                    <a
+                      href={`#${section.slug}`}
+                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                    >
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-slate-100 text-slate-500">
+                        <Globe size={16} />
+                      </div>
+
+                      <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">
+                        {isRTL
+                          ? `كل ${sectionLabel(section)}`
+                          : `All ${sectionLabel(section)}`}
+                      </p>
+                    </a>
+
+                    {(section.categories || []).map(
+                      (category) => (
+                        <a
+                          key={category.slug}
+                          href={`#${section.slug}/${category.slug}`}
+                          className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
+                        >
+                          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-blue-50 text-[#003B7A]">
+                            <LayoutGrid size={16} />
+                          </div>
+
+                          <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">
+                            {isRTL
+                              ? category.name_ar ||
+                                category.name_en
+                              : category.name_en ||
+                                category.name_ar}
+                          </p>
+                        </a>
+                      )
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+
             {/* FLIGHTS */}
             <a
               href="#flights"
@@ -523,6 +711,166 @@ export default function Navbar({ services }) {
                   </div>
                 )}
               </div>
+
+              {/* VISAS (driven by admin-managed visa categories) */}
+              <div className="mt-1">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setVisasDropdownOpen(
+                      !visasDropdownOpen
+                    )
+                  }
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <FileCheck
+                      size={17}
+                      className="text-[#003B7A]"
+                    />
+
+                    <span>
+                      {t("nav.visas")}
+                    </span>
+                  </span>
+
+                  <ChevronDown
+                    size={17}
+                    className={`transition-transform duration-300 ${
+                      visasDropdownOpen
+                        ? "rotate-180 text-[#FF7A00]"
+                        : "text-slate-400"
+                    }`}
+                  />
+                </button>
+
+                {visasDropdownOpen && (
+                  <div className="mt-1 mx-2 space-y-1">
+                    <a
+                      href="#visa"
+                      onClick={closeMobileMenu}
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors"
+                    >
+                      <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-slate-100 text-slate-500">
+                        <Globe size={17} />
+                      </div>
+
+                      <p className="text-sm font-bold text-[#002B5B]">
+                        {isRTL
+                          ? "جميع التأشيرات"
+                          : "All Destinations"}
+                      </p>
+                    </a>
+
+                    {displayedVisaCategories.map(
+                      (category) => (
+                        <a
+                          key={category.slug}
+                          href={`#visa/${category.slug}`}
+                          onClick={
+                            closeMobileMenu
+                          }
+                          className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors"
+                        >
+                          <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-blue-50 text-[#003B7A]">
+                            <FileCheck size={17} />
+                          </div>
+
+                          <p className="text-sm font-bold text-[#002B5B]">
+                            {isRTL
+                              ? category.name_ar ||
+                                category.name_en
+                              : category.name_en ||
+                                category.name_ar}
+                          </p>
+                        </a>
+                      )
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* DYNAMIC SECTIONS (admin-managed) */}
+              {navSections.map((section) => (
+                <div className="mt-1" key={section.slug}>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenSectionMenu(
+                        openSectionMenu === section.slug
+                          ? null
+                          : section.slug
+                      )
+                    }
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                  >
+                    <span className="flex items-center gap-2">
+                      <LayoutGrid
+                        size={17}
+                        className="text-[#0084D6]"
+                      />
+
+                      <span>
+                        {sectionLabel(section)}
+                      </span>
+                    </span>
+
+                    <ChevronDown
+                      size={17}
+                      className={`transition-transform duration-300 ${
+                        openSectionMenu === section.slug
+                          ? "rotate-180 text-[#FF7A00]"
+                          : "text-slate-400"
+                      }`}
+                    />
+                  </button>
+
+                  {openSectionMenu === section.slug && (
+                    <div className="mt-1 mx-2 space-y-1">
+                      <a
+                        href={`#${section.slug}`}
+                        onClick={closeMobileMenu}
+                        className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors"
+                      >
+                        <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-slate-100 text-slate-500">
+                          <Globe size={17} />
+                        </div>
+
+                        <p className="text-sm font-bold text-[#002B5B]">
+                          {isRTL
+                            ? `كل ${sectionLabel(section)}`
+                            : `All ${sectionLabel(section)}`}
+                        </p>
+                      </a>
+
+                      {(section.categories || []).map(
+                        (category) => (
+                          <a
+                            key={category.slug}
+                            href={`#${section.slug}/${category.slug}`}
+                            onClick={
+                              closeMobileMenu
+                            }
+                            className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors"
+                          >
+                            <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-blue-50 text-[#003B7A]">
+                              <LayoutGrid size={17} />
+                            </div>
+
+                            <p className="text-sm font-bold text-[#002B5B]">
+                              {isRTL
+                                ? category.name_ar ||
+                                  category.name_en
+                                : category.name_en ||
+                                  category.name_ar}
+                            </p>
+                          </a>
+                        )
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
 
               {/* FLIGHTS */}
               <a

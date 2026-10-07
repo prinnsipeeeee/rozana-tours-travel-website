@@ -12,6 +12,7 @@ import TranslationSection from './components/TranslationSection';
 import EmbassySection from './components/EmbassySection';
 import LicenseSection from './components/LicenseSection';
 import FlightBookingSection from './components/FlightBookingSection';
+import DynamicSection from './components/DynamicSection';
 
 export default function App() {
   const [content, setContent] = useState(null);
@@ -44,6 +45,7 @@ export default function App() {
           image: pkg.image_url,
         })),
         tourPackageCategories: data.tourPackageCategories || [],
+        sections: data.sections || [],
         umrahPackages: (data.umrahPackages || []).map((pkg) => ({
           ...pkg,
           id: pkg.slug,
@@ -63,7 +65,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 font-sans selection:bg-[#FF7A00] selection:text-white transition-all">
       
       {/* 1. Navbar */}
-      <Navbar settings={content?.settings} services={content?.services} />
+      <Navbar settings={content?.settings} services={content?.services} visaCategories={content?.visaCategories} sections={content?.sections} />
 
         <main>
           <Hero settings={content?.settings} />
@@ -73,6 +75,9 @@ export default function App() {
           {(content === null || serviceBySlug('license')) && <LicenseSection settings={content?.settings} service={serviceBySlug('license')} />}
           <FlightBookingSection />
           <PackagesSection items={content?.tourPackages} categories={content?.tourPackageCategories} settings={content?.settings} />
+          {(content?.sections || []).map((section) => (
+            <DynamicSection key={section.slug} section={section} settings={content?.settings} />
+          ))}
           <AboutSection settings={content?.settings} />
           <Contact settings={content?.settings} />
         </main>

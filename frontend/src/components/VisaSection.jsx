@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
+import { useHashCategory } from "../hooks/useHashCategory";
 
 // DEFAULT DATA SET
 const defaultVisaData = [
@@ -144,7 +145,7 @@ export default function VisaSection({ items, settings = {}, service, categories 
     content[`${key}_${isRTL ? 'ar' : 'en'}`] ||
     (isRTL ? arabic : english);
 
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useHashCategory('visa');
   const [selectedVisa, setSelectedVisa] = useState(null);
 
   const displayData =

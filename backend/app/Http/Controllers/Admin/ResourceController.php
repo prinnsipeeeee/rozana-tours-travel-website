@@ -190,10 +190,10 @@ class ResourceController extends Controller
         }
         if ($model instanceof VisaCategory && $model->visas()->exists()) {
             if ($request->expectsJson()) {
-                return response()->json(['message' => __('admin.resources.category_in_use')], 422);
+                return response()->json(['message' => __('admin.resources.category_in_use_visas')], 422);
             }
 
-            return back()->withErrors(__('admin.resources.category_in_use'));
+            return back()->withErrors(__('admin.resources.category_in_use_visas'));
         }
         $this->deleteUploadedImage($model);
         $model->delete();

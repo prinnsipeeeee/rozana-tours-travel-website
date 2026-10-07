@@ -4,6 +4,7 @@ export const translations = {
   nav: {
     home: { en: "Home", ar: "الرئيسية" },
     services: { en: "Services", ar: "خدماتنا" },
+    visas: { en: "Visas", ar: "التأشيرات" },
     visa: { en: "Visa Services", ar: "خدمات التأشيرات" },
     translation: { en: "Certified Translation", ar: "الترجمة المعتمدة" },
     embassy: { en: "Embassy Services", ar: "خدمات السفارات" },
