@@ -30,7 +30,7 @@ The platform is designed with a high-converting architecture, dynamic localizati
 - **Mobile Navigation Drawer**: Responsive slide-down overlay menu optimized for all mobile viewports.
 
 ### 2. Interactive Hero & Finder Console (`src/components/Hero.jsx`)
-- **Value Proposition Grid**: Asymmetric layout highlighting certified licensure and 99.6% visa approval statistics.
+- **Value Proposition Grid**: Asymmetric layout highlighting certified licensure and a high chance of visa approval.
 - **Quick Travel Finder Console**: Interactive multi-tab widget facilitating instant inquiries for *Visas*, *Tour Packages*, and *Flights & Hotels*.
 - **Interactive Badges & Metrics**: Floating 4.9/5.0 customer rating badge with continuous spring physics, paired with a live trust metrics counter (15,000+ Visas issued across 120+ destinations).
 
@@ -53,7 +53,7 @@ The platform is designed with a high-converting architecture, dynamic localizati
 ### 6. About Us & Heritage (`src/components/AboutSection.jsx`)
 - **Brand Legacy & Story**: Highlights the agency's physical presence on *Umm Al Hamam Street, Riyadh*.
 - **Consultant Spotlight**: Direct contact verification for Senior Travel Consultant *Ashraf Hussein*.
-- **Four Core Trust Pillars**: Licensed Excellence, 99.6% Visa Success, Personalized Care, and 24/7 Dedicated Support.
+- **Four Core Trust Pillars**: Licensed Excellence, High Chance of Visa Approval, Personalized Care, and 24/7 Dedicated Support.
 
 ### 7. Contact & Instant Consultation Funnel (`src/components/ContactSection.jsx`)
 - **Textured Modern Grid Background**: Subtle slate grid texture providing depth and contrast.

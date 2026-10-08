@@ -21,8 +21,8 @@ export default function AboutSection({ settings = {} }) {
         },
         {
             icon: <ShieldCheck size={24} className="text-[#0084D6]" />,
-            title_en: '99.6% Visa Success',
-            title_ar: '99.6% نسبة نجاح التأشيرات',
+            title_en: 'High Chance of Visa Approval',
+            title_ar: 'فرصة كبيرة للحصول على التأشيرة',
             desc_en: 'Expert embassy relations, error-free documentations, and certified legal translation support.',
             desc_ar: 'علاقات متميزة مع السفارات، وثائق خالية من الأخطاء، ودعم ترجمة قانونية معتمدة.'
         },

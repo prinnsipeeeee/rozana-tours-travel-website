@@ -29,7 +29,7 @@ export const translations = {
       en: "Experience fast-track worldwide visa processing, bespoke holiday packages, official embassy legalizations, and exclusive flight bookings crafted for Saudi travelers.",
       ar: "نقدم لك أسرع إجراءات استخراج التأشيرات، وبكجات سياحية فاخرة، وتصديق المعاملات لدى السفارات، وحجوزات طيران حصرية للمسافرين من المملكة."
     },
-    stat_approval: { en: "99.6% Visa Approval", ar: "نسبة قبول التأشيرات 99.6%" },
+    stat_approval: { en: "High Chance of Visa Approval", ar: "فرصة كبيرة للحصول على التأشيرة" },
     stat_licensed: { en: "Licensed Saudi Operator", ar: "مكتب سياحي معتمد ومرخص" },
     stat_express: { en: "Express Turnaround", ar: "إنجاز فوري وسريع" },
     cta_consult: { en: "Instant Travel Consultation", ar: "استشارة سياحية فورية" },
