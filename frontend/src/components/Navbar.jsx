@@ -92,7 +92,6 @@ export default function Navbar({ services, visaCategories, sections }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [visasDropdownOpen, setVisasDropdownOpen] = useState(false);
-  const [openSectionMenu, setOpenSectionMenu] = useState(null);
 
   const displayedServices = Array.isArray(services)
     ? services
@@ -103,15 +102,15 @@ export default function Navbar({ services, visaCategories, sections }) {
       ? visaCategories
       : defaultVisaCategories;
 
-  // Admin-managed dynamic sections; only sections with items get a menu.
-  const navSections = (Array.isArray(sections) ? sections : []).filter(
-    (section) => (section.items || []).length > 0
-  );
-
-  const sectionLabel = (section) =>
-    isRTL
-      ? section.name_ar || section.name_en
-      : section.name_en || section.name_ar;
+  // Admin-managed dynamic sections: every category gets its own navbar
+  // item (sections without categories fall back to a single section item).
+  const navCategoryLinks = (Array.isArray(sections) ? sections : [])
+    .filter((section) => (section.items || []).length > 0)
+    .flatMap((section) =>
+      (section.categories || []).length > 0
+        ? section.categories.map((category) => ({ section, category }))
+        : [{ section, category: null }]
+    );
 
   // Detect page scroll
   useEffect(() => {
@@ -133,7 +132,6 @@ export default function Navbar({ services, visaCategories, sections }) {
         setMobileMenuOpen(false);
         setServicesDropdownOpen(false);
         setVisasDropdownOpen(false);
-        setOpenSectionMenu(null);
       }
     };
 
@@ -149,7 +147,6 @@ export default function Navbar({ services, visaCategories, sections }) {
     setMobileMenuOpen(false);
     setServicesDropdownOpen(false);
     setVisasDropdownOpen(false);
-    setOpenSectionMenu(null);
   };
 
   return (
@@ -436,85 +433,28 @@ export default function Navbar({ services, visaCategories, sections }) {
               )}
             </div>
 
-            {/* DYNAMIC SECTION DROPDOWNS (admin-managed) */}
-            {navSections.map((section) => (
-              <div
-                key={section.slug}
-                className="relative"
-                onMouseEnter={() =>
-                  setOpenSectionMenu(section.slug)
-                }
-                onMouseLeave={() =>
-                  setOpenSectionMenu(null)
-                }
+            {/* DYNAMIC SECTION CATEGORY LINKS (admin-managed, one navbar item per category) */}
+            {navCategoryLinks.map(({ section, category }) => (
+              <a
+                key={`${section.slug}/${category ? category.slug : "all"}`}
+                href={`#${section.slug}${category ? `/${category.slug}` : ""}`}
+                className="px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-[#002B5B] transition-all hover:-translate-y-0.5 flex items-center gap-1.5"
               >
-                <button
-                  className="px-3 py-1.5 rounded-full hover:bg-slate-100 hover:text-[#002B5B] transition-all hover:-translate-y-0.5 flex items-center gap-1.5"
-                >
-                  <LayoutGrid
-                    size={15}
-                    className="text-[#0084D6]"
-                  />
+                <LayoutGrid
+                  size={15}
+                  className="text-[#0084D6]"
+                />
 
-                  <span>{sectionLabel(section)}</span>
-
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform duration-300 ${
-                      openSectionMenu === section.slug
-                        ? "rotate-180 text-[#FF7A00]"
-                        : "text-slate-400"
-                    }`}
-                  />
-                </button>
-
-                {openSectionMenu === section.slug && (
-                  <div
-                    className={`absolute top-full ${
-                      isRTL
-                        ? "right-0"
-                        : "left-0"
-                    } w-60 bg-white rounded-2xl shadow-2xl border border-slate-100 py-3 px-2 z-50 text-start`}
-                  >
-                    <a
-                      href={`#${section.slug}`}
-                      className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
-                    >
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-slate-100 text-slate-500">
-                        <Globe size={16} />
-                      </div>
-
-                      <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">
-                        {isRTL
-                          ? `كل ${sectionLabel(section)}`
-                          : `All ${sectionLabel(section)}`}
-                      </p>
-                    </a>
-
-                    {(section.categories || []).map(
-                      (category) => (
-                        <a
-                          key={category.slug}
-                          href={`#${section.slug}/${category.slug}`}
-                          className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-colors group"
-                        >
-                          <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-blue-50 text-[#003B7A]">
-                            <LayoutGrid size={16} />
-                          </div>
-
-                          <p className="text-xs font-bold text-[#002B5B] group-hover:text-[#FF7A00]">
-                            {isRTL
-                              ? category.name_ar ||
-                                category.name_en
-                              : category.name_en ||
-                                category.name_ar}
-                          </p>
-                        </a>
-                      )
-                    )}
-                  </div>
-                )}
-              </div>
+                <span>
+                  {category
+                    ? isRTL
+                      ? category.name_ar || category.name_en
+                      : category.name_en || category.name_ar
+                    : isRTL
+                      ? section.name_ar || section.name_en
+                      : section.name_en || section.name_ar}
+                </span>
+              </a>
             ))}
 
             {/* FLIGHTS */}
@@ -790,86 +730,29 @@ export default function Navbar({ services, visaCategories, sections }) {
                 )}
               </div>
 
-              {/* DYNAMIC SECTIONS (admin-managed) */}
-              {navSections.map((section) => (
-                <div className="mt-1" key={section.slug}>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setOpenSectionMenu(
-                        openSectionMenu === section.slug
-                          ? null
-                          : section.slug
-                      )
-                    }
-                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                  >
-                    <span className="flex items-center gap-2">
-                      <LayoutGrid
-                        size={17}
-                        className="text-[#0084D6]"
-                      />
+              {/* DYNAMIC SECTION CATEGORY LINKS (admin-managed, one navbar item per category) */}
+              {navCategoryLinks.map(({ section, category }) => (
+                <a
+                  key={`${section.slug}/${category ? category.slug : "all"}`}
+                  href={`#${section.slug}${category ? `/${category.slug}` : ""}`}
+                  onClick={closeMobileMenu}
+                  className="mt-1 flex items-center gap-2 px-4 py-3 rounded-xl font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  <LayoutGrid
+                    size={17}
+                    className="text-[#0084D6]"
+                  />
 
-                      <span>
-                        {sectionLabel(section)}
-                      </span>
-                    </span>
-
-                    <ChevronDown
-                      size={17}
-                      className={`transition-transform duration-300 ${
-                        openSectionMenu === section.slug
-                          ? "rotate-180 text-[#FF7A00]"
-                          : "text-slate-400"
-                      }`}
-                    />
-                  </button>
-
-                  {openSectionMenu === section.slug && (
-                    <div className="mt-1 mx-2 space-y-1">
-                      <a
-                        href={`#${section.slug}`}
-                        onClick={closeMobileMenu}
-                        className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors"
-                      >
-                        <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-slate-100 text-slate-500">
-                          <Globe size={17} />
-                        </div>
-
-                        <p className="text-sm font-bold text-[#002B5B]">
-                          {isRTL
-                            ? `كل ${sectionLabel(section)}`
-                            : `All ${sectionLabel(section)}`}
-                        </p>
-                      </a>
-
-                      {(section.categories || []).map(
-                        (category) => (
-                          <a
-                            key={category.slug}
-                            href={`#${section.slug}/${category.slug}`}
-                            onClick={
-                              closeMobileMenu
-                            }
-                            className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 transition-colors"
-                          >
-                            <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-blue-50 text-[#003B7A]">
-                              <LayoutGrid size={17} />
-                            </div>
-
-                            <p className="text-sm font-bold text-[#002B5B]">
-                              {isRTL
-                                ? category.name_ar ||
-                                  category.name_en
-                                : category.name_en ||
-                                  category.name_ar}
-                            </p>
-                          </a>
-                        )
-                      )}
-                    </div>
-                  )}
-                </div>
+                  <span>
+                    {category
+                      ? isRTL
+                        ? category.name_ar || category.name_en
+                        : category.name_en || category.name_ar
+                      : isRTL
+                        ? section.name_ar || section.name_en
+                        : section.name_en || section.name_ar}
+                  </span>
+                </a>
               ))}
 
               {/* FLIGHTS */}
