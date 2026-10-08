@@ -175,7 +175,7 @@
         .empty-icon { display:grid; place-items:center; width:52px; height:52px; margin:0 auto 15px; border-radius:16px; color:var(--blue-600); background:var(--blue-100); }
         .empty-icon svg { width:24px; height:24px; }
         .empty strong { display:block; color:var(--navy-900); }
-        .empty span { display:block; margin-top:4px; color:var(--muted); font-size:14px; }
+        .empty span:not(.empty-icon) { display:block; margin-top:4px; color:var(--muted); font-size:14px; }
         [dir="rtl"] body { font-family:"Segoe UI",Tahoma,Arial,sans-serif; }
         [dir="rtl"] .nav a:hover { transform:translateX(-2px); }
         [dir="rtl"] .nav a.active::before { left:auto; right:-6px; }
