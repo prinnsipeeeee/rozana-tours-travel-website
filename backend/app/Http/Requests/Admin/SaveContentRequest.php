@@ -63,6 +63,7 @@ class SaveContentRequest extends FormRequest
                 'processing_time_ar' => ['nullable', 'string', 'max:255'],
                 'validity' => ['required', 'string', 'max:255'],
                 'validity_ar' => ['nullable', 'string', 'max:255'],
+                'price_ar' => ['nullable', 'string', 'max:255'],
                 'description' => ['required', 'string', 'max:10000'],
                 'description_ar' => ['nullable', 'string', 'max:10000'],
                 'requirements' => ['required', 'string', 'max:10000'],

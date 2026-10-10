@@ -30,6 +30,7 @@ class ResourceControllerTest extends TestCase
             'processing_time' => '5 working days',
             'validity' => '12 months',
             'price' => '500 SAR',
+            'price_ar' => '500 ريال',
             'description' => 'Tourist visa assistance.',
             'requirements' => "Passport\nBank statement",
             'active' => '1',
@@ -39,6 +40,7 @@ class ResourceControllerTest extends TestCase
         $this->assertDatabaseHas('visas', [
             'slug' => 'australia',
             'country' => 'Australia Tourist Visa',
+            'price_ar' => '500 ريال',
             'active' => true,
         ]);
         $this->assertSame(

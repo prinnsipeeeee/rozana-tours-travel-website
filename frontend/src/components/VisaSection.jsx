@@ -26,6 +26,7 @@ const defaultVisaData = [
     validity: 'Up to 90 Days / Multi-Entry',
     validity_ar: 'تصل إلى 90 يوماً / دخول متعدد',
     price: '450 SAR',
+    price_ar: '450 ريال',
     requirements: [
       'Original Passport (Valid 6+ months)',
       'Saudi ID / Iqama Copy',
@@ -55,6 +56,7 @@ const defaultVisaData = [
     validity: '2 - 10 Years Multiple',
     validity_ar: 'سنتان إلى 10 سنوات متعددة',
     price: '380 SAR',
+    price_ar: '380 ريال',
     requirements: [
       'High-Resolution Passport Scan',
       'Saudi Iqama / National ID Copy',
@@ -82,6 +84,7 @@ const defaultVisaData = [
     validity: 'Up to 10 Years Multi-Entry',
     validity_ar: 'تصل إلى 10 سنوات دخول متعدد',
     price: '650 SAR',
+    price_ar: '650 ريال',
     requirements: [
       'DS-160 Application Confirmation Page',
       'Valid Passport & 5x5cm US Photo',
@@ -109,6 +112,7 @@ const defaultVisaData = [
     validity: '90 Days Tourist Permit',
     validity_ar: 'تصريح سياحي لمدة 90 يوماً',
     price: '320 SAR',
+    price_ar: '320 ريال',
     requirements: [
       'Original Passport Scan',
       'White Background Photo',
@@ -275,7 +279,7 @@ export default function VisaSection({ items, settings = {}, service, categories 
               <div className="space-y-3 pt-2">
                 <div className="flex items-baseline justify-between">
                   <span className="text-[10px] text-slate-400 font-bold uppercase">{copy('fee_label', 'Service Fee', 'رسوم الخدمة')}</span>
-                  <span className="text-xl font-black text-[#002B5B]">{visa.price}</span>
+                  <span className="text-xl font-black text-[#002B5B]">{getContent(visa, 'price')}</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">

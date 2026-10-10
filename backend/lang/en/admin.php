@@ -121,6 +121,7 @@ return [
         'validity' => 'Validity',
         'validity_ar' => 'Validity (Arabic)',
         'price' => 'Price',
+        'price_ar' => 'Price (Arabic)',
         'description' => 'Description',
         'description_ar' => 'Description (Arabic)',
         'requirements' => 'Requirements (one per line)',

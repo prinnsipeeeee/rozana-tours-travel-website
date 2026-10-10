@@ -121,6 +121,7 @@ return [
         'validity' => 'الصلاحية',
         'validity_ar' => 'الصلاحية (بالعربية)',
         'price' => 'السعر',
+        'price_ar' => 'السعر (بالعربية)',
         'description' => 'الوصف',
         'description_ar' => 'الوصف (بالعربية)',
         'requirements' => 'المتطلبات (متطلب في كل سطر)',

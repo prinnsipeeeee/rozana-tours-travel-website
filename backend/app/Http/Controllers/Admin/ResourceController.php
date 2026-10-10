@@ -34,6 +34,7 @@ class ResourceController extends Controller
                 'validity' => ['label' => 'admin.fields.validity', 'type' => 'text', 'required' => true],
                 'validity_ar' => ['label' => 'admin.fields.validity_ar', 'type' => 'text'],
                 'price' => ['label' => 'admin.fields.price', 'type' => 'text', 'required' => true],
+                'price_ar' => ['label' => 'admin.fields.price_ar', 'type' => 'text'],
                 'description' => ['label' => 'admin.fields.description', 'type' => 'textarea', 'required' => true],
                 'description_ar' => ['label' => 'admin.fields.description_ar', 'type' => 'textarea'],
                 'requirements' => ['label' => 'admin.fields.requirements', 'type' => 'lines', 'required' => true],

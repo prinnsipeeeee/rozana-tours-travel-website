@@ -23,6 +23,7 @@ class VisaResource extends JsonResource
             'validity' => $this->validity,
             'validity_ar' => $this->validity_ar,
             'price' => $this->price,
+            'price_ar' => $this->price_ar,
             'description' => $this->description,
             'description_ar' => $this->description_ar,
             'requirements' => $this->requirements,
