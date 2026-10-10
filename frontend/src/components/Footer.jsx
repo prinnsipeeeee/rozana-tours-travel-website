@@ -51,7 +51,7 @@ export default function Footer({ settings = {} }) {
   const address = settings.address || (isRTL ? 'شارع أم الحمام، حي أم الحمام الشرقي، الرياض، المملكة العربية السعودية' : 'Umm Al Hamam St., Umm Al Hamam Al Sharqi Dist., Riyadh · Saudi Arabia');
 
   return (
-    <footer className="bg-[#001730] text-slate-300 font-sans border-t border-blue-900/60 pt-20 pb-12 relative overflow-hidden">
+    <footer translate="no" className="bg-[#001730] text-slate-300 font-sans border-t border-blue-900/60 pt-20 pb-12 relative overflow-hidden">
       
       {/* BRAND GLOW */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#FF7A00]/5 rounded-full blur-3xl pointer-events-none"></div>

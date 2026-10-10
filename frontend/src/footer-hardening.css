@@ -1,0 +1,56 @@
+/* ==========================================================================
+   Rozana — Footer Hardening Patch
+   Drop this file into frontend/src/ and import it at the END of
+   frontend/src/index.css:
+
+       @import "./footer-hardening.css";
+
+   What it protects against:
+   1. Forced-dark inversion (Samsung Internet Night mode, Chrome Android
+      "darken websites", Huawei/Xiaomi browser themes) that flip white
+      footer text to black.
+   2. Translation engines / extensions injecting styles that override the
+      footer's light text colors on the dark navy background.
+   ========================================================================== */
+
+/* --- 1. Pin the footer to its dark color scheme -------------------------
+   color-scheme: dark tells the browser this subtree is already dark, so
+   forced-dark engines skip inverting it. The explicit background-color
+   backs up the Tailwind bg-[#001730] class if classes are ever stripped. */
+footer {
+  background-color: #001730;
+  color: #cbd5e1; /* slate-300 fallback */
+  color-scheme: dark only;
+}
+
+/* --- 2. Pin every text role the footer uses -----------------------------
+   These mirror the Tailwind utilities in Footer.jsx. The !important wins
+   over any style injected by translation engines or browser extensions.
+   Scope is limited to `footer` so nothing else on the page is affected. */
+footer .text-white          { color: #ffffff !important; }
+footer .text-slate-300      { color: #cbd5e1 !important; }
+footer .text-slate-400      { color: #94a3b8 !important; }
+footer .text-amber-300      { color: #fcd34d !important; }
+footer .text-\[\#FF7A00\]   { color: #ff7a00 !important; }
+footer .text-slate-200      { color: #e2e8f0 !important; }
+footer .text-slate-500      { color: #64748b !important; }
+
+/* --- 3. Restore hover accents that the !important pins would flatten --- */
+footer a[class*="hover:text-[#FF7A00]"]:hover,
+footer [class*="hover:text-[#FF7A00]"]:hover {
+  color: #ff7a00 !important;
+}
+footer a[class*="hover:text-white"]:hover,
+footer [class*="hover:text-white"]:hover {
+  color: #ffffff !important;
+}
+footer a[class*="hover:text-amber-300"]:hover,
+footer [class*="hover:text-amber-300"]:hover {
+  color: #fcd34d !important;
+}
+
+/* --- 4. Keep borders/badges legible if an engine strips alpha utilities - */
+footer [class*="border-white/10"],
+footer [class*="border-blue-900/60"] {
+  border-color: rgba(255, 255, 255, 0.1);
+}
