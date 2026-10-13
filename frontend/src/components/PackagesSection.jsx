@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Compass, Calendar, Star, Check, MessageSquare, X, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { openWhatsApp } from '../utils/whatsapp';
 
 // DEFAULT STATIC DATA (used when Laravel API is not connected)
 const packageData = [
@@ -212,9 +213,9 @@ export default function PackagesSection({ items, categories: categoryItems, sett
 
     const handleBook = (packageTitle) => {
         const message = lang === 'ar'
-            ? encodeURIComponent(`مرحباً روزانا للسياحة! أرغب في حجز باقة "${packageTitle}". أرجو إرسال التفاصيل والتواريخ المتاحة.`)
-            : encodeURIComponent(`Hello Rozana Tours! I am interested in booking the "${packageTitle}" Tour Package. Please send me details & available dates.`);
-        window.location.href = `https://wa.me/${whatsappNumber}?text=${message}`;
+            ? `مرحباً روزانا للسياحة! أرغب في حجز باقة "${packageTitle}". أرجو إرسال التفاصيل والتواريخ المتاحة.`
+            : `Hello Rozana Tours! I am interested in booking the "${packageTitle}" Tour Package. Please send me details & available dates.`;
+        openWhatsApp(settings.whatsapp_number, message);
     };
 
     const fallbackCategories = [

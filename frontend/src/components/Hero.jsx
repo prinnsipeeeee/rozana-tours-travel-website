@@ -11,10 +11,11 @@ import {
   CheckCircle2,
   Sparkles
 } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { openWhatsApp, getWhatsAppUrl } from '../utils/whatsapp';
+import { motion } from 'framer-motion';
 
-export default function Hero() {
+export default function Hero({ settings = {} }) {
   const { lang, t, isRTL } = useLanguage();
   const [activeTab, setActiveTab] = useState('visas');
   const [selectedDestination, setSelectedDestination] = useState('Schengen');
@@ -34,8 +35,7 @@ export default function Hero() {
         ? `السلام عليكم روزانة للسياحة، أرغب في حجز طيران إلى ${selectedDestination}.`
         : `Hello Rozana Tours! I need to search and book flights to ${selectedDestination}.`;
     }
-    const encoded = encodeURIComponent(msg);
-    window.location.href = `https://wa.me/966552993899?text=${encoded}`;
+    openWhatsApp(settings?.whatsapp_number, msg);
   };
 
   return (
@@ -105,7 +105,9 @@ export default function Hero() {
             {/* ACTION BUTTONS */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
               <a
-                href="https://wa.me/966552993899"
+                href={getWhatsAppUrl(settings?.whatsapp_number)}
+                target="_blank"
+                rel="noreferrer"
                 className="bg-linear-to-r from-[#FF7A00] to-amber-500 hover:from-amber-500 hover:to-[#FF7A00] text-white px-7 py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider shadow-xl shadow-[#FF7A00]/25 transition-all hover:scale-105 active:scale-95 flex items-center gap-2"
               >
                 <span>{t('hero.cta_consult')}</span>

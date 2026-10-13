@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import logoImg from '../assets/logo-1.png';
 import { useLanguage } from '../context/LanguageContext';
+import { getWhatsAppUrl } from '../utils/whatsapp';
 
 const socialLinks = [
   {
@@ -147,7 +148,7 @@ export default function Footer({ settings = {} }) {
 
             <div className="space-y-2 pt-1 text-xs">
               <a 
-                href={`https://wa.me/${whatsappNumber}`}
+                href={getWhatsAppUrl(settings.whatsapp_number)}
                 target="_blank" 
                 rel="noreferrer" 
                 className="text-[#FF7A00] font-bold hover:underline flex items-center gap-1.5"

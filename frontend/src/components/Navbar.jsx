@@ -19,6 +19,7 @@ import {
 
 import logoImg from "../assets/logo-1.png";
 import { useLanguage } from "../context/LanguageContext";
+import { getWhatsAppUrl } from "../utils/whatsapp";
 
 const defaultServices = [
   {
@@ -85,7 +86,7 @@ const defaultVisaCategories = [
   { slug: "asia", name_en: "Asia", name_ar: "آسيا وشرق آسيا" },
 ];
 
-export default function Navbar({ services, visaCategories, sections }) {
+export default function Navbar({ settings = {}, services, visaCategories, sections }) {
   const { lang, toggleLanguage, t, isRTL } = useLanguage();
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -504,7 +505,7 @@ export default function Navbar({ services, visaCategories, sections }) {
 
             {/* WHATSAPP */}
             <a
-              href="https://wa.me/966552993899"
+              href={getWhatsAppUrl(settings?.whatsapp_number)}
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-full font-bold text-xs shadow-md shadow-emerald-500/20 transition-all hover:scale-105 active:scale-95"
@@ -805,7 +806,7 @@ export default function Navbar({ services, visaCategories, sections }) {
 
                 {/* WHATSAPP */}
                 <a
-                  href="https://wa.me/966552993899"
+                  href={getWhatsAppUrl(settings?.whatsapp_number)}
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold text-sm transition-colors"

@@ -8,9 +8,10 @@ import {
   X,
   FileCheck
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
 import { useHashCategory } from "../hooks/useHashCategory";
+import { openWhatsApp } from "../utils/whatsapp";
+import { motion, AnimatePresence } from "framer-motion";
 
 // DEFAULT DATA SET
 const defaultVisaData = [
@@ -167,10 +168,7 @@ export default function VisaSection({ items, settings = {}, service, categories 
       ? `السلام عليكم روزانة للسياحة، أرغب في التقديم على استخراج ${countryName}. الرجاء تزويدي بالتفاصيل والمواعيد المتاحة.`
       : `Hello Rozana Tours! I want to apply for the ${countryName} visa. Please provide me with requirements and details.`;
 
-    const encoded = encodeURIComponent(text);
-
-    window.location.href =
-      `https://wa.me/${whatsappNumber}?text=${encoded}`;
+    openWhatsApp(settings.whatsapp_number, text);
   };
 
   return (

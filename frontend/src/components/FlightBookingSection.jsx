@@ -11,9 +11,9 @@ import {
     X,
     Ticket,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-
+import { openWhatsApp } from '../utils/whatsapp';
+import { motion, AnimatePresence } from 'framer-motion';
 // POPULAR DESTINATIONS WITH HD FLAG CDN
 const popularDestinations = [
     { city_en: 'Dubai (DXB)', city_ar: 'دبي (DXB)', country_en: 'UAE', country_ar: 'الإمارات', price: 'from 550 SAR', flag: 'https://flagcdn.com/w40/ae.png' },
@@ -69,8 +69,7 @@ export default function FlightBookingSection({ settings = {} }) {
                 `Please check the best available airline fares and schedules for me.`;
         }
 
-        const encoded = encodeURIComponent(details);
-        window.location.href = `https://wa.me/${whatsappNumber}?text=${encoded}`;
+        openWhatsApp(settings.whatsapp_number, details);
     };
 
     const steps = [

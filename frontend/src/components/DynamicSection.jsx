@@ -11,6 +11,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useHashCategory } from '../hooks/useHashCategory';
+import { openWhatsApp } from '../utils/whatsapp';
 
 // Renders an admin-managed dynamic section with the visa-section design:
 // category filter tabs + cards (+ details popup), EN/AR aware. Every field
@@ -64,7 +65,7 @@ export default function DynamicSection({ section, settings = {} }) {
       ? `السلام عليكم روزانة للسياحة، أرغب في الاستفسار عن ${title} ضمن ${sectionName}. الرجاء تزويدي بالتفاصيل والمواعيد المتاحة.`
       : `Hello Rozana Tours! I want to apply for the ${title} (${sectionName}). Please provide me with details.`;
 
-    window.location.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`;
+    openWhatsApp(settings.whatsapp_number, text);
   };
 
   const specIcons = [

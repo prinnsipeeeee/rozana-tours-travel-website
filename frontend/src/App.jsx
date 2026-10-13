@@ -73,7 +73,7 @@ export default function App() {
           {(content === null || serviceBySlug('embassy')) && <EmbassySection settings={content?.settings} service={serviceBySlug('embassy')} />}
           {(content === null || serviceBySlug('translation')) && <TranslationSection settings={content?.settings} service={serviceBySlug('translation')} />}
           {(content === null || serviceBySlug('license')) && <LicenseSection settings={content?.settings} service={serviceBySlug('license')} />}
-          <FlightBookingSection />
+          <FlightBookingSection settings={content?.settings} />
           <PackagesSection items={content?.tourPackages} categories={content?.tourPackageCategories} settings={content?.settings} />
           {(content?.sections || []).map((section) => (
             <DynamicSection key={section.slug} section={section} settings={content?.settings} />

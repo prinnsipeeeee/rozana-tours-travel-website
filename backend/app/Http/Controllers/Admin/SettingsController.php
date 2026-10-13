@@ -38,6 +38,16 @@ class SettingsController extends Controller
     public function update(SaveSettingsRequest $request): RedirectResponse
     {
         foreach ($request->validated() as $key => $value) {
+            if ($key === 'whatsapp_number' && !empty($value)) {
+                $cleaned = preg_replace('/\D+/', '', $value);
+                $cleaned = preg_replace('/^00/', '', $cleaned);
+                if (str_starts_with($cleaned, '05') && strlen($cleaned) === 10) {
+                    $cleaned = '966' . substr($cleaned, 1);
+                } elseif (str_starts_with($cleaned, '5') && strlen($cleaned) === 9) {
+                    $cleaned = '966' . $cleaned;
+                }
+                $value = $cleaned ?: $value;
+            }
             SiteSetting::updateOrCreate(['key' => $key], ['value' => $value]);
         }
 

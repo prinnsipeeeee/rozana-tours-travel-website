@@ -2,6 +2,7 @@ import React from "react";
 import { Award, ShieldCheck, MapPin, Sparkles, HeartHandshake, Compass, PhoneCall, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from '../context/LanguageContext';
+import { openWhatsApp } from '../utils/whatsapp';
 
 export default function AboutSection({ settings = {} }) {
     const { lang, isRTL } = useLanguage();
@@ -168,9 +169,9 @@ export default function AboutSection({ settings = {} }) {
                             <button
                                 onClick={() => {
                                     const msg = lang === 'ar'
-                                        ? encodeURIComponent('مرحباً روزانا للسياحة! أود الاستفسار عن خدماتكم.')
-                                        : encodeURIComponent('Hello Rozana Tours! I would like to know more about your services.');
-                                    window.location.href = `https://wa.me/${whatsappNumber}?text=${msg}`;
+                                        ? 'مرحباً روزانا للسياحة! أود الاستفسار عن خدماتكم.'
+                                        : 'Hello Rozana Tours! I would like to know more about your services.';
+                                    openWhatsApp(settings.whatsapp_number, msg);
                                 }}
                                 className="shrink-0 bg-[#FF7A00] hover:bg-orange-600 text-white px-5 py-3 rounded-2xl font-bold text-xs transition-transform hover:scale-105 shadow-md"
                             >

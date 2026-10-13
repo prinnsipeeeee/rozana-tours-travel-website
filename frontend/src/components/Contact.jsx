@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock, MessageSquare, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLanguage } from "../context/LanguageContext";
+import { openWhatsApp, getWhatsAppUrl } from "../utils/whatsapp";
 
 export default function Contact({ settings = {} }) {
   const { isRTL } = useLanguage();
@@ -32,8 +33,7 @@ export default function Contact({ settings = {} }) {
         `🎯 *Service:* ${formData.service}\n` +
         `💬 *Message:* ${formData.message || 'I would like more information.'}`;
 
-    const encoded = encodeURIComponent(text);
-    window.location.href = `https://wa.me/${whatsappNumber}?text=${encoded}`;
+    openWhatsApp(settings.whatsapp_number, text);
   };
 
   return (
@@ -86,7 +86,7 @@ export default function Contact({ settings = {} }) {
               </h4>
 
               <a 
-                href={`https://wa.me/${whatsappNumber}`}
+                href={getWhatsAppUrl(settings.whatsapp_number)}
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center justify-between p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-[#FF7A00] transition-all group"

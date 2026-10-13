@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { openWhatsApp } from '../utils/whatsapp';
 
 const defaultEmbassyServices = [
   {
@@ -179,10 +180,7 @@ export default function EmbassySection({ settings = {}, service }) {
       ? `السلام عليكم روزانة للسياحة، أرغب في الاستفسار عن خدمة: "${serviceTitle}". الرجاء توضيح المتطلبات والرسوم.`
       : `Hello Rozana Tours! I need assistance with "${serviceTitle}". Please inform me about requirements and fees.`;
 
-    const encoded = encodeURIComponent(text);
-
-    window.location.href =
-      `https://wa.me/${whatsappNumber}?text=${encoded}`;
+    openWhatsApp(settings.whatsapp_number, text);
   };
 
   return (

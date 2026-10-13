@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { openWhatsApp } from '../utils/whatsapp';
 
 const defaultLicensePlans = [
   {
@@ -128,10 +129,7 @@ export default function LicenseSection({ settings = {}, service }) {
       ? `السلام عليكم روزانة للسياحة، أرغب في استخراج "${planTitle}" بقيمة (${price}). الرجاء إفادتي بالمتطلبات.`
       : `Hello Rozana Tours! I want to apply for the "${planTitle}" (${price}). Please assist me with issuance.`;
 
-    const encoded = encodeURIComponent(text);
-
-    window.location.href =
-      `https://wa.me/${whatsappNumber}?text=${encoded}`;
+    openWhatsApp(settings.whatsapp_number, text);
   };
 
   return (

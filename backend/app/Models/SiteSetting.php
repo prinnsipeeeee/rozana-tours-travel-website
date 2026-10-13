@@ -30,6 +30,21 @@ class SiteSetting extends Model
 
     public static function allAsArray(): array
     {
-        return static::query()->pluck('value', 'key')->all();
+        $settings = static::query()->pluck('value', 'key')->all();
+
+        if (!empty($settings['whatsapp_number'])) {
+            $cleaned = preg_replace('/\D+/', '', $settings['whatsapp_number']);
+            $cleaned = preg_replace('/^00/', '', $cleaned);
+            if (str_starts_with($cleaned, '05') && strlen($cleaned) === 10) {
+                $cleaned = '966' . substr($cleaned, 1);
+            } elseif (str_starts_with($cleaned, '5') && strlen($cleaned) === 9) {
+                $cleaned = '966' . $cleaned;
+            }
+            if (!empty($cleaned)) {
+                $settings['whatsapp_number'] = $cleaned;
+            }
+        }
+
+        return $settings;
     }
 }

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { openWhatsApp } from '../utils/whatsapp';
 
 const defaultDocumentTypes = [
   {
@@ -106,8 +107,7 @@ export default function TranslationSection({ settings = {}, service }) {
     const message = isRTL
       ? `السلام عليكم روزانة للسياحة، أحتاج ترجمة معتمدة للوثيقة: *${selectedDoc}* إلى اللغة: *${selectedLang}*. الرجاء تزويدي بالرسوم ووقت التسليم.`
       : `Hello Rozana Tours! I need certified legal translation for: *${selectedDoc}* to *${selectedLang}*. Please provide fee and turnaround.`;
-    const encoded = encodeURIComponent(message);
-    window.location.href = `https://wa.me/${whatsappNumber}?text=${encoded}`;
+    openWhatsApp(settings.whatsapp_number, message);
   };
 
   return (
