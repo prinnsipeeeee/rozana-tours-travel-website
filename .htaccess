@@ -1,0 +1,24 @@
+# Rozana Travels — shared-hosting (Apache) routing.
+# The repo root is the domain document root on the host. The Laravel app
+# lives in backend/ and the built SPA is copied into backend/public/ on deploy.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never expose hidden files or directories (.env, .git, ...).
+    RewriteRule (^|/)\.[^/]+ - [F,L]
+
+    # Laravel handles the API and the admin panel.
+    RewriteRule ^(api|admin)(/|$) backend/public/index.php [L]
+
+    # Static files served from the built app inside backend/public
+    # (vite assets, user uploads via the storage symlink).
+    RewriteRule ^(assets|storage)(/.*)?$ backend/public$0 [L]
+    RewriteRule ^(favicon\.ico|favicon\.svg|icons\.svg|robots\.txt|index\.html)$ backend/public/$1 [L]
+
+    # Everything else falls back to the SPA entry point.
+    RewriteRule ^ backend/public/index.html [L]
+</IfModule>
+
+# No directory listings.
+Options -Indexes
