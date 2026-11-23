@@ -54,7 +54,9 @@ php artisan view:cache
 cd ~/domains/rozanatravels.com/public_html/frontend
 export PATH="$HOME/node/bin:$PATH"
 npm ci
-VITE_API_URL=https://rozanatravels.com npm run build
+# RAYON_NUM_THREADS is required on this host: the default 64-thread pool
+# fails to spawn (EAGAIN) and the build crashes in rolldown/rayon.
+RAYON_NUM_THREADS=4 VITE_API_URL=https://rozanatravels.com npm run build
 ```
 
 ## 5. Publish the build into the Laravel public directory
